@@ -1,3 +1,22 @@
+# Self-added file extensions
+
+# LaTeX
+*.aux
+*.bbl
+*.blg
+*.log
+*.nav
+*.out
+*.snm
+*.gz
+*.bak
+*.toc
+
+# Folder for sources
+sources
+
+#--------------------------------------
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,0 +1,89 @@
+% Settings for the default beamer theme
+\documentclass[english, aspectratio=169]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{babel}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\makeatletter
+
+\newcommand\makebeamertitle{\frame{\maketitle}}
+
+% (ERT) argument for the TOC
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+% Theme settings
+\usetheme{Frankfurt}
+\usecolortheme{default}
+\usefonttheme[onlymath]{serif}
+
+% Template settings
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{title page}[default][colsep=-4bp, rounded=true, shadow=false]
+\makeatother
+
+\begin{document}
+
+% Title page
+\section{Bevezetés}
+\title[]{Üzleti Intelligencia}
+\subtitle{1. Előadás: Verziókezelés és dokumentálás}
+\author[Kuknyó Dániel]{Kuknyó Dániel\\Budapesti Gazdasági Egyetem}
+\date{2023/24\\1.félév}
+\makebeamertitle
+
+% Table of contents slide
+\begin{frame}{Tartalom}
+\tableofcontents{}
+\end{frame}
+
+\section{Verziókezelés alapfogalmai}
+
+\begin{columns}
+
+\begin{column}{0.5\textwidth}
+\begin{frame}{Verziókezelés alapjai}
+	Miért van szükség verziókezelésre?
+	\begin{itemize}
+		\item A program változásainak követése
+		\item A munka biztonságos elmentése
+		\item Kollaboráció több fejlesztő között
+		\item Programkód párhuzamos szerkesztése
+		\item Feladatok szétosztása és követése
+	\end{itemize}
+\end{frame}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+	
+\end{column}
+
+\end{columns}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

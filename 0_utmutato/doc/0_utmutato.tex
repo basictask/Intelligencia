@@ -1,0 +1,81 @@
+% Settings for the default beamer theme
+\documentclass[english, aspectratio=169]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{babel}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\makeatletter
+
+\newcommand\makebeamertitle{\frame{\maketitle}}
+
+% (ERT) argument for the TOC
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+% Theme settings
+\usetheme{Frankfurt}
+\usecolortheme{default}
+\usefonttheme[onlymath]{serif}
+
+% Template settings
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{title page}[default][colsep=-4bp, rounded=true, shadow=false]
+\makeatother
+
+% Title page
+\begin{document}
+
+\section{Bevezetés}
+\title[]{Üzleti Intelligencia}
+\subtitle{Tantárgyi útmutató}
+\author[Kuknyó Dániel]{Kuknyó Dániel\\Budapesti Gazdasági Egyetem}
+\date{2023/24\\1.félév}
+\makebeamertitle
+
+\begin{frame}{Tartalom}
+\tableofcontents{}
+\end{frame}
+
+
+\begin{frame}{A félév tematikája}
+
+	\begin{itemize}
+		\item[-] Bevezetés
+		\begin{itemize}
+			\item[\textbf{1.}] \textbf{Verziókezelés és dokumentáció készítés}
+		\end{itemize}
+		\item[-] Megerősítéses tanulás
+		\begin{itemize}
+			\item[\textbf{2.}] \textbf{Bevezetés}: alapfogalmak, értékfüggvények
+			\item[\textbf{3.}] \textbf{Markov döntési folyamatok}: DP, MC, TD
+			\item[\textbf{4.}] \textbf{Sztochasztikus becslés}: Q-tanulás, SARSA, Jogosultsági nyomok
+			\item[\textbf{5.}] \textbf{Megerősítéses mélytanulás}: Q-hálózatok, Dupla Q-hálózatok,
+			\item[\textbf{6.}] \textbf{Összetett megerősítéses mélytanulás}: Csatázó Q-hálózatok, Aktor-kritikus
+		\end{itemize}
+		\item[-]{Mélytanulás}
+		\begin{itemize}
+			\item[\textbf{7.}] \textbf{Transzfertanulás}
+			\item[\textbf{8.}] \textbf{Autoencoder architektúrák}
+			\item[\textbf{9.}] \textbf{Objektum detekció}
+			\item[\textbf{10.}] \textbf{Visszacsatolásos neurális hálózatok}
+			\item[\textbf{11.}] \textbf{Transzformáló archtiketkúrák}
+		\end{itemize}
+	\end{itemize}
+	
+\end{frame}
+
+\section{Követelmények}
+
+\begin{frame}{Ponthatárok}
+	
+\end{frame}
+
+
+\end{document}
