@@ -1,0 +1,14 @@
+digraph "ann_singlehead" { 
+    // Label properies 
+    graph [dpi = 300];
+    
+    // Make graph vertical 
+    rankdir = "LR"
+    
+    start [label="start"]  
+    exploitation [label="mohó cselekvés"]
+    exploration [label="véletlen cselekvés"]    
+
+    start -> exploitation [label="1-ε"]
+    start -> exploration [label="ε"]
+}
