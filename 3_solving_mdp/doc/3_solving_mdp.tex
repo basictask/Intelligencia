@@ -4,6 +4,7 @@
 \usepackage{tabularx}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[ruled,vlined]{algorithm2e}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
@@ -140,33 +141,74 @@ A következő valós példák alkalmasak a felfedezés/kizsákmányolás dilemma
 \begin{itemize}
 	\item Étterem választás:
 	\begin{itemize}
-		\item Kizsákmányolás: elmész a kedvenc éttermedbe.
-		\item Felfedezés: elmész egy új étterembe, hátha találsz egy jobbat mint a kedvenced.
+		\item \textbf{Kizsákmányolás}: elmész a kedvenc éttermedbe.
+		\item \textbf{Felfedezés}: elmész egy új étterembe, hátha találsz egy jobbat mint a kedvenced.
 	\end{itemize}
 	\item Online hirdetés:
 	\begin{itemize}
-		\item Kizsákmányolás: a legjobb reklám megmutatása a felhasználónak.
-		\item Felfedezés: egy új reklám megmutatása a felhasználónak, hátha tetszik neki.
+		\item \textbf{Kizsákmányolás}: a legjobb reklám megmutatása a felhasználónak.
+		\item \textbf{Felfedezés}: egy új reklám megmutatása a felhasználónak, hátha tetszik neki.
 	\end{itemize}
 	\item Olajfúrás:
 	\begin{itemize}
-		\item Kizsákmányolás: Egy meglévő helyen fúrás az olajért.
-		\item Felfedezés: Egy új helyen fúrás.
+		\item \textbf{Kizsákmányolás}: Egy meglévő helyen fúrás az olajért.
+		\item \textbf{Felfedezés}: Egy új helyen fúrás.
 	\end{itemize}
 	\item Klinikai kezelés:
 	\begin{itemize}
-		\item Kizsákmányolás: A bevált kezelés alkalmazása.
-		\item Felfedezés: Új kezelés kipróbálása.
+		\item \textbf{Kizsákmányolás}: A bevált kezelés alkalmazása.
+		\item \textbf{Felfedezés}: Új kezelés kipróbálása.
 	\end{itemize}
 \end{itemize}
+\end{frame}
+
+\section{A rabló probléma}
+
+\begin{frame}
+\tableofcontents[currentsection]
 \end{frame}
 
 \begin{frame}{A rabló probléma}
 \begin{columns}
 \begin{column}{.5\textwidth}
-A $k$-karú rabló problémája egy elméleti megerősítéses tanulás probléma. A játékos egy rablógépen játszik, amelynek $k$ karja van. Minden karhúzás után egy állandó eloszlásból választott jutalmat kap az ügynök. Az ügynök célja, hogy olyan politikát válasszon, ami az elvárt hozamot maximalizálja $1000$ cselekvés vagy \emph{időlépés} után.
+\only<1>{A $k$-karú rabló problémája egy elméleti megerősítéses tanulás probléma. A játékos egy rablógépen játszik, amelynek $k$ karja van. \\
+Minden karhúzás után egy állandó eloszlásból választott jutalmat kap az ügynök. Az ügynök célja, hogy olyan politikát válasszon, ami az elvárt hozamot maximalizálja $1000$ cselekvés vagy \emph{időlépés} után.}
+\only<2>{Az ügynöknek számon kell tartania, mennyi a jutalom várható értéke, ha adott egy $a$ cselekvés. Ez a $Q(s,a)$ állapot-cselekvés minőség függvény. A rabló problémában csak egy állapot van, ezért elég csak a cselekvésekhez tartozóan számon tartani:
+\[
+q_{*}(a)=E\left[r_{t}|A_{t}=a\right]
+\]
+A jutalom várható értéke: 
+\[
+Q_{n}=\frac{r_{1}+r_{2}+...+r_{n-1}}{n-1}
+\]
+}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/solving_5.png}
+\end{center}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Algoritmus a rabló megoldására}
+\begin{algorithm}[H]
+\caption{Egyszerű rabló algoritmus}
+\SetAlgoLined
+	$Q(a)\leftarrow0\;for\;a=1\rightarrow k$\tcc*[r]{Cselekvés minőségének függvénye}
+	$N(a)\leftarrow	0\;for\;a=1\rightarrow k$\tcc*[r]{Kar meghúzásainak a száma}
+	\For{$t=1 \rightarrow max_{t}$}{
+		$p=random(0,1)$\tcc*[t]{Véletlen szám $0$ és $1$ között}
+		\eIf{$p>\varepsilon$}{
+			$a \leftarrow \underset{a}{argmax}Q(a)$\tcc*[r]{Legnagyobb ismert jutalom cselekvése}
+		}{
+			$a \leftarrow a \sim A $\tcc*[r]{Véletlen cselekvés}
+		}
+		$r\leftarrow env(a)$\tcc*[t]{Cselekvés végrehajtása a környezetben}
+		$N(a) \leftarrow N(a)+1$\tcc*[t]{Cselekvés számlálójának növelése}
+		$Q(a) \leftarrow Q(a) + \frac{1}{N(a)}\left[r-Q(a)\right]$\tcc*[t]{$Q$-érték frissítése}
+	}
+\end{algorithm}
 \end{frame}
 
 \end{document}
