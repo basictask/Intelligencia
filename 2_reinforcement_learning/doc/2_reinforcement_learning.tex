@@ -148,10 +148,11 @@ $s_1 \rightarrow a_1 \rightarrow s_2 \rightarrow a_2 \rightarrow ... \rightarrow
 \begin{columns}
 \begin{column}{.5\textwidth}
 \only<1>{A megerősítéses tanulásban a jutalmak általában ritkák és késleltetettek.\\
-Például: ha az ügynök életben maradt 100 lépésen keresztül, és a 101. lépésben meghal, honnan tudjuk, melyik lépés volt érte a felelős?\\
+Például: ha az ügynök életben maradt 100 lépésen keresztül, és a 101. lépésben meghal, honnan tudjuk, melyik lépés volt érte a felelős?\par\smallskip
 A probléma megoldására a tanulás egy diszkont rátát ($\gamma$) alkalmaz.\\
 A diszkont ráta megadja a jövőbeli jutalmak jelenbeli értékét. Valamely $r$ jutalom értéke $k$ időlépés után $\gamma^{k-1}$.} 
-\only<2>{Ha az ügynök  háromszor egymás után jobbra megy, és $+10$ jutalmat kap az első lépés után, $0$-t a második lépés után, és végül $-50$-et a harmadik lépés után, akkor feltéve, hogy $\gamma=0.8$ diszkontálási tényezőt használ, az első lépés hozama $10+\gamma 0+\gamma^2 (-50)=-22$ lesz. Ha a diszkontálási tényező közel van a $0$-hoz, akkor a jövőbeli jutalmak nem számítanak sokat az azonnali jutalmakhoz képest. Ha viszont a diszkontálási tényező közel van $1$-hez, akkor a jutalmak a jövőben majdnem ugyanannyit számítanak, mint az azonnali jutalmak.}
+\only<2>{Ha az ügynök  háromszor egymás után jobbra megy, és $+10$ jutalmat kap az első lépés után, $0$-t a második lépés után, és végül $-50$-et a harmadik lépés után, akkor feltéve, hogy $\gamma=0.8$ diszkontálási tényezőt használ, az első lépés hozama $10+\gamma 0+\gamma^2 (-50)=-22$ lesz. \par\smallskip
+Ha a diszkontálási tényező közel van a $0$-hoz, akkor a jövőbeli jutalmak nem számítanak sokat az azonnali jutalmakhoz képest. Ha viszont a diszkontálási tényező közel van $1$-hez, akkor a jutalmak a jövőben majdnem ugyanannyit számítanak, mint az azonnali jutalmak.}
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
@@ -327,7 +328,7 @@ $\;minden\;s\in S-re$
 \begin{columns}
 \begin{column}{.6\textwidth}
 Hogyan lehet javítani egy $\pi$ politikát?\\
-Azt tudjuk, hogy mennyire jövedelmező egy $s$ állapotból $\pi$-t követni - ez a $v_\pi(s)$.\\ Érdemes lenne eltérni $\pi$ politikától egy adott $a$ cselekvést választva?\\
+Azt tudjuk, hogy mennyire jövedelmező egy $s$ állapotból $\pi$-t követni - ez a $v_\pi(s)$.\\ Érdemes lenne eltérni $\pi$ politikától egy adott $a$ cselekvést választva?\par\smallskip
 Ezt adja meg az állapot-cselekvés minőség függvény: mennyire jövedelmező egy ügynöknek $s$ állapotból $a$ cselekvést választani, majd utána $\pi$ politikát követni:\\
 \begin{block}{Állapot-cselekvés minőség Bellman szabály}
 \[

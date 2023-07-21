@@ -1,0 +1,46 @@
+digraph DynamicProgrammingTree {
+  graph [dpi = 300];
+
+  F5;
+  F5L [label="F4"];
+  F5R [label="F3"];
+  F5 -> F5L;
+  F5 -> F5R;
+  
+  F5L;
+  F5LL [label="F3"];
+  F5LR [label="F2"];
+  F5L -> F5LL;
+  F5L -> F5LR;
+  
+  F5R;
+  F5RL [label="F2"];
+  F5RR [label="F1"];
+  F5R -> F5RL;
+  F5R -> F5RR;
+  
+  F5LL;
+  F5LLL [label="F2"];
+  F5LLR [label="F1"];
+  F5LL -> F5LLL;
+  F5LL -> F5LLR;
+  
+  F5LR;
+  F5LRL [label="F1"];
+  F5LRR [label="F0"];
+  F5LR -> F5LRL;
+  F5LR -> F5LRR;
+  
+  F5RL;
+  F5RLL [label="F1"];
+  F5RLR [label="F0"];
+  F5RL -> F5RLL;
+  F5RL -> F5RLR;
+  
+  F5LLL;
+  F5LLLL [label="F1"];
+  F5LLLR [label="F0"];
+  F5LLL -> F5LLLL;
+  F5LLL -> F5LLLR;
+}
+

@@ -211,6 +211,93 @@ Q_{n}=\frac{r_{1}+r_{2}+...+r_{n-1}}{n-1}
 \end{algorithm}
 \end{frame}
 
+\begin{frame}{Egy példa rabló}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Hogy meg lehessen mérni a mohó és $\varepsilon$-mohó stratégiák teljesítményét, szükség van egy teszt rablóra. A példában szereplő egy $10$-karú rabló. Minden karhoz tartozóan a jutalmak eloszlása Gauss-i eloszlást követ $1$ varianciával, viszont nem $0$ átlaggal. \par\smallskip
+Valamelyik karok nagyobb valószínűséggel járnak magas jutalommal mint a többi. Az ügynök feladata megtalálni melyik kartól remélhet nagyobb jutalmat. Ehhez szükség van arra, hogy végig próbálja őket.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+A jutalmak eloszlása
+\includegraphics[width=7cm, height=6cm, keepaspectratio]{images/solving_6.png}
+\begin{scriptsize}
+Cselekvés
+\end{scriptsize}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{A futás teljesítménye}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Az algoritmus $1000$ időlépésen keresztül futott $\varepsilon=0,\varepsilon=0.01,\varepsilon=0.001$ hiperparaméterekkel. Minél nagyobb a $\varepsilon$ érték, annál nagyobb a felfedezés valószínűsége. \par\smallskip 
+Mindegyik módszer megbecsülte az állapot-cselekvés minőség függvényt a rabló minden karára a mozgóátlagolás technikájával. A diagramon a várható jutalom mértékét mutatja az időlépések függvényében. 
+\par\smallskip
+A mohó stratégia kezdetben gyorsabban javult mint a többi, de kisebb értékre konvergált a futásidő végére.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+Átlagos jutalom
+\includegraphics[width=7cm, keepaspectratio]{images/solving_7.png}
+\begin{scriptsize}
+Időlépés
+\end{scriptsize}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{A futás teljesítménye}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Az ábra azt mutatja, hogy a mohó módszer csak a feladatok mintegy $30\%$-ában találta meg az optimális műveletet. Az $\varepsilon$-mohó módszerek végül jobban teljesítettek, mert folytatták a felfedezést és javították az esélyüket az optimális művelet felismerésére. \par\smallskip
+Az $\varepsilon=0.1$ módszer többet fedezett fel, és általában korábban megtalálta az optimális műveletet, de soha nem választotta ki azt több mint $91\%$-ban. \par\smallskip
+Az $\varepsilon=0.01$ módszer lassabban javult, de végül mindkét teljesítménymérőn jobban teljesített.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+Optimális cselekvés aránya
+\includegraphics[width=7cm, keepaspectratio]{images/solving_8.png}
+\begin{scriptsize}
+Időlépés
+\end{scriptsize}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Dinamikus programozás}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Dinamikus programozás alapjai}
+\begin{columns}
+\begin{column}{.5\textwidth}
+
+\only<1>{A dinamikus programozás egy gyűjtőfogalom olyan algoritmusokra amelyekkel kiszámolható az optimális politika \emph{ha adott egy tökéletes környezeti modell egy Markov döntési folyamatként}.\par\smallskip
+A klasszikus dinamikus programozási algoritmusok ritkák a megerősítéses tanulásban mert egy tökéletes környezeti modellt feltételeznek és mert rendkívül erőforrásigényesek.}
+\only<2>{\begin{center}
+\begin{block}{Dinamikus programozás}
+A DP algoritmusok a komplex problémákat alproblémákra bontják, majd a végső megoldást az alproblémák megoldásaiból állítják elő. Ehhez két tulajdonságnak kell érvényesnek lennie:
+\begin{itemize}
+	\item \textbf{Optimális alstruktúra}: Az almegoldásoknak felhasználhatóknak kell lenniük a probléma megoldására.
+	\item \textbf{Átfedésben lévő alproblémák}: Bizonyos alproblémák megoldásait többször is fel lehet használni hasonló feladatok elvégzéséhez.
+\end{itemize}
+\end{block}
+\end{center}}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/%add later}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
 \end{document}
 
 

@@ -73,7 +73,8 @@ Miért van szükség verziókezelésre?
 \begin{frame}{Lokális verziókezelők}
 \begin{columns}
 \begin{column}{0.5\textwidth}
-\only<1>{A legegyszerűbb verziókezelés, ha a fejlesztő kézzel átmásol egy mappába fájlokat. Ezek lehetnek idő bélyegzett mappák is, ha okos a fejlesztő. Ez a megoldás nagyon egyszerű, viszont fogékony a hibákra, mert sok a manuális munka. Ezenkívül sok benne a redundáns adat is, mert a nem változtatott adatot is el kell tárolni. Ezért hozták létre a lokális verziókezelőket.}
+\only<1>{A legegyszerűbb verziókezelés, ha a fejlesztő kézzel átmásol egy mappába fájlokat. Ezek lehetnek idő bélyegzett mappák is, ha okos a fejlesztő. \par\smallskip
+Ez a megoldás nagyon egyszerű, viszont fogékony a hibákra, mert sok a manuális munka. Ezenkívül sok benne a redundáns adat is, mert a nem változtatott adatot is el kell tárolni. Ezért hozták létre a lokális verziókezelőket.}
 \only<2>{\begin{block}{Lokális verziókezelő}
 A lokális verziókezelők a teljes fájlok helyett csak a változtatásokat tárolják el egy külön erre kifejlesztett adatbázisban lokálisan, a számítógépen. Egy gyakori ilyen szoftver volt az RCS.
 \end{block}} 
@@ -138,7 +139,7 @@ A kliensek nem csak a fájlok legfrissebb pillanatképét töltik le, hanem telj
 \begin{columns}
 \begin{column}{0.5\textwidth}
 A Git úgy gondolkodik az adatokról, mint egy fájlrendszer pillanatképei. 
-\\Segítségével minden alkalommal, amikor commit történik, (azaz elmentődik a projekt) készít egy képet arról, hogy az összes fájl hogyan néz ki abban a pillanatban, és eltárol egy hivatkozást erre a pillanatfelvételre.\\
+\\Segítségével minden alkalommal, amikor commit történik, (azaz elmentődik a projekt) készít egy képet arról, hogy az összes fájl hogyan néz ki abban a pillanatban, és eltárol egy hivatkozást erre a pillanatfelvételre. \par\smallskip
 A hatékonyság érdekében, ha a fájlok nem változtak, a Git nem tárolja újra a fájlt, csak egy hivatkozást az előző, azonos fájlra, amit már tárolt.
 \end{column}
 \begin{column}{0.5\textwidth}
