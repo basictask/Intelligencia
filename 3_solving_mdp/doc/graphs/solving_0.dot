@@ -1,0 +1,16 @@
+digraph bandit {
+    graph [dpi=300];
+    ranksep=1.0;
+    nodestep=5.0;
+
+    s [label="s"];
+    a1 [label="a1", style=filled, fillcolor=black, fontcolor=white, shape=circle, fixedsize=true, width=0.3];
+    a2 [label="a2", style=filled, fillcolor=black, fontcolor=white, shape=circle, fixedsize=true, width=0.3];
+    
+    s -> a1
+    s -> a2
+
+    a1 -> s [label="r~N(μ1,1)"]
+    a2 -> s [label="r~N(μ2,1)"]
+
+}

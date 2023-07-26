@@ -1,0 +1,33 @@
+digraph MDP {
+  rankdir=LR;  // Sets the direction of the graph (from left to right)
+
+  // Define the states as nodes
+  S1 [shape=circle];
+  S2 [shape=circle];
+  S3 [shape=circle];
+
+  // Define the actions as nodes with black-filled circles
+  node [shape=circle, style=filled, fillcolor=black, width=0.2, label=""];
+  A_s1 [label="", height=0.2];
+  B_s1 [label="", height=0.2];
+  A_s2 [label="", height=0.2];
+  B_s2 [label="", height=0.2];
+  A_s3 [label="", height=0.2];
+  B_s3 [label="", height=0.2];
+
+  // Define edges for transitions with their probabilities
+  S1 -> S1 [label="0.5", fontsize=10];
+  S1 -> S2 [label="0.3", fontsize=10];
+  S2 -> S2 [label="0.8", fontsize=10];
+  S2 -> S3 [label="0.4", fontsize=10];
+  S3 -> S1 [label="0.6", fontsize=10];
+  S3 -> S3 [label="0.9", fontsize=10];
+
+  // Specify the actions available in each state
+  S1 -> A_s1 [label="A"];
+  S1 -> B_s1 [label="B"];
+  S2 -> A_s2 [label="A"];
+  S2 -> B_s2 [label="B"];
+  S3 -> A_s3 [label="A"];
+  S3 -> B_s3 [label="B"];
+}

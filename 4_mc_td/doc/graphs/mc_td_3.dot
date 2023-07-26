@@ -1,0 +1,21 @@
+digraph mc_vs {
+    graph [dpi=300];
+    label="Q(s,a)"
+
+    s2 [label="s2", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+    s3 [label="s3", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+
+    a1 [label="a1", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    a2 [label="a3", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    a3 [label="a", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+
+    t [label="T", width=0.6, fontcolor="white", fillcolor="black", style="filled", shape="square", fixedsize="true"]
+
+    rankdir = "TB"
+
+    a1 -> s2
+    s2 -> a2
+    a2 -> s3
+    s3 -> a3 [style="dotted", arrowhead="none"]
+    a3 -> t
+}

@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[ruled,vlined]{algorithm2e}
+\SetAlgorithmName{Algoritmus}{algoritmus}{List of Algorithms}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
@@ -55,13 +56,13 @@
 \begin{column}{.5\textwidth}
 \only<1>{\begin{block}{Markov döntési folyamat}
 \[
-\left(S,A,P,R,s_{0},\gamma\right)
+MDP\left(S,A,P,R,s_{0},\gamma\right)
 \]
 \begin{itemize}
 	\item $S$: állapotok halmaza
 	\item $A$: cselekvések halmaza
 	\item $P:\; S \times A \times S \rightarrow [0,1]$: állapotátmeneti valószínűségek
-	\item $R:\; S \times A \rightarrow \mathbb{R}$: azonnali jutalmak halmaza
+	\item $R:\; S \times A \rightarrow \mathbb{R}$: azonnali jutalmak
 	\item $s_{0}$: kezdőállapot
 	\item $\gamma$: diszkont faktor
 \end{itemize}
@@ -174,13 +175,17 @@ A következő valós példák alkalmasak a felfedezés/kizsákmányolás dilemma
 \only<1>{A $k$-karú rabló problémája egy elméleti megerősítéses tanulás probléma. A játékos egy rablógépen játszik, amelynek $k$ karja van. \\
 Minden karhúzás után egy állandó eloszlásból választott jutalmat kap az ügynök. Az ügynök célja, hogy olyan politikát válasszon, ami az elvárt hozamot maximalizálja $1000$ cselekvés vagy \emph{időlépés} után.}
 \only<2>{Az ügynöknek számon kell tartania, mennyi a jutalom várható értéke, ha adott egy $a$ cselekvés. Ez a $Q(s,a)$ állapot-cselekvés minőség függvény. A rabló problémában csak egy állapot van, ezért elég csak a cselekvésekhez tartozóan számon tartani:
+\begin{block}{}
 \[
 q_{*}(a)=E\left[r_{t}|A_{t}=a\right]
 \]
+\end{block}
 A jutalom várható értéke: 
+\begin{block}{}
 \[
 Q_{n}=\frac{r_{1}+r_{2}+...+r_{n-1}}{n-1}
 \]
+\end{block}
 }
 \end{column}
 \begin{column}{.5\textwidth}
@@ -191,12 +196,26 @@ Q_{n}=\frac{r_{1}+r_{2}+...+r_{n-1}}{n-1}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Algoritmus a rabló megoldására}
+\begin{frame}{A rabló folyamat modellje}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A példában egy kétkarú rabló folyamat modellje látható. A modell egyetlen állapotot tartalmaz. az ügynök minden lépésben innen választhat, hogy melyik kart húzza meg. Ez a két cselekvéssel egyezik meg: $a_{1}, a_{2}$.\par\smallskip
+A jutalmak minden cselekvés után egy normál eloszlásból származnak, valamilyen $\mu_{1}$ és $\mu_{2}$ várható értékkel és $1$ szórással: $r\sim N(\mu_{1},1)$.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{graphs/solving_0.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
 \begin{algorithm}[H]
-\caption{Egyszerű rabló algoritmus}
+\caption{Rabló játék}
 \SetAlgoLined
-	$Q(a)\leftarrow0\;for\;a=1\rightarrow k$\tcc*[r]{Cselekvés minőségének függvénye}
-	$N(a)\leftarrow	0\;for\;a=1\rightarrow k$\tcc*[r]{Kar meghúzásainak a száma}
+	$Q(a)\leftarrow0$ \textbf{for} $a=1\rightarrow k$\tcc*[r]{Cselekvés minőségének függvénye}
+	$N(a)\leftarrow	0$ \textbf{for} $a=1\rightarrow k$\tcc*[r]{Kar meghúzásainak a száma}
 	\For{$t=1 \rightarrow max_{t}$}{
 		$p=random(0,1)$\tcc*[t]{Véletlen szám $0$ és $1$ között}
 		\eIf{$p>\varepsilon$}{
@@ -277,12 +296,11 @@ Időlépés
 \begin{frame}{Dinamikus programozás alapjai}
 \begin{columns}
 \begin{column}{.5\textwidth}
-
 \only<1>{A dinamikus programozás egy gyűjtőfogalom olyan algoritmusokra amelyekkel kiszámolható az optimális politika \emph{ha adott egy tökéletes környezeti modell egy Markov döntési folyamatként}.\par\smallskip
-A klasszikus dinamikus programozási algoritmusok ritkák a megerősítéses tanulásban mert egy tökéletes környezeti modellt feltételeznek és mert rendkívül erőforrásigényesek.}
+A klasszikus dinamikus programozási algoritmusok ritkák a megerősítéses tanulásban mert egy tökéletes környezeti modellt feltételeznek és mert rendkívül erőforrás igényesek.}
 \only<2>{\begin{center}
 \begin{block}{Dinamikus programozás}
-A DP algoritmusok a komplex problémákat alproblémákra bontják, majd a végső megoldást az alproblémák megoldásaiból állítják elő. Ehhez két tulajdonságnak kell érvényesnek lennie:
+A DP algoritmusok a komplex problémákat alproblémákra bontják, majd a végső megoldást az alproblémák megoldásaiból állítják elő. Ehhez két feltételnek kell érvényesnek lennie:
 \begin{itemize}
 	\item \textbf{Optimális alstruktúra}: Az almegoldásoknak felhasználhatóknak kell lenniük a probléma megoldására.
 	\item \textbf{Átfedésben lévő alproblémák}: Bizonyos alproblémák megoldásait többször is fel lehet használni hasonló feladatok elvégzéséhez.
@@ -292,10 +310,232 @@ A DP algoritmusok a komplex problémákat alproblémákra bontják, majd a végs
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
-\includegraphics[width=7cm, keepaspectratio]{images/%add later}
+\includegraphics[width=7cm, keepaspectratio]{graphs/solving_2.png}
 \end{center}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Példa dinamikus programozásra}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A példa a Fibonacci számok kiszámításának dinamikus programozása. A Fibonacci számokat a következőképpen lehet definiálni:\\
+\begin{block}{Fibonacci sorozat}
+\[
+F_{0}=0\;;F_{1}=1
+\]
+és
+\[
+F_{n}=F_{n-1}+F_{n-2}
+\]
+\end{block}
+Tehát a sorozat első pár tagja:
+\[
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144
+\]
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{graphs/solving_4.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Dinamikus programozás az RL-ben}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{block}{Dinamikus programozás általános modellje}
+\[
+V(s_{t})\leftarrow E_{\pi}\left[r_{t+1} + \gamma V(s_{t+1})\right]
+\]
+\begin{itemize}
+	\item $E_{\pi}$: várható érték $\pi$ politika alatt
+	\item $V(s_{t})$: cselekvés-érték függvény az aktuális $s$ állapotban
+	\item $r_{t+1}$: a jutalom a következő cselekvésért
+	\item $\gamma$: diszkont faktor
+	\item $V(s_{t+1})$ vagy $s'$: cselekvés-érték függvény a következő állapotban.
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+A megerősítéses tanulásban a dinamikus programozás egy szélességi bejárásnak felel meg. Mivel az állapotok tere túlságosan nagy, ez gyakran nem vezet megoldáshoz. 
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/solving_10}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Markov döntési folyamatok dinamikus programozása}
+A Markov döntési folyamatok kielégítik a dinamikus programozás feltételeit.\\
+Az értékfüggvény eltárolja és újra felhasználja a kiszámított megoldásokat: ez egy gyorsítótárként szolgál azoknak az információknak az MDP-ről, ami megadja, hogy mennyi a jutalom várható értéke egy $s$ állapotból indulva:
+\begin{block}{}
+\[
+v_{\pi}(s)=E_{\pi}\left[G_{t}|S_{t}=s\right]=E_{\pi}\left[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k+1}\mid S_{t}=s\right]
+\]
+\end{block}
+A Bellman egyenlet megadja, hogyan kell lebontani az optimális állapot-érték függvényt két részre: a következő időlépés optimális cselekvése és az összes többi lépés optimális cselekvése:\\
+\begin{block}{}
+\[
+v_{\pi}(s)=\sum_{a}\pi(a|s)\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]\;minden\;s\in S-re
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}{Dinamikus programozás felhasználásai}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A dinamikus programozási eljárások akkor tudnak megoldani megerősítéses tanulási problémákat, ha adott a környezet dinamikája (az állapotok, az állapotátmeneti valószínűségek, jutalmak). Ezért két fő felhasználása van:\\
+\begin{block}{1. Politika kiértékelés}
+Ha adott egy $MDP(S,A,P,R,\gamma,s_{0})$ és egy $\pi$ politika, a feladat megtalálni $\pi$-hez tartozó $v_{\pi}$ állapot-érték függvényt ahhoz, hogy meg lehessen mondani mennyire jövedelmező a politika. 
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{block}{2. Politika keresés}
+Ha adott egy $MDP(S,A,P,R,\gamma,s_{0})$, a feladat megtalálni az optimális állapot-érték függvényt ($v_{\pi}$) és a hozzá tartozó $\pi_{*}$ optimális politikát. 
+\end{block}
+\begin{center}
+\includegraphics[width=4.5cm, keepaspectratio]{images/solving_9.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Politika iteráció}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Politika iteráció}
+\begin{columns}
+\begin{column}{.6\textwidth}
+Miután egy $\pi$ politika javult $v_\pi$ segítségével annak érdekében, hogy egy $\pi'$ jobb politikát eredményezzen ki lehet számítani $v_{\pi'}$ javított állapot-érték függvényt és felhasználni egy újabb javított politika, $\pi''$ kiszámítására. Ezáltal egy monoton javuló politika - értékfüggvény sorozatot eredményezve:
+\begin{small}
+\[
+\pi_{0}\stackrel{E}{\longrightarrow}v_{\pi_{0}}\stackrel{I}{\longrightarrow}\pi_{1}\stackrel{E}{\longrightarrow}v_{\pi_{1}}\stackrel{I}{\longrightarrow}\pi_{2}\stackrel{E}{\longrightarrow}\hdots\stackrel{I}{\longrightarrow}\pi_{*}\stackrel{E}{\longrightarrow}v_{*}
+\]
+\begin{itemize}
+	\item $E$: Kiértékelés (evaluation)\\
+	\item $I$: Javítás (improvement)
+	\item $v_{*}$: Optimális állapot-érték függvény
+	\item $\pi_{*}$: Optimális politika
+\end{itemize}
+\end{small}
+\end{column}
+\begin{column}{.4\textwidth}
+\begin{center}
+\includegraphics[width=6cm, keepaspectratio]{images/solving_11.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\begin{algorithm}[H]
+\caption{Politika kiértékelése}
+\SetAlgoLined
+	\While{$\Delta > \theta$}{
+		$\Delta \leftarrow 0$\tcc*[t]{Hiba nullára állítása}
+		\For{$s \in S$}{
+			$v \leftarrow V(s)$\tcc*[t]{Jelenlegi állapot-érték}
+			$V(s)\leftarrow\sum_{s',r}p\left(s',r,|s,\pi(s)\right)\left[r+\gamma V(s')\right]$\tcc*[t]{Új állapot-érték}
+			$\Delta \leftarrow max(\Delta, |v-V(s)|)$\tcc*[t]{Hiba kiszámolása}
+		}
+	}
+\end{algorithm}
+\begin{itemize}
+	\item $\Delta$: $V(s)$ jelen állapot-érték és $V(s_{t+1})$ következő állapot-érték különbsége.
+	\item $\theta$: hibahatár: egy alacsony szám ami a becslés pontosságát adja.
+	\item $p\left(s',r,|s,\pi(s)\right)$: $s'$ következő állapot és $r$ jutalom valószínűsége ha adott $s$ állapot és $\pi(s)$ cselekvés $\pi$ politika szerint (a környezet dinamikája).
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{algorithm}[H]
+\caption{Politika javítása}
+\SetAlgoLined
+	$\pi_{instabil} \leftarrow\; false$\tcc*[t]{Politika instabilon indul}
+	\While{$\pi_{instabil}$}{
+		\For{$s \in S$}{
+			$a \leftarrow \pi(s)$\tcc*[t]{Jelenlegi cselekvés}
+			$\pi(s) \leftarrow \underset{a}{argmax}\sum_{s',r}p\left(s',r,|s,a\right)\left[r+\gamma V(s')\right]$\tcc*[t]{Új cselekvés}
+			\If{$a \neq \pi(s)$}{
+				$\pi_{instabil} \leftarrow\; false$\tcc*[t]{politika instabillá állítása}
+			}		
+		}
+	}
+	return $v \thickapprox v_{*}$, $\pi \thickapprox \pi_{*}$
+\end{algorithm}
+A politika ebben az esetben mohó, tehát úgy választja ki a cselekvést, hogy melyik következő állapothoz tartozik a lehető legnagyobb várható jutalom. Egy politika akkor számít stabilnak, amikor egyik lépésben sem változik a cselekvés. 
+\end{frame}
+
+\begin{frame}{Példa politika iterációra}
+\begin{columns}
+\begin{column}{.8\textwidth}
+Cél: a robotnak el kell jutnia a célhoz, miközben minél kevesebb üzemanyagot használ. A környezetben a következő változók érvényesek:
+\begin{itemize}
+	\item Száraz kockák:	
+	\begin{itemize}
+		\item $1$ időegység alatt megy végig rajta a robot. $-1$ jutalmat kap ha egy ilyen kockára lép.
+		\item A célállapotot mindig eléri, mert ilyenkor nem csúszik el.
+	\end{itemize}		
+	\item Kis tócsák:
+	\begin{itemize}
+		\item $2$ időegység rajta átjutni, tehát $-2$ jutalmat kap érte a robot.
+		\item A csúszás valószínűsége $0.4$, ezért az idő $40\%$-ában nem éri el a célállapotot, hanem valamelyik másik lehetséges célállapotba csúszik át.
+	\end{itemize}
+	\item Nagy tócsák:
+	\begin{itemize}
+		\item $4$ időegység alatt lehet rajta átjutni, ezért $-4$ jutalom jár érte.
+		\item A csúszás valószínűsége $0.6$.
+	\end{itemize}
+\end{itemize}
+\end{column}
+\begin{column}{.2\textwidth}
+\begin{center}
+\includegraphics[width=3cm, keepaspectratio]{images/solving_12.png}
+\vspace{1cm}
+\includegraphics[width=3cm, keepaspectratio]{images/solving_13.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Példa politika iterációra}
+\only<1>{\begin{center}
+A robotnak a bal felső kockából kell a jobb alsóba eljutnia úgy, hogy a falakat megkerüli.\\
+\includegraphics[width=7cm, keepaspectratio]{images/policy_iteration_0.png}
+\end{center}}
+\only<2>{\begin{center}
+A kezdeti politika véletlenszerű és determinisztikus.\\
+\includegraphics[width=7cm, keepaspectratio]{images/policy_iteration_1.png}
+\end{center}}
+\only<3>{\begin{center}
+A $V(s)$ állapot értékek $0$ értékkel indulnak.\\
+\includegraphics[width=7cm, keepaspectratio]{images/policy_iteration_2.png}
+\end{center}}
+\only<4>{\begin{center}
+$\gamma=0.9$ diszkont rátával a politika kiértékelés $75$ iteráció alatt konvergál.\\
+\includegraphics[width=7cm, keepaspectratio]{images/policy_iteration_3.png}
+\end{center}}
+\only<5>{\begin{center}
+A következő iterációban a politika változik. A konvergálás $55$ iteráció alatt megtörtént.\\
+\includegraphics[width=7cm, keepaspectratio]{images/policy_iteration_4.png}
+\end{center}}
+\only<6>{\begin{center}
+A következő futtatással $26$ iteráció alatt konvergált.\\
+\includegraphics[width=7cm, keepaspectratio]{images/policy_iteration_5.png}
+\end{center}}
+\only<7>{\begin{center}
+A következő futtatással $21$ iteráció alatt konvergált.\\
+\includegraphics[width=7cm, keepaspectratio]{images/policy_iteration_6.png}
+\end{center}}
+\only<8>{\begin{center}
+A következő futtatással $26$ iteráció alatt konvergált.\\
+\includegraphics[width=7cm, keepaspectratio]{images/policy_iteration_7.png}
+\end{center}}
 \end{frame}
 
 \end{document}

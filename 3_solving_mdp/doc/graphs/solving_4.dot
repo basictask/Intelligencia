@@ -1,0 +1,34 @@
+digraph fibonacci {
+    //graph [dpi = 300];  
+    
+    F5 [label="fib(5)"]
+    F5L [label="fib(4)"]
+    F5R [label="fib(3)"]
+    F5LL [label="fib(3)"]
+    F5LR [label="fib(2)"]
+    F5RL [label="fib(2)"]
+    F5RR [label="fib(1)"]
+    F5LLL [label="fib(2)"]
+    F5LLR [label="fib(1)"]
+    F5LRL [label="fib(1)"]
+    F5LRR [label="fib(0)"]
+    F5RLL [label="fib(1)"]
+    F5RLR [label="fib(0)"]
+    F5LLLL [label="fib(1)"]
+    F5LLLR [label="fib(0)"] 
+
+    F5 -> F5L
+    F5 -> F5R
+    F5L -> F5LL
+    F5L -> F5LR
+    F5R -> F5RL
+    F5R -> F5RR
+    F5LL -> F5LLL
+    F5LL -> F5LLR
+    F5LR -> F5LRL
+    F5LR -> F5LRR
+    F5RL -> F5RLL
+    F5RL -> F5RLR
+    F5LLL -> F5LLLL
+    F5LLL -> F5LLLR
+}

@@ -1,13 +1,13 @@
-digraph "ann_singlehead" { 
+digraph "epsilon_greedy" { 
     // Label properies 
     graph [dpi = 300];
     
     // Make graph vertical 
     rankdir = "LR"
     
-    start [label="start"]  
-    exploitation [label="mohó cselekvés"]
-    exploration [label="véletlen cselekvés"]    
+    start [label="aktuális\nállapot"]  
+    exploitation [label="mohó cselekvés", style=filled, fillcolor=black, fontcolor=white]
+    exploration [label="véletlen cselekvés", style=filled, fillcolor=black, fontcolor=white]    
 
     start -> exploitation [label="1-ε"]
     start -> exploration [label="ε"]
