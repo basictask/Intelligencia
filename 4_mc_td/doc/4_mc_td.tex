@@ -51,13 +51,14 @@
 \tableofcontents[currentsection]
 \end{frame}
 
-\begin{frame}{Az RL modellje}
+\begin{frame}{Ügynök-környezet interakció}
 \begin{columns}
 \begin{column}{.5\textwidth}
 \only<1>{\begin{block}{Markov döntési folyamat}
 \[
 MDP\left(S,A,P,R,s_{0},\gamma\right)
 \]
+\vspace{-0.5cm}
 \begin{itemize}
 	\item $S$: állapotok halmaza
 	\item $A$: cselekvések halmaza
@@ -112,14 +113,19 @@ Számítási algoritmusok olyan osztálya, ami a véletlen vagy bizonytalan komp
 \begin{columns}
 \begin{column}{.5\textwidth}
 A MC tanítási algoritmus a politika iteráció egy általánosított változata. A megerősítéses tanulásban a MC algoritmusok a mélységi bejárásnak felelnek meg. \par\smallskip
-A MC módszer egy egyszerű ötletet használ: epizódonkénti nyers tapasztalatok alapján tanul anélkül, hogy modellezné a környezeti dinamikát. A megfigyelt átlagos hozamot a várható megtérülésre tett becslésként számítja ki. 
-\begin{block}{}
+\begin{block}{MC állapot-érték frissítési szabály}
 \[
 V(s_{t}) \leftarrow V(s_{t}) + \alpha \left[ G_{t} - V(s_{t}) \right]
 \]
+\vspace{-0.5cm}
+\begin{itemize}
+	\item $\alpha$: Tanulási sebesség
+	\item $G_{t} = \sum_{k=0}^\infty \gamma^k r_{t+k+1}$: Diszkontált kumulált hozam
+\end{itemize}
 \end{block}
 \end{column}
 \begin{column}{.5\textwidth}
+A központban egy egyszerű ötlet áll: epizódonkénti nyers tapasztalatok alapján tanul anélkül, hogy szüksége lenne a környezet dinamikájának modelljére.
 \begin{center}
 \includegraphics[width=7cm, height=7cm, keepaspectratio]{images/mc_td_3.png}
 \end{center}
@@ -130,7 +136,7 @@ V(s_{t}) \leftarrow V(s_{t}) + \alpha \left[ G_{t} - V(s_{t}) \right]
 \begin{frame}{Értékfüggvények a Monte Carlo tanításban}
 \begin{columns}
 \begin{column}{.8\textwidth}
-A MC mivel epizódonként vesz mintát a hozamokból az értékfüggvények csak sok epizód hozamának átlagolásaként számítódhatnak ki.\par\smallskip
+Mivel a MC epizódonként vesz mintát a hozamokból, az értékfüggvények csak sok epizód hozamának átlagolásaként számítódhatnak ki.\par\smallskip
 \only<1>{Az \textbf{állapot-érték függvény} megadja, mennyi a várható hozam, ha az ügynök adott $s$ állapotban áll, és onnan $\pi$ politikát követi:
 \begin{block}{}
 \[
@@ -158,8 +164,352 @@ $t$ aktuális időlépéstől a $T$ terminális állapotba vezető időlépésig
 \end{columns}
 \end{frame}
 
+\begin{frame}{MC politika kiértékelés}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\only<1>{A $V_{\pi}(s)$ állapot-érték függvény egy állapotonkénti vektor, amely minden állapot esetén számon tartja az adott $s$ állapotból indulva összegyűjtött jutalmak várható értékét ha az ügynök egy adott $\pi$ politika szerint cselekszik.}
+\only<2>{A $Q_{\pi}(s,a)$ állapot-cselekvés minőség függvény egy mátrix, amely az állapot-cselekvés párokhoz tartozóan tárolja el, hogy egy adott $s$ állapotból $a$ cselekvést végrehajtva mennyi a jutalom várható értéke ha az ügynök egy adott $\pi$ politika szerint cselekszik.}
+\par\smallskip
+Az értékfüggvény \textbf{diszkrét} adatszerkezetben tartja számon a hozamok várható értékét, ezért diszkrét állapotokat és cselekvéseket feltételez.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\only<1>{\includegraphics[width=7cm, keepaspectratio]{images/mc_td_4.png}}
+\only<2>{\includegraphics[width=7cm, keepaspectratio]{images/mc_td_5.png}}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Látogatás alapú Monte Carlo becslés}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Az ügynök-környezet interakció alatt az ügynök egy adott $s$ állapotot többször is meglátogathat egy epizód alatt. Az ábrán ez a $6$-os állapot, amit kétszer látogatott meg az ügynök. \par\smallskip 
+Ezt kétféleképpen tudja kezelni az MC algoritmusa: vagy az első látogatást, vagy minden látogatást fog figyelembe venni az értékfüggvények számításakor. Az első látogatás alapú MC esetén csak az első látogatás hozamát fogja figyelembe venni átlagoláskor, míg az összes látogatás alapú esetén mindegyiket.
+\end{column}
+\begin{column}{.5\textwidth}
+Mindkét esetben a valós értékhez való konvergencia garantált, ahogy a látogatások száma közelít a $\infty$-hez. 
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/mc_td_6.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{}
+\begin{algorithm}[H]
+\caption{Első látogatás alapú Monte Carlo algoritmus $v_{\pi}$ becslésére}
+\SetAlgoLined
+\textbf{Input:} A kiértékelendő $\pi$ politika\par\smallskip
+$V(s) \leftarrow random()$, minden $s \in S$-re\;
+$Hozam(s) \leftarrow $ \textbf{üres lista}, minden $s \in S$-re\; 
+\For{$i=0 \rightarrow max_i$}{
+	Epizód lejátszása $\pi$ politikával: $s_0, a_0, r_1, s_1, a_1, r_2, ..., s_{T-1}, a_{T-1}, r_T$\;
+	$G \leftarrow 0$\tcc*[t]{Hozam inícializálása $0$ értékkel}
+	\For{$t=T-1 \rightarrow 0$}{
+		$G \leftarrow \gamma G+R_{t+1}$\tcc*[t]{Hozam diszkontálása és kumulálása}
+		\If{$s_t$ \textbf{not in} $s_0, s_1, ..., s_{t-1}$}{
+			$G$ hozzáfűzése $Hozam(s_t)$-hez\tcc*[t]{Állapothoz tartozó hozam}
+			$V(s_t) \leftarrow Avg \left\{ Hozam(s_t) \right\}$\tcc*[t]{Hozam várható értéke}
+		}
+	}
+}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{}
+\begin{algorithm}[H]
+\caption{Monte Carlo becslés az $\pi_{*}$ megkeresésére}
+\SetAlgoLined
+\begin{small}
+$\pi(s) \in A(s)$ véletlenszerűen, minden $s \in S$-re\;
+$Q(s,a) \in \mathbb{R}$ véletlenszerűen, minden $s \in S$-re és $a \in A$-ra\;
+$Hozam(s,a) \leftarrow$ üres lista minden $s \in S$-re és $a \in A$-ra\;
+\For{$i=0 \rightarrow max_i$}{
+	$s_0 \in S$ és $a_0 \in A$ véletlenszerű kiválasztása\;
+	Epizód lejátszása $s_0, a_0$-ból $\pi$ politikával: $s_0, a_0, r_1, s_1, a_1, r_2, ..., s_{T-1}, a_{T-1}, r_T$\;
+	$G \leftarrow 0$\tcc*[t]{Hozam inícializálása $0$ értékkel}
+	\For{$t=T-1 \rightarrow 0$}{
+		$G \leftarrow \gamma G+R_{t+1}$\tcc*[t]{Hozam diszkontálása és kumulálása}
+		\If{$\left(s_t, a_t \right)$ \textbf{not in} $s_0, s_1, ...s_{t-1}$}{
+			$G$ hozzáfűzése $Hozam(s_t,a_t)$-hez\tcc*[t]{Állapot-cselekvés pár hozama}
+			$Q(s_t, a_t) \leftarrow Avg \left\{ Hozam(s_t, a_t) \right\}$\tcc*[t]{Hozam várható értéke}
+			$\pi(s_t) \leftarrow \underset{a}{argmax}Q(s_t, a)$\tcc*[t]{Politika frissítése}
+		}
+	}
+}
+\end{small}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{Példa Monte Carlo érték becslésre}
+\begin{columns} % https://towardsdatascience.com/monte-carlo-learning-b83f75233f92
+\begin{column}{.5\textwidth}
+Az ügynök 3 tanítási iteráción keresztül játszott. Minden esetben a a végállapot $s_T=s_{13}$. Ez 3 tanítási mintának felel meg:
+\[
+Hozam(01) = \underset{s05}{2}+\underset{s04}{1}+\underset{s07}{2}+\underset{s10}{2}+\underset{s11}{1}+\underset{s13}{5}=13
+\]
+\[
+Hozam(02) = \underset{s05}{2}+\underset{s06}{3}+\underset{s08}{1}+\underset{s12}{3}+\underset{s11}{1}+\underset{s13}{5}=15
+\]
+\[
+Hozam(03) = \underset{s05}{2}+\underset{s06}{3}+\underset{s08}{1}+\underset{s12}{3}+\underset{s11}{1}+\underset{s13}{5}=15
+\]
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/mc_td_12.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Időbeli különbségek}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Időbeli különbségek}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Az egyik központi ötlete a megerősítéses tanulásnak az időbeli különbségek (\textbf{TD}) tanító algoritmusa. A TD kombinálja a MC és DP algoritmusok ötleteit. \par\smallskip
+Csakúgy mint a MC, nyers tapasztalatokból tud tanulni, ezért \textbf{nincs szüksége a környezet dinamikájának modelljére}. És hasonlóan a DP algoritmusokhoz, az ügynöknek \textbf{nem szükséges teljes epizódokat lejátszania}.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/mc_td_7.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{TD becslés}
+\begin{columns}
+\begin{column}{.7\textwidth}
+Az ábrán az időbeli különbségek frissítési diagramja látható. Az $s_1$ állapothoz tartozó állapot-érték csak a következő állapot és a következő állapothoz tartozó jutalom alapján frissül. \par\smallskip
+A TD tanítás csak az egyes lépések által kapott jutalomból vesz mintát, és ez alapján számítja ki adott állapotonként a hozamok várható értékét. Az MC és TD becslés a \textbf{mintavevő frissítések} algoritmusainak körébe tartoznak, mert ahhoz, hogy ki lehessen számolni, előre meg kell ismerni a következő állapothoz (vagy állapotokhoz) tartozó jutalmakat.\par\smallskip
+A DP algoritmusok esetén nem mintavétel történik, hanem egy teljes sokaság alapján egy várható érték számolódik ki.
+\end{column}
+\begin{column}{.3\textwidth}
+\begin{center}
+\includegraphics[height=7cm, keepaspectratio]{graphs/mc_td_4.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{TD a megerősítéses tanulásban}
+\begin{columns}
+\begin{column}{.55\textwidth}
+\begin{block}{TD állapot-érték frissítési szabály}
+\[
+V(s_t) \leftarrow V(s_t) + \alpha \left[ r_{t+1} + \gamma V(s_{t+1}) - V(s_t) \right]
+\]
+\vspace{-0.5cm}
+\begin{itemize}
+	\item $\alpha$: Tanulási sebesség
+	\item $r_{t+1}$: Következő jutalom 
+\end{itemize}
+\end{block}
+A zárójelben lévő kifejezés a \textbf{TD hiba}, ami a $s_t$ jelen állapot értéke és a jobb becslés, $r_{t+1} + \gamma V(s_{t+1})$ közötti távolságot adja meg. A megerősítéses tanulásban számos helyen jelen van: 
+\[
+\delta_t=r_{t+1} + \gamma V(s_{t}) - V(s_t)
+\]
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/mc_td_8.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{}
+\begin{algorithm}[H]
+\caption{TD algoritmus $v_\pi$ megbecslésére}
+\SetAlgoLined
+\textbf{Input}: $\pi$ politika ami kiértékelésre kerül; $\alpha \in [0,1]$ tanulási sebesség\par\smallskip
+$V(s) \leftarrow random()$, minden $s \in S$-re\tcc*[t]{Állapot-értékek inícializálása}
+$V(s_T) \leftarrow 0$\tcc*[t]{Terminális állapot értékének 0-ra állítása}
+\For{$i=0 \rightarrow max_i$}{
+	$s \leftarrow s_0$\tcc*[t]{Kezdőállapot felvétele}
+	\While{$s \neq s_T$}{
+		$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választás $s$ állapotból $\pi$ szerint}
+		$a$ végrehajtása, $r, s$ megfigyelése\;
+		$V(s) \leftarrow V(s) + \alpha \left[ r + \gamma V(s') - V(s) \right]$\;
+		$s \leftarrow s'$\tcc*[t]{Aktuális állapot frissítése}
+	}
+}
+\end{algorithm}
+\end{frame}
+
+\section{SARSA}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Politikaalapú TD irányítás: SARSA}
+\begin{columns}
+\begin{column}{.8\textwidth}
+TD becsléssel lehetséges a $v_\pi$ mellett a $q_\pi$ értékfüggvény is. Ebben az esetben nem állapot-állapot átmeneteket hanem állapot-cselekvés állapot-cselekvés átmeneteket tanul az algoritmus. \textbf{Formálisan mindkettő Markov folyamat} jutalmazási rendszerrel. \par\smallskip
+\begin{center}
+\begin{block}{SARSA frissítési szabálya}
+\[
+Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \left[ r_{t+1} + \gamma Q(s_{t+1},a_{t+1}) - Q(s_t,a_t) \right]
+\]
+\vspace{-0.5cm}
+\begin{itemize}
+	\item $Q(s_t,a_t)$: $s$ állapot és $a$ cselekvés minőség függvénye $t$ időlépésben
+	\item $Q(s_{t+1},a_{t+1})$: a következő állapot és cselekvés minőség függvénye $t+1$ időlépésben
+\end{itemize}
+\end{block}
+\end{center}
+\end{column}
+\begin{column}{.2\textwidth}
+\begin{center}
+\includegraphics[height=7cm, keepaspectratio]{graphs/mc_td_5.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{A SARSA folyamat modellje}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A SARSA frissítési szabálya szerint a tanítási epizód minden lépése alkalmával \textbf{politika kiértékelés} fog végrehajtódni, amikor egy $(s_t,a_t,r_t,s_{t+1},a_{t+1})$ sorozattal találkozik a modell. Ha gyakoribb a mintavétel nagyobb a számításigény, viszont pontosabb is a becslés.\par\smallskip
+A \textbf{politika javítás} lépésében amikor az ügynök cselekvést választ gyakori az $\varepsilon$-mohó stratégia alkalmazása, ezzel is ösztönözve a felfedezést és nem vélt magas jutalmak megszerzését.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/mc_td_10.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{SARSA algoritmusa}
+\begin{algorithm}[H]
+\caption{SARSA algoritmus $Q \approx q_*$ megbecslésére}
+\SetAlgoLined
+\textbf{Input}: $\alpha$: tanulási sebesség; $\varepsilon > 0$: algoritmus hibahatára\par\smallskip
+$Q(s,a) \leftarrow random()$, minden $s \in S$-re és $a \in A$-ra\;
+$Q(s_t,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapot értéke $0$}
+\For{$i=0 \rightarrow max_i$}{
+	$s \leftarrow s_0$\tcc*[t]{Kezdőállapot felvétele}
+	$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választása $s$ állapotból $\pi$ szerint}
+	\While{$s \neq s_T$}{
+		$a$ végrehajtása, $s', r$ megfigyelése\;
+		$a' \leftarrow \pi(s')$\tcc*[t]{Cselekvés választása $s'$ állapotból $\pi$ szerint}
+		$Q(s,a) \leftarrow Q(s,a) + \alpha \left[ r + \gamma Q(s',a') - Q(s,a) \right]$\;
+		$s \leftarrow s'$, $a \leftarrow a'$\tcc*[t]{Jelenlegi állapot és cselekvés frissítése}
+	}	
+}
+\end{algorithm}
+\end{frame}
+
+\section{Összefoglalás}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Keresés mélysége}
+\begin{center}
+\includegraphics[width=14cm, keepaspectratio]{images/mc_td_11.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Frissítési szabályok}
+\begin{block}{Dinamikus programozás}
+\[
+V(s_t) \leftarrow E_\pi \left[ r_{t+1} + \gamma V(s_{t+1}) \right]
+\]
+\end{block}
+\vspace{0.5cm}
+\begin{block}{Monte Carlo}
+\[
+V(s_t) \leftarrow V(s_t) + \alpha \left[ G_t - V(s_t) \right]
+\]
+\end{block}
+\vspace{0.5cm}
+\begin{block}{Időbeli különbségek}
+\[
+V(s_t) \leftarrow V(s_t) + \alpha \left[ r_{t+1} + \gamma V(s_{t+1}) - V(s_t) \right]
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}{Frissítések mélysége függvény szerint}
+\only<1>{
+\begin{center}
+{\large Dinamikus programozás}
+\end{center}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=4cm, keepaspectratio]{graphs/mc_td_6.png}
+\end{center}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=4cm, keepaspectratio]{graphs/mc_td_7.png}
+\end{center}
+\end{column}
+\end{columns}}
+\only<2>{
+\begin{center}
+{\large Monte Carlo}
+\end{center}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=6cm, keepaspectratio]{graphs/mc_td_2.png}
+\end{center}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=6cm, keepaspectratio]{graphs/mc_td_3.png}
+\end{center}
+\end{column}
+\end{columns}}
+\only<3>{
+\begin{center}
+{\large Időbeli különbségek}
+\end{center}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=5cm, keepaspectratio]{graphs/mc_td_4.png}
+\end{center}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=5cm, keepaspectratio]{graphs/mc_td_5.png}
+\end{center}
+\end{column}
+\end{columns}}
+\end{frame}
 
 \end{document}
+
+
+
+
+w
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

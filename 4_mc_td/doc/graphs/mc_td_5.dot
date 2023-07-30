@@ -1,0 +1,13 @@
+digraph mc_vs {
+    graph [dpi=300];
+    label="Q(s,a)"
+    rankdir = "TB"
+
+    s2 [label="s2", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+
+    a1 [label="a1", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    a2 [label="a2", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    
+    a1 -> s2
+    s2 -> a2
+}

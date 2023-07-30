@@ -1,23 +1,22 @@
 digraph mc_vs {
     graph [dpi=300];
-    label="V(s)"
+    rankdir = "TB"
+    label="Q(s,a)"
 
     s1 [label="s1", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
     s2 [label="s2", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
-    s3 [label="s3", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
-
+    
     a1 [label="a1", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
     a2 [label="a2", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
-    a3 [label="a", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    a3 [label="a3", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    a4 [label="a4", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    a5 [label="a5", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
 
-    t [label="T", width=0.6, fontcolor="white", fillcolor="black", style="filled", shape="square", fixedsize="true"]
-
-    rankdir = "TB"
-
-    s1 -> a1
+    a1 -> s1
     a1 -> s2
-    s2 -> a2
-    a2 -> s3
-    s3 -> a3 [style="dotted", arrowhead="none"]
-    a3 -> t
+    s1 -> a2
+    s1 -> a3
+    s2 -> a4
+    s2 -> a5
+
 }

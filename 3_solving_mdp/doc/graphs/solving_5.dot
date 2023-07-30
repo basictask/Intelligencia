@@ -1,0 +1,27 @@
+digraph mc_vs {
+    graph [dpi=300];
+    rankdir = "TB"
+    label="V(s)"
+
+    s1 [label="s1", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+    s2 [label="s2", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+    s3 [label="s3", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+    s4 [label="s4", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+    s5 [label="s5", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+    s6 [label="s6", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+    s7 [label="s7", width=0.8, fontcolor="black", fillcolor="white", style="filled", shape="circle", fixedsize="true"]
+
+    a1 [label="a1", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    a2 [label="a2", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+    a3 [label="a3", width=0.5, fontcolor="white", fillcolor="black", style="filled", shape="circle", fixedsize="true"]
+
+    s1 -> a1
+    s1 -> a2
+    s1 -> a3
+    a1 -> s2
+    a1 -> s3
+    a2 -> s4
+    a2 -> s5
+    a3 -> s6
+    a3 -> s7
+}

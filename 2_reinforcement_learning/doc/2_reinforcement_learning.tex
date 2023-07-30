@@ -215,18 +215,22 @@ A probléma felírása:
 	\item A környezet az állapot és a cselekvés alapján ad jutalmat:\\
 	$s_{t+1}\sim{P(s_{t}, a_{t})};\;r_{t+1}\sim{R(s_{t}, a_{t})}$
 	\item A politika optimális, ha a kumulált diszkontált jutalma (\textbf{hozama}) maximális:\\
+	\begin{block}{}
 	\[	
 	G_{t} = (r_{1} + \gamma r_{2} + \gamma ^2 r_{3} + ...)=
 	\]
 	\[	
 	=\sum_{k=0}^{\infty}\gamma^{k}r_{t+k+1} \rightarrow max
 	\]
-	\item A cél: az optimális politika megtalálása.
+	\end{block}
 \end{itemize}
 \end{column}
 \begin{column}{.4\textwidth}
+\begin{itemize}
+	\item A cél az \textbf{optimális politika} megtalálása.
+\end{itemize}
 \begin{center}
-\includegraphics[width=5cm, height=5cm, keepaspectratio]{images/reinf_8.png}
+\includegraphics[width=4cm, height=5cm, keepaspectratio]{images/reinf_8.png}
 \end{center}
 \end{column}
 \end{columns}
