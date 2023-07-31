@@ -242,23 +242,46 @@ $Hozam(s,a) \leftarrow$ üres lista minden $s \in S$-re és $a \in A$-ra\;
 \end{algorithm}
 \end{frame}
 
-\begin{frame}{Példa Monte Carlo érték becslésre}
+\begin{frame}{Példa Monte Carlo értékbecslésre}
 \begin{columns} % https://towardsdatascience.com/monte-carlo-learning-b83f75233f92
 \begin{column}{.5\textwidth}
 Az ügynök 3 tanítási iteráción keresztül játszott. Minden esetben a a végállapot $s_T=s_{13}$. Ez 3 tanítási mintának felel meg:
+\begin{scriptsize}
 \[
-Hozam(01) = \underset{s05}{2}+\underset{s04}{1}+\underset{s07}{2}+\underset{s10}{2}+\underset{s11}{1}+\underset{s13}{5}=13
+Hozam(01) = \underset{s_{05}}{2}+\underset{s_{04}}{1}+\underset{s_{07}}{2}+\underset{s_{10}}{2}+\underset{s_{11}}{1}+\underset{s_{13}}{5}=13
 \]
 \[
-Hozam(02) = \underset{s05}{2}+\underset{s06}{3}+\underset{s08}{1}+\underset{s12}{3}+\underset{s11}{1}+\underset{s13}{5}=15
+Hozam(02) = \underset{s_{05}}{2}+\underset{s_{06}}{3}+\underset{s_{08}}{1}+\underset{s_{12}}{3}+\underset{s{11}}{1}+\underset{s_{13}}{5}=15
 \]
 \[
-Hozam(03) = \underset{s05}{2}+\underset{s06}{3}+\underset{s08}{1}+\underset{s12}{3}+\underset{s11}{1}+\underset{s13}{5}=15
+Hozam(03) = \underset{s_{05}}{2}+\underset{s_{06}}{3}+\underset{s_{08}}{1}+\underset{s_{12}}{3}+\underset{s_{11}}{1}+\underset{s_{13}}{5}=15
+\]
+\end{scriptsize}
+Tehát a megfigyelt átlagos hozam $s_{05}$ állapotból indulva: 
+\[
+V_\pi(s_{05})=(13+15+15)/3=14.33
 \]
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
 \includegraphics[width=7cm, keepaspectratio]{images/mc_td_12.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Monte Carlo értékbecslés több látogatás esetén}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Ha az ügynök többször látogatta meg ugyanazt az állapotot a tanítási iterációk során, a tanítási iteráció során kezelni kell a több látogatásból adódó jutalom többletet. Az első látogatás alapú MC tanulás során az ügynök első látogatásától a jutalom kumulálodva számítódik.\par\smallskip
+Ebben az esetben $s_{05}$ állapot értéke:
+\[
+V_\pi(s_{05})=(33+15+15)=21
+\]
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/mc_td_13.png}
 \end{center}
 \end{column}
 \end{columns}
