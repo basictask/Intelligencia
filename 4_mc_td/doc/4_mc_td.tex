@@ -219,7 +219,7 @@ $Hozam(s) \leftarrow $ \textbf{üres lista}, minden $s \in S$-re\;
 
 \begin{frame}{}
 \begin{algorithm}[H]
-\caption{Monte Carlo becslés az $\pi_{*}$ megkeresésére}
+\caption{Monte Carlo becslés $\pi_{*}$ keresésére}
 \SetAlgoLined
 \begin{small}
 $\pi(s) \in A(s)$ véletlenszerűen, minden $s \in S$-re\;
@@ -242,7 +242,7 @@ $Hozam(s,a) \leftarrow$ üres lista minden $s \in S$-re és $a \in A$-ra\;
 \end{algorithm}
 \end{frame}
 
-\begin{frame}{Példa Monte Carlo értékbecslésre}
+\begin{frame}{Példa: Monte Carlo értékbecslés egy látogatás esetén}
 \begin{columns} % https://towardsdatascience.com/monte-carlo-learning-b83f75233f92
 \begin{column}{.5\textwidth}
 Az ügynök 3 tanítási iteráción keresztül játszott. Minden esetben a a végállapot $s_T=s_{13}$. Ez 3 tanítási mintának felel meg:
@@ -259,8 +259,9 @@ Hozam(03) = \underset{s_{05}}{2}+\underset{s_{06}}{3}+\underset{s_{08}}{1}+\unde
 \end{scriptsize}
 Tehát a megfigyelt átlagos hozam $s_{05}$ állapotból indulva: 
 \[
-V_\pi(s_{05})=(13+15+15)/3=14.33
+V_\pi(s_{05})=\frac{13+15+15}{3}=14.33
 \]
+Megjegyzés: $\gamma=1$
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
@@ -270,14 +271,15 @@ V_\pi(s_{05})=(13+15+15)/3=14.33
 \end{columns}
 \end{frame}
 
-\begin{frame}{Monte Carlo értékbecslés több látogatás esetén}
+\begin{frame}{Példa: Monte Carlo értékbecslés több látogatás esetén}
 \begin{columns}
 \begin{column}{.5\textwidth}
 Ha az ügynök többször látogatta meg ugyanazt az állapotot a tanítási iterációk során, a tanítási iteráció során kezelni kell a több látogatásból adódó jutalom többletet. Az első látogatás alapú MC tanulás során az ügynök első látogatásától a jutalom kumulálodva számítódik.\par\smallskip
 Ebben az esetben $s_{05}$ állapot értéke:
 \[
-V_\pi(s_{05})=(33+15+15)=21
+V_\pi(s_{05})=\frac{33+15+15}{3}=21
 \]
+Megjegyzés: $\gamma=1$ 
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
@@ -432,6 +434,48 @@ $Q(s_t,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapot értéke $0$}
 \end{algorithm}
 \end{frame}
 
+\section{$n$-lépéses különbségek}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{MC és TD egyesítése}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A MC eljárások az aktuális állapottól egészen \textbf{az epizód végéig} megfigyelt állapotok alapján számolják ki az új $v_\pi(s)$ értéket.\par\smallskip
+A TD módszer pedig \textbf{csak a következő állapotig} kapott jutalom alapján frissíti az értékfüggvényt.\par\smallskip
+A köztes módszer, hogy az algoritmus $n$ \textbf{köztes állapotból} származó jutalmat vegye figyelembe. Például ha $n=2$ akkor következő $2$ állapot és a hozzájuk tartozó jutalom ami számít.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/mc_td_14.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{TD($n$) értékfüggvényei}
+\only<1>{\begin{block}{$n$ lépéses diszkontált hozam}
+\begin{center}
+$G_{t:t+n}=r_{t+1}+ \gamma r_{t+2}+ ... + \gamma^{n-1}r_{t+n} + \gamma^n V_{t+n-1}(s_{t+n})$
+\end{center}
+\end{block}}
+\only<2>{\begin{block}{$n$ lépéses állapot-érték frissítési szabály}
+\begin{center}
+$V_{t:t+n}=V_{t+n-1}(s_{t}) + \alpha \left[ G_{t:t+n}-V_{t+n-1}(s_{t}) \right]$
+\end{center}
+\end{block}}
+\only<3>{\begin{block}{$n$ lépéses SARSA}
+\begin{center}
+$Q_{t+n}(s_t,a_t)=Q_{t+n-1}(s_t,a_t) + \alpha \left[ G_{t:t+n - Q_{t+n-1}(s_t, a_t)} \right]$
+\end{center}
+\end{block}}
+\begin{center}
+\includegraphics[width=8cm, keepaspectratio]{images/mc_td_15.png}
+\end{center}
+\end{frame}
+
 \section{Összefoglalás}
 
 \begin{frame}
@@ -510,6 +554,22 @@ V(s_t) \leftarrow V(s_t) + \alpha \left[ r_{t+1} + \gamma V(s_{t+1}) - V(s_t) \r
 \begin{column}{.5\textwidth}
 \begin{center}
 \includegraphics[width=7cm, height=5cm, keepaspectratio]{graphs/mc_td_5.png}
+\end{center}
+\end{column}
+\end{columns}}
+\only<4>{
+\begin{center}
+{\large $n$ lépéses különbségek}
+\end{center}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=5cm, keepaspectratio]{images/mc_td_14.png}
+\end{center}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=5cm, keepaspectratio]{images/mc_td_16.png}
 \end{center}
 \end{column}
 \end{columns}}
