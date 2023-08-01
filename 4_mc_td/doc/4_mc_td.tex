@@ -460,16 +460,19 @@ A köztes módszer, hogy az algoritmus $n$ \textbf{köztes állapotból} szárma
 \begin{center}
 $G_{t:t+n}=r_{t+1}+ \gamma r_{t+2}+ ... + \gamma^{n-1}r_{t+n} + \gamma^n V_{t+n-1}(s_{t+n})$
 \end{center}
+A hozam végén az utolsó, $t+n-1$-edik állapot állapot-értéke szerepel, ezzel kompenzálva az összes, $n$-edik állapot után szereplő állapot várható hozamáért.
 \end{block}}
 \only<2>{\begin{block}{$n$ lépéses állapot-érték frissítési szabály}
 \begin{center}
 $V_{t:t+n}=V_{t+n-1}(s_{t}) + \alpha \left[ G_{t:t+n}-V_{t+n-1}(s_{t}) \right]$
 \end{center}
+Megegyezik az eddig vizsgált állapot-érték függvénnyel kivéve, hogy az $n$ lépéses diszkontált hozamot használja a teljes hozam helyett.
 \end{block}}
 \only<3>{\begin{block}{$n$ lépéses SARSA}
 \begin{center}
-$Q_{t+n}(s_t,a_t)=Q_{t+n-1}(s_t,a_t) + \alpha \left[ G_{t:t+n - Q_{t+n-1}(s_t, a_t)} \right]$
+$Q_{t+n}(s_t,a_t)=Q_{t+n-1}(s_t,a_t) + \alpha \left[ G_{t:t+n} - Q_{t+n-1}(s_t, a_t) \right]$
 \end{center}
+Megegyezik az eddig vizsgált állapot-cselekvés minőség függvénnyel kivéve, hogy az $n$ lépéses hozamot használja a teljes hozam helyett.
 \end{block}}
 \begin{center}
 \includegraphics[width=8cm, keepaspectratio]{images/mc_td_15.png}
@@ -580,7 +583,6 @@ V(s_t) \leftarrow V(s_t) + \alpha \left[ r_{t+1} + \gamma V(s_{t+1}) - V(s_t) \r
 
 
 
-w
 
 
 
