@@ -1,0 +1,15 @@
+digraph qlearning {
+    graph[dpi=300]
+
+    initialize_q_table [label="Q-tábla inícializálása", shape=rectangle];
+    choose_action [label="Cselekvés választás a tábla alapján", shape=rectangle];
+    perform_action [label="Cselekvés végrehajtás", shape=rectangle];
+    measure_reward [label="Jutalom megfigyelése", shape=rectangle];
+    update_q_table [label="Q-tábla frissítése", shape=rectangle];
+
+    initialize_q_table -> choose_action
+    choose_action -> perform_action
+    perform_action -> measure_reward
+    measure_reward -> update_q_table
+    update_q_table -> choose_action
+}
