@@ -306,15 +306,173 @@ A gradiens segítségével meg lehet határozni, merre és mennyivel érdemes v�
 \end{columns}
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{Gradiens ereszkedés}
 \begin{columns}
 \begin{column}{.5\textwidth}
-	% Some code comes here
+\only<1>{A gradiens ereszkedés egy iteratív minimalizálási algoritmus egy tetszőleges függvény lokális minimum helyének megtalálására. Az algoritmus lépésről lépésre mozog a függvény értékének csökkentése érdekében. \par\smallskip
+\begin{block}{Tanulási sebesség ($\alpha$ vagy $\eta$)}
+A tanulási sebesség meghatározza, mennyire nagy lépéseket tesz a gradiens ereszkedés az optimalizációs folyamat során.
+\end{block}}
+\only<2>{\begin{block}{A gradiens ereszkedés paraméter frissítése:}
+\[
+\theta \leftarrow \theta - \eta \nabla_\theta MSE(\theta)
+\]
+\begin{itemize}
+	\item $\theta=[\theta_0,\theta_1,...,\theta_n]$: Paraméterek vektora
+	\item $\eta \in [0,1]$: Tanulási sebesség
+	\item $\nabla_\theta$: Költségfüggvény gradiense ($\theta$ szerinti derivált)
+\end{itemize}
+\end{block}}
 \end{column}
 \begin{column}{.5\textwidth}
-	% Some code comes here
+\only<1>{\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/ql_13.png}
+\end{center}}
+\only<2>{\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/ql_20.png}
+\end{center}}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Túl alacsony tanulási sebesség}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=6cm, keepaspectratio]{images/ql_17.png}
+\end{center}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/ql_14.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Túl magas tanulási sebesség}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=6cm, keepaspectratio]{images/ql_19.png}
+\end{center}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/ql_15.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Egyéb problémák}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A gradiens ereszkedés nem garantálja, hogy elér egy globális minimumot, hiszen a gradiens operátora csak lokális változásokat vesz figyelembe. Ebből adódóan az \textbf{algoritmus beragadhat egy lokális minimumon}.\par\medskip
+Vannak esetek, amikor a gradiens nem meghatározható (szaturál), például amikor \textbf{elér egy fennsíkot a függvényen}. Ebben az esetben a futás vagy nagyon lassú lesz, vagy nem halad semerre. 
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/ql_16.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Neurális hálózatok}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{A neuron}
+\begin{columns}
+\begin{column}{.4\textwidth}
+A neurális hálózatot \textbf{neuronok összessége} alkotja. Az egyes neuronok egyszerű elemi műveleteket végeznek. A neuronnak több inputja (kapcsolata) van, és mindegyikhez egy súly tartozik.\par\smallskip
+A neuron kiszámítja az inputjainak a súlyozott összegét ($z=x_1w_1 + x_2w_2 + ... + x_nw_n$), majd ezt az értéket behelyettesíti egy aktivációs függvénybe ($o=\varphi(z)$). 
+\end{column}
+\begin{column}{.6\textwidth}
+\begin{center}
+\includegraphics[width=9cm, keepaspectratio]{images/ql_21.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Többrétegű hálózatok}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Ebben az esetben a neuronok rétegekben foglalnak helyet. A kapcsolataik az előző réteg kimeneteivel állnak összeköttetésben. A legelső réteg neuronjai a bemeneti adattal állnak összeköttetésben. Minden bemeneti jellemzőhöz egy neuron tartozik.\par\smallskip
+\begin{block}{Teljesen becsatolt neuronréteg kimenete}
+\[
+h_{w,b}(X)=\varphi(XW+b)
+\]
+\vspace{-0.5cm}
+\begin{itemize}
+	\item $X$: Input jellemzők mátrixa
+	\item $W$: Kapcsolati súlyok mátrixa
+	\item $b$: Torzítások vektora
+	\item $\varphi$: Aktivációs függvény
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/ql_22.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Mély $Q$-tanulás}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{A $Q$-hálózat (DQN)}
+\begin{columns}
+\begin{column}{.6\textwidth}
+A $Q$-hálózat egy természetes kiterjesztése a hagyományos $Q$-tanulásnak. A naív $Q$-hálózat inputja a \textbf{környezetet leíró változók} vektora vagy mátrixa, és az outputja pedig az ügynök számára elérhető \textbf{cselekvések $Q(s,a)$ értéke} minden $a_1,a_2,..,a_n$ cselekvéshez tartozóan. \par\smallskip
+A cselekvés választáshoz az ügynök kiválasztja a legnagyobb becsült $Q$ értéket, és az ahhoz tartozó cselekvést fogja végrehajtani.\par\smallskip
+Miután először bemutatták 2013-ban, hamar kiderült hogy a naív $Q$-hálózat nem elég stabil, gyakran eredményez torz politikát a túltanulás miatt. 
+\end{column}
+\begin{column}{.4\textwidth}
+\begin{center}
+\includegraphics[width=6cm, keepaspectratio]{graphs/ql_3.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Tapasztalat visszajátszás}
+\begin{columns}
+\begin{column}{.65\textwidth}
+A tapasztalat visszajátszás az egyik változtatás, ami a $Q$-hálózat problémáján hivatott segíteni.\par\smallskip
+A tapasztalat memória ($D_{replay}$) \textbf{$[s,a,r,s']$ négyeseket tartalmaz}. Minden alkalommal amikor az ügynök cselekszik, az általa tapasztalt $s_t, a_t, r_t, s_{t+1}$ elmentődik a tapasztalat memóriába.\par\smallskip
+Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mintát} (miniköteget) kap a tapasztalat memóriából, melynek számossága megegyezik a kötegmérettel. Eszerint fogja kiszámolni a költségfüggvényt majd frissíteni a neurális hálózat paramétereit.
+\end{column}
+\begin{column}{.35\textwidth}
+\begin{center}
+\includegraphics[height=7cm, keepaspectratio]{graphs/ql_4.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Költségfüggvény és frissítési szabály}
+\begin{block}{A DQN költségfüggvénye}
+\[
+J(\theta) = E_{s,a,s' \sim D_{replay}} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
+\]
+A költségfüggvény egy miniköteg átlagos négyzetes Bellman hibájának várható értéke ($E$). A $Q_\theta(s,a)$ a $Q$-hálózat $s$ cselekvésre és $a$ állapotra adott predikciója, $Q(s',a')$ pedig $s_{t+1}$-re és $a_{t+1}$-re adott predikció, ún. \textbf{célérték} .
+\end{block}
+\begin{block}{A DQN paraméter frissítése}
+\[
+\theta_{t+1} = \theta_t + \alpha \; J(\theta) \; \nabla_\theta Q_\theta(s,a)
+\]
+Ahol $\theta$ a paramétervektor, $\alpha$ a tanulási sebesség, $J(\theta)$ a költségfüggvény $\theta$ szerint és $\nabla_\theta$ a költségfüggvény gradiense $\theta$ szerint.
+\end{block}
 \end{frame}
 
 \end{document}

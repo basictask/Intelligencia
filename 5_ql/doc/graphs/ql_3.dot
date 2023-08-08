@@ -1,0 +1,20 @@
+digraph qlearning {
+    graph[dpi=300]
+    rankdir="BT"
+
+    s [label="Állapot", shape="rectangle"]
+    net [label="Neurális hálózat", shape="rectangle"]
+    
+    subgraph cluster{
+        style="dotted"
+        a1 [label="Q(s,a1)", shape="rectangle"]
+        a2 [label="Q(s,a2)", shape="rectangle"]
+        a3 [label="Q(s,a3)", shape="rectangle"]  
+    }
+    
+    s -> net
+    net -> a1
+    net -> a2
+    net -> a3
+
+}

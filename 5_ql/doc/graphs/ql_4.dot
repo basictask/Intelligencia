@@ -1,0 +1,15 @@
+digraph qlearning {
+    graph[dpi=300]
+
+    interact [label="Az ügynök cselekszik\na környezetben", shape="rectangle"]
+    learn [label="Q(s,a) tanulása\na minta alapján", shape="rectangle"]
+    update [label="Politika frissítése", shape="rectangle"]
+    replay [label="Tapasztalat visszajátszás", shape="cylinder"]
+
+    interact -> learn
+    learn -> update
+    update -> interact
+    interact -> replay [label=" [s,a,r,s']"]
+    replay -> learn [label=" minta [s,a,r,s']"]
+
+}
