@@ -12,6 +12,7 @@
 *.bak
 *.toc
 *.synctex
+*.synctex.gz
 
 # Folder for sources
 sources

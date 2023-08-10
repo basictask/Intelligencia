@@ -1,0 +1,16 @@
+digraph dql {
+    //graph[dpi=300]
+    rankdir="BT"
+
+    cost [label="J(θ)", shape="rectangle"]
+    qsa [label="Q(s,a)", shape="rectangle"]
+    qsaprime [label="Q(s',a')", shape="rectangle"]
+    qnet [label="Q-hálózat", shape="rectangle"]
+    state [label="Állapot", shape="rectangle"]
+
+    qnet -> qsa
+    qnet -> qsaprime
+    qsa -> cost
+    qsaprime -> cost
+    state -> qnet
+}
