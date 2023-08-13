@@ -5,7 +5,7 @@ Output: .png files from each dot file
 """
 
 import os
-import pydot
+import subprocess
 
 target_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -14,9 +14,9 @@ for root, _, files in os.walk(target_dir):
         file_path = os.path.join(root, file)
         if file_path.endswith('.dot'):
             print('Rendering: ' + file_path + '... ', end = '') 
-            (graph, ) = pydot.graph_from_dot_file(file_path)
-            name = file_path.split('.')[0]
-            graph.write_png(os.path.join(root, name) + '.png')
+            output_file = os.path.splitext(file_path)[0] + '.png'
+            command = f'dot -Tpng {file_path} -o {output_file}' 
+            subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             print('Done')
 
 print('Done')

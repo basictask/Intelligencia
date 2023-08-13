@@ -1,0 +1,8 @@
+digraph dql {
+    graph[dpi=300]
+    rankdir="LR"
+    qnet1 [label="Online Q-hálózat", shape="rectangle"]
+    qnet2 [label="Cél Q-hálózat", shape="rectangle"]
+
+    qnet1 -> qnet2 [label="Polyak átlagolás"]
+}

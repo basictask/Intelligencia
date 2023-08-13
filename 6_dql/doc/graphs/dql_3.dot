@@ -1,0 +1,21 @@
+digraph dql {
+    graph[dpi=300]
+    rankdir="BT"
+
+    cost [label="J(θ)", shape="rectangle"]
+    qsa [label="Q(s,a)", shape="rectangle"]
+    qsaprime [label=<max<sub>a'</sub>Q(s',a')>, shape="rectangle"]
+    qsaprime2 [label=<max<sub>a'</sub>Q(s',a')>, shape="rectangle"]
+    qnet1 [label="Online Q-hálózat", shape="rectangle"]
+    qnet2 [label="Cél Q-hálózat", shape="rectangle"]
+    state [label="Tapasztalat\nvisszajátszás", shape="rectangle"]
+
+    qsaprime2 -> cost [label="Q(s',a')"]
+    qsa -> cost
+    qnet2 -> qsaprime2 [label="s',a'"]
+    qsaprime -> qnet2 [label="a'"]
+    qnet1 -> qsa [label="s,a"]
+    qnet1 -> qsaprime [label="s'"]
+    state -> qnet2 [label="s'"]
+    state -> qnet1 [label="s,a,s'"]
+}

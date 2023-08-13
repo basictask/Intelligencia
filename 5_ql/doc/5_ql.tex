@@ -315,12 +315,13 @@ A tanulási sebesség meghatározza, mennyire nagy lépéseket tesz a gradiens e
 \end{block}}
 \only<2>{\begin{block}{A gradiens ereszkedés paraméter frissítése:}
 \[
-\theta \leftarrow \theta - \eta \nabla_\theta MSE(\theta)
+\theta \leftarrow \theta - \alpha \; \nabla_\theta \; J(\theta)
 \]
 \begin{itemize}
 	\item $\theta=[\theta_0,\theta_1,...,\theta_n]$: Paraméterek vektora
-	\item $\eta \in [0,1]$: Tanulási sebesség
-	\item $\nabla_\theta$: Költségfüggvény gradiense ($\theta$ szerinti derivált)
+	\item $\alpha \in [0,1]$: Tanulási sebesség
+	\item $\nabla_\theta$: Költségfüggvény gradiense \\($\theta$ szerinti derivált)
+	\item $J(\theta)$: Költségfüggvény $\theta$ szerint \\(pl. MSE)
 \end{itemize}
 \end{block}}
 \end{column}
@@ -463,9 +464,9 @@ Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mi
 \begin{frame}{Költségfüggvény és frissítési szabály}
 \begin{block}{A DQN költségfüggvénye}
 \[
-J(\theta) = E_{s,a,s' \sim D_{replay}} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
+J(\theta) = E_{s,a,r,s' \sim D} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
 \]
-A költségfüggvény egy miniköteg átlagos négyzetes Bellman hibájának várható értéke ($E$). A $Q_\theta(s,a)$ a $Q$-hálózat $s$ cselekvésre és $a$ állapotra adott predikciója, $Q(s',a')$ pedig $s_{t+1}$-re és $a_{t+1}$-re adott predikció, ún. \textbf{célérték} .
+A költségfüggvény a \textbf{négyzetes Bellman hiba várható értéke} ($E$). Ahol $s,a,r,s'$ a $D$ \textbf{tapasztalat visszajátszásból vett minta}.$Q_\theta$ megkeresi az $s'$ következő állapothoz tartozó legnagyobb cselekvés értéket (\textbf{célérték}), és lekérdezi $s$ aktuális állapothoz és $a$ aktuális cselekvéshez tartozó értéket. 
 \end{block}
 \begin{block}{A DQN paraméter frissítése}
 \[

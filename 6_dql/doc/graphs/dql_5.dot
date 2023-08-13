@@ -1,0 +1,38 @@
+digraph dql {
+    graph[dpi=300]
+    rankdir="BT"
+
+    s [label="Állapot", shape="rectangle"]
+    net [label="Neurális hálózat", shape="rectangle"]
+    vsnet [label="Specifikus\nhálózat", shape="rectangle"]
+    qsanet [label="Specifikus\nhálózat", shape="rectangle"]
+    vs [label="V(s)", shape="rectangle"]
+
+    subgraph cluster1{
+        style="dotted"
+        a1 [label="A(s,a1)", shape="rectangle"]
+        a2 [label="A(s,a2)", shape="rectangle"]
+        a3 [label="A(s,a3)", shape="rectangle"]  
+    }
+    
+    subgraph cluster2{
+        style="dotted"
+        q1 [label="Q(s,a1)", shape="rectangle"]
+        q2 [label="Q(s,a2)", shape="rectangle"]
+        q3 [label="Q(s,a3)", shape="rectangle"]  
+    }
+
+    a1 -> q1
+    vs -> q1
+    a2 -> q2
+    vs -> q2
+    a3 -> q3
+    vs -> q3
+    vsnet -> vs
+    qsanet -> a1
+    qsanet -> a2
+    qsanet -> a3
+    net -> vsnet
+    net -> qsanet
+    s -> net
+}

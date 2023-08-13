@@ -1,0 +1,22 @@
+digraph dql {
+    graph[dpi=300]
+    //rankdir="LR"
+
+    cost [label="J(θ)", shape="rectangle"]
+    replay [label="Tapasztalat\nvisszajátszás", shape="rectangle"]
+    env [label="Környezet", shape="rectangle"]
+    qnet1 [label="Online párbajozó hálózat", shape="rectangle"]
+    qnet2 [label="Cél párbajozó hálózat", shape="rectangle"]
+
+    {rank="same"; qnet1 qnet2}
+    {rank="max"; replay env}
+
+    replay -> qnet1 [label="s, a, s'"]
+    replay -> qnet2 [label=" s'"]
+    qnet1 -> qnet2 [label="a*"]
+    qnet2 -> cost [label="Q(s',a')"]
+    qnet1 -> cost [label="Q(s,a)"]
+    cost -> qnet1 [label="∇"]
+    qnet1 -> env [label=" a"]
+    env -> replay [label="s,a,r,s'"]
+}

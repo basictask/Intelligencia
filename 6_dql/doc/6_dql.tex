@@ -100,7 +100,7 @@ Dupla $Q$-tanulás\par\smallskip
 \end{columns}
 \end{frame}
 
-\section{Mély $Q$-tanulás}
+\section{Mély $Q$-tanulás (DQN)}
 
 \begin{frame}
 \tableofcontents[currentsection]
@@ -123,11 +123,211 @@ A $Q$-hálózat költségfüggvénye az \textbf{átlagos négyzetes Bellman hiba
 
 \begin{frame}{A DQN költségfüggvénye}
 \begin{columns}
-\begin{column}{.5\textwidth}
+\begin{column}{.75\textwidth}
+A mély $Q$-tanulás során a költségfüggvény a négyzetes Bellman hiba várható értéke:
+\begin{block}{}
+\[
+J(\theta) = E_{s,a,s' \sim D} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
+\]
+\end{block}	
+Ahol $s,a,s'$ a $D$ tapasztalat visszajátszási memóriából vett minta. A $Q$-hálózat megkeresi az $s'$ következő állapothoz tartozó legnagyobb értékű cselekvést, $a'$-t, és lekérdezi a memóriából vett $s$ aktuális állapothoz és $a$ aktuális cselekvéshez tartozó $Q$-értéket. Ez a TD hibának egy változata.  
+\end{column}
+\begin{column}{.25\textwidth}
+\begin{center}
+\includegraphics[height=6cm, keepaspectratio]{graphs/dql_1.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
 
+\begin{frame}{Tapasztalat visszajátszás}
+\begin{columns}
+\begin{column}{.65\textwidth}
+A tapasztalat visszajátszás az egyik változtatás, ami a $Q$-hálózat problémáján hivatott segíteni.\par\smallskip
+A tapasztalat memória ($D_{replay}$) \textbf{$[s,a,r,s']$ négyeseket tartalmaz}. Minden alkalommal amikor az ügynök cselekszik, az általa tapasztalt $s_t, a_t, r_t, s_{t+1}$ elmentődik a tapasztalat memóriába.\par\smallskip
+Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mintát} (miniköteget) kap a tapasztalat memóriából, melynek számossága megegyezik a kötegmérettel. Eszerint számolódik ki a költségfüggvény majd frissülnek a $Q$-hálózat paraméterei.
+\end{column}
+\begin{column}{.35\textwidth}
+\begin{center}
+\includegraphics[height=7cm, keepaspectratio]{../../5_ql/doc/graphs/ql_4.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{}
+\begin{algorithm}[H]
+\caption{Mély $Q$-tanulás}
+\SetAlgoLined
+\textbf{Input}: $\tau \sim [0,1]$ átlagolási ráta,
+Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inícializálása\;
+\For{$i = 0 \rightarrow max_i$}{
+	\For{$t = 0 \rightarrow max_t$}{
+		$s_t$ megfigyelése és $a_t \sim \pi(s_t,a_t)$ cselekvés választása\;
+		$a_t$ végrehajtása és $s_{t+1}$, $r_t$ megfigyelése\;
+		$s_t, a_t, r_t, s_{t+1}$ eltárolása a tapasztalat memóriában\;
+	}
+	\For{$c = 0 \rightarrow max_c$}{
+		$e_t = s_t, a_t, r_t, s_{t+1} \sim D$\tcc*[t]{Mintavétel a tapasztalat memóriából}
+		Gradiens ereszkedés végrehajtása a $\left( r + \gamma \underset{a'}{max}Q_\theta(s',a') - Q_\theta(sa) \right)^2$ hibán:
+	}		
+}
+\end{algorithm}
+Ahol $t$ a környezetben lejátszott lépések és $c$ a hálózat tanítási lépések ciklusváltozója.
+\end{frame}
+
+\section{Dupla mély $Q$-tanulás (DDQN)}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{DDQN}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A DDQN algoritmusa a dupla $Q$-tanulás elveit hajtja végre neurális hálózatokkal: ebben az esetben a két $Q$-tábla helyett \textbf{két $Q$-hálózat} kap helyet az architektúrában:
+\begin{itemize}
+	\item Online hálózat $Q_\theta$: a cselekvések \textbf{kiválasztásáért} felel.
+	\item Célhálózat $Q_{\bar{\theta}}$: a választott cselekvés \textbf{kiértékeléséért} felel.
+\end{itemize}
+Az algoritmus csak az online hálózaton hajt végre paraméter frissítést. A célhálózatot úgy frissíti, hogy az online hálózat paramétereinek értékét átmásolja adott időközönként. 
 \end{column}
 \begin{column}{.5\textwidth}
-%TODO: insert image
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{graphs/dql_2.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{A DDQN költségfüggvénye}
+\begin{columns}
+\begin{column}{.7\textwidth}
+A DDQN architektúrában az optimális cselekvés $a^*$ a $Q_\theta$ online hálózat által lesz kiválasztva $s'$ következő cselekvésre:
+\begin{block}{}
+\[
+a^*=\underset{a'}{argmax}Q_\theta(s',a')
+\]
+\end{block}
+A $Q_{\bar{\theta}}$ célhálózat pedig kiértékeli az online hálózat által választott cselekvést: $Q_{\bar{\theta}}(s',a^*)$, majd kiszámolja a TD hibát: 
+\begin{block}{}
+\[
+J(\theta) = E_{s,a,r,s' \sim D} \left[ \left( r + \gamma Q_{\bar{\theta}}(s',a^*) - Q_\theta(s,a) \right)^2 \right]
+\]
+\end{block}
+Ahol $E_{s,a,r,s' \sim D}$ a tapasztalat visszajátszásból származó miniköteg, $\gamma$ a diszkont ráta. 
+\end{column}
+\begin{column}{.3\textwidth}
+\begin{center}
+\includegraphics[height=7cm, keepaspectratio]{graphs/dql_3.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{A célhálózat frissítése}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Adott időközönként az online hálózat $Q_\theta$ paramétereit át kell másolni a $Q_{\bar{\theta}}$ célhálózatra, \textbf{hiszen a célhálózaton nincs gradiens ereszkedés végrehajtva}.\par\smallskip
+Ezt meg lehet tenni úgy is, hogy periodikusan explicit másolat készüljön az online hálózatról, viszont egy jobb megoldás, ha Polyak átlagolással (\textbf{lágy másolással}) másolódnak át a paraméterek.\par\smallskip
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{graphs/dql_4.png}
+\end{center}
+\end{column}
+\begin{column}{.5\textwidth}
+Ebben az esetben a $\tau$ hiperparaméter szabályozza az \textbf{átlagolási rátát} vagyis, hogy mekkora súllyal legyenek figyelembe véve az új paraméterek:
+\begin{block}{Polyak átlagolás}
+\[
+\bar{\theta} \leftarrow \tau \theta + (1 - \tau) \bar{\theta}
+\]
+\begin{itemize}
+	\item $\bar{\theta}$: Célhálózat paraméterei
+	\item $\theta$: Online hálózat paraméterei
+	\item $\tau$: Átlagolási ráta
+\end{itemize}
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{}
+\begin{algorithm}[H]
+\caption{Dupla mély $Q$-tanulás (DDQN)}
+\SetAlgoLined
+\textbf{Input}: $\tau \sim [0,1]$ átlagolási ráta,
+Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inícializálása\;
+\For{$i = 0 \rightarrow max_i$}{
+	\For{$t = 0 \rightarrow max_t$}{
+		$s_t$ megfigyelése és $a_t \sim \pi(s_t,a_t)$ cselekvés választása\;
+		$a_t$ végrehajtása és $s_{t+1}$, $r_t$ megfigyelése\;
+		$s_t, a_t, r_t, s_{t+1}$ eltárolása a tapasztalat memóriában\;
+	}
+	\For{$c = 0 \rightarrow max_c$}{
+		$e_t = s_t, a_t, r_t, s_{t+1} \sim D$\tcc*[t]{Mintavétel a tapasztalat memóriából}
+		$Q^*(s_t,a_t) \leftarrow r_t + \gamma Q_\theta(s_{t+1}, argmax_{a'}Q_{\bar{\theta}}(s_{t+1},a'))$\;
+		Gradiens ereszkesés végrehajtása a $(Q^*(s_t,a_t) - Q_\theta(s_t,a_t))^2$ hibán\;
+		$\bar{\theta} \leftarrow \tau \theta + (1 - \tau) \bar{\theta}$\tcc*[t]{Paraméterek frissítése}
+	}		
+}
+\end{algorithm}
+\end{frame}
+
+\section{Párbajozó mély $Q$-tanulás}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Az előny függvény}
+A megerősítéses tanulás harmadik értékfüggvénye a $V(s)$ és a $Q(s,a)$ mellett.\par\smallskip
+Matematikailag az előny függvény $s$ állapotra és $a$ cselekvésre a cselekvés $Q$ értékének és az állapot értékének a különbsgée:
+\begin{block}{Előny függvény}
+Az előny függvény megadja, \textbf{mennyivel jobb vagy rosszabb} egy adott $a$ cselekvést végrehajtani egy $s$ állapotból a többi elérhető cselekvéshez képest.
+\[
+A(s,a) = Q(s,a) - V(s)
+\]
+Egy $A(s,a)=0$ érték azt jelenti, hogy $a$ cselekvést végrehajtani olyan jövedelmező, mint az átlagos cselekvés $s$-ből. Ha $A(s,a)>0$, a cselekvés jobb, és ha $A(s,a)<0$ akkor rosszabb mint az átlagos cselekvés $s$ állapotból.
+\end{block}
+\end{frame}
+
+\begin{frame}{Párbajozó $Q$-hálózat architektúrája}
+\begin{columns}
+\begin{column}{.6\textwidth}
+\only<1>{A párbajozó $Q$-tanulás algoritmusa \textbf{explicit módon kettéválasztja az állapot-érték és előny függvények megbecslését} minden állapot művelet esetén. Ez a szétválasztás teszi lehetővé a hatékonyabb tanulást és jobb általánosítást.\par\smallskip
+Az előnyfüggvény definíciójából kiindulva a minőségfüggvényt ki lehetne számolni úgy, mint $Q(s,a)=V(s)+A(s,a)$, \textbf{viszont ez problémás mert nem feltételezhető, hogy a hálózat minden értékre pontos becslést ad}.\par\smallskip}
+\only<2>{A gyakorlatban a $Q(s,a)$ érték úgy áll elő, hogy a $V(s)$ állapot-értékhez hozzáadódik a választott cselekvés és a legnagyobb előnyű cselekvés $A(s,a)$ értékének különbsége:
+\begin{block}{}
+\vspace{-0.5cm}
+\[
+Q(s,a) = V(s) + \left( A(s,a) - \frac{1}{\vert A \vert} \sum_{a'} A(s,a') \right)
+\]
+\end{block}
+Ahol $\vert A \vert$ az elérhető cselekvések száma, $\frac{1}{\vert A \vert} \sum_{a'} A(s,a')$ pedig az elérhető cselekvések előnyeinek átlaga.}
+\end{column}
+\begin{column}{.4\textwidth}
+\begin{center}
+\includegraphics[height=6.5cm, keepaspectratio]{graphs/dql_5.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Az egycsatornás és párbajozó architektúrák összehasonlítása}
+\begin{center}
+\includegraphics[width=10cm, keepaspectratio]{images/dql_2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Dupla pádbajozó architektúrák (DDDQN)}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A kettős $Q$-tanulást meg lehet valósítani párbajozó hálózatokkal is. Mivel mindkettőnek az outputja a $Q(s,a)$ állapot-cselekvés minőség függvény, az egyetlen változtatás a kettős $Q$-tanuláshoz képest a neurális hálózat architektúrájában van. A komponensek elrendezésén nem szükséges változtatni.\par\smallskip
+A hálózatok között a paraméterek másolását explicit másolássl, vagy Polyak átlagolással lehet megoldtani. Ezzel a hálózat pontosabban tanul, és ellenállóbb a tanítási mintában jelen lévő zajjal szemben.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=6cm, keepaspectratio]{graphs/dql_6.png}
+\end{center}
 \end{column}
 \end{columns}
 \end{frame}
