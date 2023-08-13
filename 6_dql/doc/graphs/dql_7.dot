@@ -1,0 +1,19 @@
+digraph dql {
+    graph[dpi=300]
+    //rankdir="LR"
+
+    cost [label="J(θ)", shape="rectangle"]
+    env [label="Környezet", shape="rectangle"]
+    actor [label="Aktor\nhálózat", shape="rectangle"]
+    critic [label="Kritikus\nhálózat", shape="rectangle"]
+
+    {rank="same"; actor critic}
+
+    cost -> actor [label="   "]
+    cost -> critic [label="   "]
+    critic -> cost [label="V(s)"]
+    actor -> env [label="Cselekvés"]
+    env -> actor [label="Állapot"]
+    env -> critic [label="Állapot"]
+    env -> critic [label=" Jutalom"]
+}

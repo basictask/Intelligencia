@@ -169,7 +169,7 @@ Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memó
 	}
 	\For{$c = 0 \rightarrow max_c$}{
 		$e_t = s_t, a_t, r_t, s_{t+1} \sim D$\tcc*[t]{Mintavétel a tapasztalat memóriából}
-		Gradiens ereszkedés végrehajtása a $\left( r + \gamma \underset{a'}{max}Q_\theta(s',a') - Q_\theta(sa) \right)^2$ hibán:
+		Gradiens ereszkedés végrehajtása $\left( r + \gamma \underset{a'}{max}Q_\theta(s',a') - Q_\theta(sa) \right)^2$ hibán
 	}		
 }
 \end{algorithm}
@@ -265,7 +265,7 @@ Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memó
 	\For{$c = 0 \rightarrow max_c$}{
 		$e_t = s_t, a_t, r_t, s_{t+1} \sim D$\tcc*[t]{Mintavétel a tapasztalat memóriából}
 		$Q^*(s_t,a_t) \leftarrow r_t + \gamma Q_\theta(s_{t+1}, argmax_{a'}Q_{\bar{\theta}}(s_{t+1},a'))$\;
-		Gradiens ereszkesés végrehajtása a $(Q^*(s_t,a_t) - Q_\theta(s_t,a_t))^2$ hibán\;
+		Gradiens ereszkedés végrehajtása a $(Q^*(s_t,a_t) - Q_\theta(s_t,a_t))^2$ hibán\;
 		$\bar{\theta} \leftarrow \tau \theta + (1 - \tau) \bar{\theta}$\tcc*[t]{Paraméterek frissítése}
 	}		
 }
@@ -318,15 +318,57 @@ Ahol $\vert A \vert$ az elérhető cselekvések száma, $\frac{1}{\vert A \vert}
 \end{center}
 \end{frame}
 
-\begin{frame}{Dupla pádbajozó architektúrák (DDDQN)}
+\begin{frame}{Dupla párbajozó architektúrák (DDDQN)}
 \begin{columns}
 \begin{column}{.5\textwidth}
-A kettős $Q$-tanulást meg lehet valósítani párbajozó hálózatokkal is. Mivel mindkettőnek az outputja a $Q(s,a)$ állapot-cselekvés minőség függvény, az egyetlen változtatás a kettős $Q$-tanuláshoz képest a neurális hálózat architektúrájában van. A komponensek elrendezésén nem szükséges változtatni.\par\smallskip
-A hálózatok között a paraméterek másolását explicit másolássl, vagy Polyak átlagolással lehet megoldtani. Ezzel a hálózat pontosabban tanul, és ellenállóbb a tanítási mintában jelen lévő zajjal szemben.
+A kettős $Q$-tanulást meg lehet valósítani párbajozó hálózatokkal is. Mivel mindkettőnek az outputja a $Q(s,a)$ állapot-cselekvés minőség függvény, \textbf{az egyetlen változtatás a kettős $Q$-tanuláshoz képest a neurális hálózat architektúrájában van}. A komponensek elrendezésén nem szükséges módosítani.\par\smallskip
+A hálózatok között a paraméterek másolását explicit másolással, vagy Polyak átlagolással lehet megoldani. Ezzel a hálózat pontosabban tanul, és ellenállóbb a tanítási mintában jelen lévő zajjal szemben.
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
 \includegraphics[width=6cm, keepaspectratio]{graphs/dql_6.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Aktor-kritikus architektúrák}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Aktor-kritikus architektúra}
+\begin{columns}
+\begin{column}{.6\textwidth}
+Az aktor-kritikus architektúra egy kettős tanulási eljárás, amely kombinálja a politikaalapú (\textbf{aktor}) és az értékalapú (\textbf{kritikus}) eljárásokat a tanítási folyamat javítása és a gyorsabb konvergencia érdekében.\par\smallskip
+\begin{itemize}
+	\item \textbf{Aktor}: Az állapothoz tartozó cselekvés kiválasztásáért felel. Egy politikát tanul meg, ami az állapotokhoz cselekvéseket rendel. Célja, hogy maximalizálja a várható kumulált hozamot. 
+	\item \textbf{Kritikus}: Az állapotból elérhető várható hozamot becsüli meg, tehát az állapot-érték függvényt. A kritikus segíti az aktort azzal, hogy visszajelzést ad neki az általa megtett cselekvések minőségéről. 
+\end{itemize}
+\end{column}
+\begin{column}{.4\textwidth}
+\begin{center}
+\includegraphics[height=5.5cm, keepaspectratio]{graphs/dql_7.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Az aktor-kritikus költségfüggvénye}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Az előnyalapú aktor-kritikus eljárásokban az aktor az $A(s,a)$ előnyfüggvényt becsüli meg a saját neurális fejében. A kritikus pedig egy logaritmikus valószínűségi eloszlást.
+\begin{block}{Az AAC költségfüggvénye}
+\[
+J(\theta) = \sum_{t=0}^{T-1} log \pi_\theta (a_t \vert s_t) A(s_t,a_t)
+\]
+Ahol $\pi_\theta (a_t \vert s_t)$ az a valószínűség, hogy a $\pi_\theta$ szerint mekkora valószínűséggel hajtja végre az ügynök $a_t$ cselekvést $s_t$ állapotból, és $A(s,a)$ az előnyfüggvény.
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/dql_3.png}
 \end{center}
 \end{column}
 \end{columns}
