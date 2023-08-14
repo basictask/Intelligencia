@@ -127,10 +127,10 @@ A $Q$-tábla tárolja el a $Q(s,a)$ értékeket minden $s \in S$ és $a \in A$ p
 $Q(s,a) \leftarrow random()$ for $s \in S$, $a \in A$\tcc*[t]{$Q$ értékek inícializálása}
 $Q(s_T,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapot $0$-ra állítása}
 \For{$i=0 \rightarrow max_i$}{
-	$s$ inícializálása\;
+	$s \leftarrow s_0$\tcc*[t]{$s$ inícializálása}
 	\While{$s \neq s_T$}{
 		$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választása $\pi$ szerint, pl. $\varepsilon$-mohó}
-		$a$ végrehajtása, $r$ és $s'$ megfigyelése\;
+		$a$ végrehajtása, $r, s'$ megfigyelése\;
 		$Q(s,a) \leftarrow Q(s,a) + \alpha \left[ r + \gamma \underset{a'}{max} Q(s',a') - Q(s,a) \right]$\;
 		$s \leftarrow s'$\tcc*[t]{$s$ frissítése}
 	}
@@ -144,7 +144,7 @@ A kettős tanulás ötlete természetesen kiterjed a teljes MDP algoritmusaira. 
 A $Q$-tanulással analóg dupla $Q$-tanulás nevű kettős tanulási algoritmus két részre osztja az időlépéseket, \textbf{minden lépésnél egy érmét feldobva}. Ha az érme fejre esik, a frissítés a következő:
 \begin{block}{}
 \[
-Q_1(s,a) \leftarrow Q_1(s,a) + \alpha \left[ r + \gamma Q_2(s', \underset{a'}{argmax} Q_1(s',a')) - Q_1(s,a) \right]
+Q_1(s,a) \leftarrow Q_1(s,a) + \alpha \left[ r + \gamma Q_2 \left(s', \underset{a'}{argmax} Q_1(s',a')\right) - Q_1(s,a) \right]
 \]
 \end{block}
 Ha az érme pedig írásra esik, akkor ugyanez a frissítés $Q_1$ és $Q_2$ felcserélésével történik, így $Q_2$ frissül. A két közelítő értékfüggvényt teljesen szimmetrikusan kezeli az algoritmus. Például egy $\varepsilon$-mohó politika a dupla tanulás esetében az egyes cselekvési értékbecslések \textbf{átlagára vagy összegére épülhet}.
@@ -177,9 +177,9 @@ $Q_1(s_T,\cdot) \leftarrow 0$, $Q_2(s_T,\cdot) \leftarrow 0$\tcc*[t]{Terminális
 		$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választása $\pi$ szerint, pl. $\varepsilon$-mohó}
 		$a$ végrehajtása, $r$ és $s'$ megfigyelése\;
 		\eIf{$p > 0.5$}{
-			 $Q_1(s,a) \leftarrow Q_1(s,a) + \alpha \left[ r + \gamma Q_2(s', \underset{a'}{argmax} Q_1(s',a')) - Q_1(s,a) \right]$
+			 $Q_1(s,a) \leftarrow Q_1(s,a) + \alpha \left[ r + \gamma Q_2\left(s', \underset{a'}{argmax} Q_1(s',a')\right) - Q_1(s,a) \right]$
 		}{
-			$Q_2(s,a) \leftarrow Q_2(s,a) + \alpha \left[ r + \gamma Q_1(s', \underset{a'}{argmax} Q_2(s',a')) - Q_2(s, a) \right]$
+			$Q_2(s,a) \leftarrow Q_2(s,a) + \alpha \left[ r + \gamma Q_1\left(s', \underset{a'}{argmax} Q_2(s',a')\right) - Q_2(s, a) \right]$
 		}
 		$s \leftarrow s'$\tcc*[t]{$s$ frissítése}
 	}
@@ -465,7 +465,7 @@ Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mi
 \[
 J(\theta) = E_{s,a,r,s' \sim D} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
 \]
-A költségfüggvény a \textbf{négyzetes Bellman hiba várható értéke} ($E$). Ahol $s,a,r,s'$ a $D$ \textbf{tapasztalat visszajátszásból vett minta}.$Q_\theta$ megkeresi az $s'$ következő állapothoz tartozó legnagyobb cselekvés értéket (\textbf{célérték}), és lekérdezi $s$ aktuális állapothoz és $a$ aktuális cselekvéshez tartozó értéket. 
+A költségfüggvény a \textbf{négyzetes Bellman hiba várható értéke}. Ahol $s,a,r,s'$ a $D$ \textbf{tapasztalat visszajátszásból vett minta}. $Q_\theta$ megkeresi az $s'$ következő állapothoz tartozó legnagyobb cselekvés értéket (\textbf{célérték}), és lekérdezi $s$ aktuális állapothoz és $a$ aktuális cselekvéshez tartozó értéket. 
 \end{block}
 \begin{block}{A DQN paraméter frissítése}
 \[
