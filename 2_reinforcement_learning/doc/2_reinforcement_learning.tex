@@ -63,7 +63,7 @@ A három fő típus, ahova be lehet sorolni a gépi tanulási algoritmusokat:
 \begin{frame}{Hol vagyunk?}
 \begin{columns}
 \begin{column}{.5\textwidth}
-A megerősítéses tanulás számos tudományterület együttese.\\
+A megerősítéses tanulás számos tudományterület együttese.\par\smallskip
 A fő elképzelése az, hogy az emberi illetve evolúcióból ismerős módszerekkel tanítson helyzethez alkalmazkodni tudó, intelligens modelleket valamilyen módszertan alapján. 
 \end{column}
 \begin{column}{.5\textwidth}
@@ -75,7 +75,7 @@ A fő elképzelése az, hogy az emberi illetve evolúcióból ismerős módszere
 \end{frame}
 
 \begin{frame}{A megerősítéses tanulás}
-A megerősítéses tanuló modell célja, hogy a legjobb döntéseket hozza egymás után, egy adott kontextusban, hogy maximalizálja a sikert mérő értéket. A döntéshozó entitás próbákkal és hibákkal tanul. Nincs megadva, hogy milyen döntéseket hozzon, hanem ő maga tanulja meg azáltal, hogy kipróbálja azokat.
+A megerősítéses tanuló modell célja, hogy \textbf{a legjobb döntéseket hozza egymás után}, egy adott kontextusban, hogy \textbf{maximalizálja a sikert mérő értéket}. A döntéshozó entitás próbákkal és hibákkal tanul. Nincs megadva, hogy milyen döntéseket hozzon, hanem ő maga tanulja meg azáltal, hogy kipróbálja azokat.
 \begin{center}
 \includegraphics[width=12cm, height=5cm, keepaspectratio]{images/reinf_2.png}
 \end{center}
@@ -85,29 +85,29 @@ A megerősítéses tanuló modell célja, hogy a legjobb döntéseket hozza egym
 \begin{columns}
 \begin{column}{.3\textwidth}
 \begin{center}
-\only<1>{\begin{block}{Ügynök (agent)}
+\only<1>{\begin{block}{Ügynök}
 Az autonóm cselekvő, ami a feladat végrehajtására törekszik.
 \end{block}}
-\only<2>{\begin{block}{Környezet (environment)}
+\only<2>{\begin{block}{Környezet}
 Egy fekete doboz, amely az ügynök cselekvéseinek helyszíne.
 \end{block}}
-\only<3>{\begin{block}{Idő (time)}
+\only<3>{\begin{block}{Idő}
 RL folyamán az időlépések diszkrétek:\\
 $t\in{1,2,3,...}$
 \end{block}}
-\only<4>{\begin{block}{Állapot (state)}
+\only<4>{\begin{block}{Állapot}
 Az ügynök megfigyelése a környezetre vonatkozóan. A környezetet leíró változók összessége.\\
-Jelölés: $s_t\in{S}$
+Jelölés: $s\in{S}$, ahol $S$ az összes állapot halmaza.
 \end{block}}
-\only<5>{\begin{block}{Jutalom (reward)}
-Az ügynök cselekvésének jóságát jelző skalár:\\
-Jelölés: $r_t\in{\mathbb{R}}$ 
+\only<5>{\begin{block}{Jutalom}
+Az ügynök cselekvésének jóságát jelző skalár.\\
+Jelölés: $r\in{\mathbb{R}}$
 \end{block}}
-\only<6>{\begin{block}{Cselekvés (action)}
+\only<6>{\begin{block}{Cselekvés}
 Az ügynök által végrehajtott művelet, ami a környezetet befolyásolja.\\
-Jelölés: $a_t\in{A}$
+Jelölés: $a \in{A}$, ahol $A$ az összes cselekvés halmaza.
 \end{block}}
-\only<7>{\begin{block}{Politika (policy)}
+\only<7>{\begin{block}{Politika}
 Egy állapot $\rightarrow$ cselekvés leképezés. Az ügynök cselekvéseinek szabályait adja meg.\\
 Jelölés:\\
 \begin{itemize}
@@ -131,12 +131,17 @@ Jelölés:\\
 \begin{itemize}
 	\item Az ügynök és a környezet egymásra hatnak. Az ügynök cselekszik, ennek hatására a környezet megváltozik. Az ügynök megfigyeli a környezetet, majd ismét cselekszik:
 $s_1 \rightarrow a_1 \rightarrow s_2 \rightarrow a_2 \rightarrow ... \rightarrow s_t \rightarrow a_t$
-	\item A jutalom azonnali, és cselekvés-állapot párosért jár: $R(s_{t}, a_{t})$
-	\item A környezet változását az átmeneti valószínűségek adják: $P(s'|s_{t}, a_{t})$
-	\item Az ügynök célja a lehető legmagasabb jutalom összegyűjtése hosszú távon: $E_{\pi}(r_{1}+r_{2}+r_{3}+...)\rightarrow{max}$
+	\item A jutalom azonnali, és cselekvés-állapot párosért jár: $R(s, a)$
+	\item A környezet változását az átmeneti valószínűségek adják: $P(s'|s, a)$, ami $s'$ következő állapot valószínűsége $s$ állapotból, $a$ cselekvést követően. Ez a \textbf{környezet dinamikája}.
 \end{itemize}
 \end{column}
 \begin{column}{.5\textwidth}
+\begin{itemize}
+	\item Az ügynök célja a lehető legmagasabb jutalom összegyűjtése hosszú távon: 
+	\[
+	E_{\pi}(r_{1}+r_{2}+r_{3}+...)\rightarrow{max}
+	\]
+\end{itemize}
 \begin{center}
 \includegraphics[width=7.5cm, keepaspectratio]{images/reinf_4.png}
 \end{center}
@@ -173,7 +178,7 @@ Ha a diszkontálási tényező közel van a $0$-hoz, akkor a jövőbeli jutalmak
 \begin{columns}
 \begin{column}{.5\textwidth}
 \only<1>{\begin{block}{Markov lánc}
-Memória nélküli sztochasztikus folyamat fix számosságú állapottal, amely véletlenszerűen vált állapotot minden lépésben.\\
+\textbf{Memória nélküli sztochasztikus folyamat} fix számosságú állapottal, amely véletlenszerűen vált állapotot minden lépésben.\\
 Az átmeneti valószínűség az aktuális állapotból ($s$) a következő állapotba ($s'$) előre meghatározott, és csak az $(s, s')$ pároson múlik, múltbeli állapotokon nem. 
 \end{block}}
 \only<2>{\begin{block}{Markov tulajdonság}
@@ -249,7 +254,7 @@ Az értékfüggvények az állapotok függvényei amik megadják, hogy mennyire 
 \begin{block}{Állapot-érték függvény (value)}
 Egy $s$ állapot állapot-értéke ($v_{\pi}(s)$) valamely $\pi$ politika szerint a várható hozam, ha az ügynök $s$ állapotból indul, és utána $\pi$ szerint hozza döntéseit:\\
 \[
-v_{\pi}(s)=E_{\pi}\left[G_{t}|S_{t}=s\right]=
+V_{\pi}(s)=E_{\pi}\left[G_{t}|S_{t}=s\right]=
 \]
 \[
 =E_{\pi}\left[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k+1}\mid S_{t}=s\right]
@@ -281,7 +286,7 @@ Hasonlóan az előzőhöz lehetséges definiálni egy adott állapot-cselekvés 
 \begin{block}{Állapot-cselekvés minőség függvény (quality)}
 Egy $(s,a)$ állapot-cselekvés páros minőség függvénye valamely $\pi$ politika szerint a várható hozam, ha az ügynök $s$ állapotból indul, $a$ cselekvést hajtja végre, majd utána $\pi$ szerint hozza döntéseit:\\
 \[
-q_{\pi}(s,a)=E_{\pi}\left[G_{t}|S_{t}=s,A_{t}=a\right]=
+Q_{\pi}(s,a)=E_{\pi}\left[G_{t}|S_{t}=s,A_{t}=a\right]=
 \]
 \[
 =E_{\pi}\left[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k+1}\mid S_{t}=s,A_{t}=a\right]
@@ -311,7 +316,7 @@ Példa: golfozásban a \emph{driver} a nagy  hatótávú ütőre vonatkozik. Ebb
 Az értékfüggvények egy alapvető tulajdonsága, hogy betartanak egy rekurzív kapcsolati rendszert. Minden $\pi$ politikára és bármely $s$ állapot esetén érvényes a következő konzisztencia kritérium $s$ állapot és $s'$ következő állapotai között:
 \begin{block}{Állapot-érték Bellman szabály}
 \[
-v_{\pi}(s)=\sum_{a}\pi(a|s)\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]
+V_{\pi}(s)=\sum_{a}\pi(a|s)\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]
 \]\\
 $\;minden\;s\in S-re$
 \end{block}
@@ -336,7 +341,7 @@ Azt tudjuk, hogy mennyire jövedelmező egy $s$ állapotból $\pi$-t követni - 
 Ezt adja meg az állapot-cselekvés minőség függvény: mennyire jövedelmező egy ügynöknek $s$ állapotból $a$ cselekvést választani, majd utána $\pi$ politikát követni:\\
 \begin{block}{Állapot-cselekvés minőség Bellman szabály}
 \[
-q_{\pi}(s,a)=\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]
+Q_{\pi}(s,a)=\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]
 \]
 \end{block}
 \end{column}
@@ -365,7 +370,7 @@ A legegyszerűbb cselekvés kiválasztási szabály, ha az ügynök mindig a sz�
 \begin{center}
 \begin{block}{Mohó cselekvés választás}
 \[
-A_{t}=\underset{a}{argmax}\:Q_{t}(a)
+a_{t}=\underset{a}{argmax}\:Q_{t}(a)
 \]
 \end{block}
 \begin{itemize}
@@ -385,9 +390,9 @@ Melyik úton jutna el a mohó ügynök a kezdő városból a cél városba, ha a
 \end{frame}
 
 \begin{frame}{GridWorld}
-A következő példában egy egyszerű GridWorld játéknak láthatóak az állapot-értékei (jobb) és a mohó ügynök adott állapot-értékhez tartozó cselekvései. A játék célja, hogy az ügynök elérje valamelyik szürke zónát. 
+A példában egy egyszerű GridWorld játéknak láthatóak az állapot-értékei (jobb) és a mohó ügynök adott állapot-értékhez tartozó cselekvései politika javítás során. A játék célja, hogy az ügynök elérje valamelyik szürke zónát.
 \begin{center}
-Véletlen politika értéke $(v_{k})\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$Mohó stratégia $v_{k}$ szerint
+Véletlen politika értéke $(V_{k})\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$Mohó stratégia $V_{k}$ szerint
 \only<1>{\includegraphics[width=10cm, height=7cm, keepaspectratio]{images/reinf_15.png}\\$k=0$}
 \only<2>{\includegraphics[width=10cm, height=7cm, keepaspectratio]{images/reinf_16.png}\\$k=1$}
 \only<3>{\includegraphics[width=10cm, height=7cm, keepaspectratio]{images/reinf_17.png}\\$k=2$}

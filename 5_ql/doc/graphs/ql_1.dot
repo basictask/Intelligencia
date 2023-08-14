@@ -2,7 +2,7 @@ digraph qlearning {
     graph[dpi=300]
 
     initialize_q_table [label="Q-tábla inícializálása", shape=rectangle];
-    choose_action [label="Cselekvés választás a tábla alapján", shape=rectangle];
+    choose_action [label="Cselekvés választás a Q-tábla alapján", shape=rectangle];
     perform_action [label="Cselekvés végrehajtás", shape=rectangle];
     measure_reward [label="Jutalom megfigyelése", shape=rectangle];
     update_q_table [label="Q-tábla frissítése", shape=rectangle];

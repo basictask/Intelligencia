@@ -69,9 +69,9 @@ MDP\left(S,A,P,R,s_{0},\gamma\right)
 \end{block}}
 \only<2>{Az MDP folyamata:\\
 \begin{enumerate}
-	\item Az ügynök $s_{0}$ állapotból indul
-	\item Az ügynök $\pi$ politika szerint cselekszik: $a_{t}\sim\pi(s_{t})$
-	\item A környezet reagál a cselekvésre, és visszaadja az ügynöknek $r_{t+1}$ jutalmat és $s_{t+1}$ következő állapotot
+	\item Az ügynök $s_0$ állapotból indul
+	\item Az ügynök $\pi$ politika szerint cselekszik: $a\sim\pi(s)$
+	\item A környezet reagál a cselekvésre, és visszaadja az ügynöknek $r$ jutalmat és $s'$ következő állapotot
 	\item Ez ismétlődik amíg a kilépési kritérium be nem teljesül
 \end{enumerate}
 Cél: Az optimális politika megtalálása. A politika optimális, ha a hozamának várható értéke maximális:
@@ -95,7 +95,7 @@ A legegyszerűbb cselekvés kiválasztási szabály, ha az ügynök mindig azt a
 \begin{block}{Mohó cselekvés választás}
 Mohó politika mindig azt a cselekvést fogja választani, amelyik - egy lépéses távlatban - a lehető legnagyobb várható jutalommal fog járni az ügynök számára $v_{\pi}$ szerint.
 \[
-A_{t}=\underset{a}{argmax}\:Q_{t}(a)
+a_{t}=\underset{a}{argmax}\:Q_{t}(a)
 \]
 \end{block}
 \end{center}
@@ -121,9 +121,10 @@ Egy másik lehetőség, ha adott valószínűséggel az ügynök véletlen csele
 \begin{center}
 \begin{block}{$\varepsilon$-mohó cselekvés választás}
 \[
-A_{t}\leftarrow\begin{cases}
-_{a\sim A}^{\underset{a}{argmax}Q(a)} & _{P=\varepsilon}^{P=1-\varepsilon}\end{cases}
+a_{t}\leftarrow\begin{cases}
+_{a\sim A}^{\underset{a}{argmax}Q_t(a)} & _{P=\varepsilon}^{P=1-\varepsilon}\end{cases}
 \]
+Ahol $A$ az összes cselekvés halmaza.
 \end{block}
 \end{center}
 \end{column}
@@ -177,7 +178,7 @@ Minden karhúzás után egy állandó eloszlásból választott jutalmat kap az 
 \only<2>{Az ügynöknek számon kell tartania, mennyi a jutalom várható értéke, ha adott egy $a$ cselekvés. Ez a $Q(s,a)$ állapot-cselekvés minőség függvény. A rabló problémában csak egy állapot van, ezért elég csak a cselekvésekhez tartozóan számon tartani:
 \begin{block}{}
 \[
-q_{*}(a)=E\left[r_{t}|A_{t}=a\right]
+Q_{*}(a)=E\left[r_{t}|a_{t}=a\right]
 \]
 \end{block}
 A jutalom várható értéke: 
@@ -200,7 +201,7 @@ Q_{n}=\frac{r_{1}+r_{2}+...+r_{n-1}}{n-1}
 \begin{columns}
 \begin{column}{.5\textwidth}
 A példában egy kétkarú rabló folyamat modellje látható. A modell egyetlen állapotot tartalmaz. az ügynök minden lépésben innen választhat, hogy melyik kart húzza meg. Ez a két cselekvéssel egyezik meg: $a_{1}, a_{2}$.\par\smallskip
-A jutalmak minden cselekvés után egy normál eloszlásból származnak, valamilyen $\mu_{1}$ és $\mu_{2}$ várható értékkel és $1$ szórással: $r\sim N(\mu_{1},1)$.
+A jutalmak minden cselekvés után egy normál eloszlásból származnak, valamilyen $\mu_{1}$ és $\mu_{2}$ várható értékkel és $1$ szórással: $r\sim N(\mu,1)$.
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
@@ -297,7 +298,7 @@ Időlépés
 \begin{columns}
 \begin{column}{.5\textwidth}
 \only<1>{A dinamikus programozás egy gyűjtőfogalom olyan algoritmusokra amelyekkel kiszámolható az optimális politika \emph{ha adott egy tökéletes környezeti modell egy Markov döntési folyamatként}.\par\smallskip
-A klasszikus dinamikus programozási algoritmusok ritkák a megerősítéses tanulásban mert egy tökéletes környezeti modellt feltételeznek és mert rendkívül erőforrás igényesek.}
+A klasszikus dinamikus programozási algoritmusok ritkák a megerősítéses tanulásban \textbf{mert egy tökéletes környezeti modellt feltételeznek} és mert rendkívül erőforrás igényesek.}
 \only<2>{\begin{center}
 \begin{block}{Dinamikus programozás}
 A DP algoritmusok a komplex problémákat alproblémákra bontják, majd a végső megoldást az alproblémák megoldásaiból állítják elő. Ehhez két feltételnek kell érvényesnek lennie:
@@ -347,14 +348,14 @@ Tehát a sorozat első pár tagja:
 \begin{column}{.5\textwidth}
 \begin{block}{DP állapot-érték frissítési szabálya}
 \[
-V(s_{t})\leftarrow E_{\pi}\left[r_{t+1} + \gamma V(s_{t+1})\right]
+V(s)\leftarrow E_{\pi}\left[r + \gamma V(s')\right]
 \]
 \begin{itemize}
-	\item $E_{\pi}$: várható érték $\pi$ politika alatt
-	\item $V(s_{t})$: cselekvés-érték függvény az aktuális $s$ állapotban
-	\item $r_{t+1}$: a jutalom a következő cselekvésért
-	\item $\gamma$: diszkont faktor
-	\item $V(s_{t+1})$ vagy $s'$: cselekvés-érték függvény a következő állapotban.
+	\item $E_{\pi}$: Várható érték $\pi$ politika alatt
+	\item $V(s)$: Cselekvés-érték függvény az aktuális $s$ állapotban
+	\item $r$: Jutalom a cselekvésért
+	\item $\gamma$: Diszkont faktor
+	\item $V(s')$: állapot-érték függvény $s_{t+1}$ következő állapotban.
 \end{itemize}
 \end{block}
 \end{column}
@@ -372,13 +373,13 @@ A Markov döntési folyamatok kielégítik a dinamikus programozás feltételeit
 Az értékfüggvény eltárolja és újra felhasználja a kiszámított megoldásokat: ez egy gyorsítótárként szolgál azoknak az információknak az MDP-ről, ami megadja, hogy mennyi a jutalom várható értéke egy $s$ állapotból indulva:
 \begin{block}{}
 \[
-v_{\pi}(s)=E_{\pi}\left[G_{t}|S_{t}=s\right]=E_{\pi}\left[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k+1}\mid S_{t}=s\right]
+V_{\pi}(s)=E_{\pi}\left[G_{t}|S_{t}=s\right]=E_{\pi}\left[\sum_{k=0}^{\infty}\gamma^{k}r_{t+k+1}\mid S_{t}=s\right]
 \]
 \end{block}
 A Bellman egyenlet megadja, hogyan kell lebontani az optimális állapot-érték függvényt két részre: a következő időlépés optimális cselekvése és az összes többi lépés optimális cselekvése:\\
 \begin{block}{}
 \[
-v_{\pi}(s)=\sum_{a}\pi(a|s)\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]\;minden\;s\in S-re
+V_{\pi}(s) = \sum_{a}\pi(a|s) \sum_{s',r}p\left(s',r|s,a\right) \left[ r + \gamma V_{\pi}\left(s'\right) \right] \; minden \; s \in S-re
 \]
 \end{block}
 \end{frame}
@@ -414,12 +415,12 @@ Ha adott egy $MDP(S,A,P,R,\gamma,s_{0})$, a feladat megtalálni az optimális á
 Miután egy $\pi$ politika javult $v_\pi$ segítségével annak érdekében, hogy egy $\pi'$ jobb politikát eredményezzen ki lehet számítani $v_{\pi'}$ javított állapot-érték függvényt és felhasználni egy újabb javított politika, $\pi''$ kiszámítására. Ezáltal egy monoton javuló politika - értékfüggvény sorozatot eredményezve:
 \begin{small}
 \[
-\pi_{0}\stackrel{E}{\longrightarrow}v_{\pi_{0}}\stackrel{I}{\longrightarrow}\pi_{1}\stackrel{E}{\longrightarrow}v_{\pi_{1}}\stackrel{I}{\longrightarrow}\pi_{2}\stackrel{E}{\longrightarrow}\hdots\stackrel{I}{\longrightarrow}\pi_{*}\stackrel{E}{\longrightarrow}v_{*}
+\pi_{0}\stackrel{E}{\longrightarrow}V_{\pi_{0}}\stackrel{I}{\longrightarrow}\pi_{1}\stackrel{E}{\longrightarrow}V_{\pi_{1}}\stackrel{I}{\longrightarrow}\pi_{2}\stackrel{E}{\longrightarrow}\hdots\stackrel{I}{\longrightarrow}\pi_{*}\stackrel{E}{\longrightarrow}V_{*}
 \]
 \begin{itemize}
 	\item $E$: Kiértékelés (evaluation)\\
 	\item $I$: Javítás (improvement)
-	\item $v_{*}$: Optimális állapot-érték függvény
+	\item $V_{*}$: Optimális állapot-érték függvény
 	\item $\pi_{*}$: Optimális politika
 \end{itemize}
 \end{small}
@@ -446,7 +447,7 @@ Miután egy $\pi$ politika javult $v_\pi$ segítségével annak érdekében, hog
 	}
 \end{algorithm}
 \begin{itemize}
-	\item $\Delta$: $V(s)$ jelen állapot-érték és $V(s_{t+1})$ következő állapot-érték különbsége.
+	\item $\Delta$: $V(s)$ jelen állapot-érték és $V(s')$ következő állapot-érték különbsége.
 	\item $\theta$: hibahatár: egy alacsony szám ami a becslés pontosságát adja.
 	\item $p\left(s',r,|s,\pi(s)\right)$: $s'$ következő állapot és $r$ jutalom valószínűsége ha adott $s$ állapot és $\pi(s)$ cselekvés $\pi$ politika szerint (a környezet dinamikája).
 \end{itemize}
@@ -466,7 +467,7 @@ Miután egy $\pi$ politika javult $v_\pi$ segítségével annak érdekében, hog
 			}		
 		}
 	}
-	return $v \thickapprox v_{*}$, $\pi \thickapprox \pi_{*}$
+	return $V \thickapprox V_{*}$, $\pi \thickapprox \pi_{*}$
 \end{algorithm}
 A politika ebben az esetben mohó, tehát úgy választja ki a cselekvést, hogy melyik következő állapothoz tartozik a lehető legnagyobb várható jutalom. Egy politika akkor számít stabilnak, amikor egyik lépésben sem változik a cselekvés. 
 \end{frame}

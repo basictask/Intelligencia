@@ -56,9 +56,9 @@
 \begin{column}{.75\textwidth}
 A megerősítéses tanulásban az egyik nagy áttörést egy politikafüggetlen TD algoritmus kifejlesztése hozta el.\par\smallskip
 Ebben az esetben a becsült \textbf{állapot-cselekvés minőség függvény}, $Q$, ami megadja, hogy mennyire jövedelmező az ügynöknek $s$ állapotban $a$ cselekvést végrehajtani.
-\begin{block}{$Q$-tanulás}
+\begin{block}{$Q$-érték frissítése}
 \[
-Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \left[ r_{t+1} + \gamma \underset{a}{max}Q(s_{t+1},a) - Q(s_t,a_t) \right]
+Q(s,a) \leftarrow Q(s,a) + \alpha \left[ r + \gamma \underset{a'}{max}Q(s',a') - Q(s,a) \right]
 \]
 \end{block}
 A $Q$-tanulás ezáltal egy teljesen online tanulási algoritmus, ami a követett \textbf{politikától függetlenül} garantáltan konvergálni fog a valós $Q$ értékekhez.
@@ -72,15 +72,14 @@ A $Q$-tanulás ezáltal egy teljesen online tanulási algoritmus, ami a követet
 \end{frame}
 
 \begin{frame}{Dupla $Q$-tanulás}
-A kettős tanulás ötlete természetesen kiterjed a teljes MDP algoritmusaira. A $Q$-tanulásban a becsült $Q$-értékek torzítottak lehetnek, ha alacsony a minta számossága, vagy zaj van a rendszerben. Egy módja a $Q$-tanulás regularizálásának, ha egy helyet\textbf{ két $Q$-táblát tart nyilván az algoritmus}, $Q_1$-et és $Q_2$-t.\par\smallskip
-A $Q$-tanulással analóg dupla $Q$-tanulás nevű kettős tanulási algoritmus két részre osztja az időlépéseket, \textbf{minden lépésnél egy érmét feldobva}. Ha az érme fejre esik, a frissítés a következő:
+A kettős tanulás ötlete kiterjed a teljes MDP algoritmusaira. A $Q$-tanulásban a becsült $Q$-értékek torzítottak lehetnek, ha alacsony a minta számossága, vagy zaj van a rendszerben. Egy módja a $Q$-tanulás regularizálásának, ha egy helyet\textbf{ két $Q$-táblát tart nyilván az algoritmus}, $Q_1$-et és $Q_2$-t.\par\smallskip
+A $Q$-tanulással analóg dupla $Q$-tanulás nevű kettős tanulási algoritmus két részre osztja az időlépéseket, minden lépésben $50\%$ valószínűséggel a frissítés a következő:
 \begin{block}{}
-\vspace{-0.5cm}
 \[
-Q_1(s_t,a_t) \leftarrow Q_1(s_t,a_t) + \alpha \left[ r_{t+1} + \gamma Q_2(s_t+1, \underset{a}{argmax} Q_1(s_{t+1},a)) - Q_1(s_t, a_t) \right]
+Q_1(s,a) \leftarrow Q_1(s,a) + \alpha \left[ r + \gamma Q_2\left(s', \underset{a'}{argmax} Q_1(s',a')\right) - Q_1(s, a) \right]
 \]
 \end{block}
-Ha az érme pedig írásra esik, akkor ugyanez a frissítés $Q_1$ és $Q_2$ felcserélésével történik, így $Q_2$ frissül. A két közelítő értékfüggvényt teljesen szimmetrikusan kezeli az algoritmus. Például egy $\varepsilon$-mohó politika a dupla tanulás esetében az egyes cselekvési értékbecslések \textbf{átlagára vagy összegére épülhet}.
+A többi esetben $Q_1$ és $Q_2$ felcserélésével történik, így $Q_2$ frissül. A két táblát teljesen szimmetrikusan kezeli az algoritmus. Például egy $\varepsilon$-mohó politika a dupla tanulás esetében az egyes cselekvési értékbecslések \textbf{átlagára vagy összegére épülhet}.
 \end{frame}
 
 \begin{frame}{Alapvető $Q$-tanulási eljárások}
@@ -127,7 +126,7 @@ A $Q$-hálózat költségfüggvénye az \textbf{átlagos négyzetes Bellman hiba
 A mély $Q$-tanulás során a költségfüggvény a négyzetes Bellman hiba várható értéke:
 \begin{block}{}
 \[
-J(\theta) = E_{s,a,s' \sim D} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
+J(\theta) = E_{s,a,r,s' \sim D} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
 \]
 \end{block}	
 Ahol $s,a,s'$ a $D$ tapasztalat visszajátszási memóriából vett minta. A $Q$-hálózat megkeresi az $s'$ következő állapothoz tartozó legnagyobb értékű cselekvést, $a'$-t, és lekérdezi a memóriából vett $s$ aktuális állapothoz és $a$ aktuális cselekvéshez tartozó $Q$-értéket. Ez a TD hibának egy változata.  
@@ -144,7 +143,7 @@ Ahol $s,a,s'$ a $D$ tapasztalat visszajátszási memóriából vett minta. A $Q$
 \begin{columns}
 \begin{column}{.65\textwidth}
 A tapasztalat visszajátszás az egyik változtatás, ami a $Q$-hálózat problémáján hivatott segíteni.\par\smallskip
-A tapasztalat memória ($D_{replay}$) \textbf{$[s,a,r,s']$ négyeseket tartalmaz}. Minden alkalommal amikor az ügynök cselekszik, az általa tapasztalt $s_t, a_t, r_t, s_{t+1}$ elmentődik a tapasztalat memóriába.\par\smallskip
+A tapasztalat memória ($D_{replay}$) \textbf{$[s,a,r,s']$ négyeseket tartalmaz}. Minden alkalommal amikor az ügynök cselekszik, az általa tapasztalt $s, a, r, s'$ elmentődik a tapasztalat memóriába.\par\smallskip
 Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mintát} (miniköteget) kap a tapasztalat memóriából, melynek számossága megegyezik a kötegmérettel. Eszerint számolódik ki a költségfüggvény majd frissülnek a $Q$-hálózat paraméterei.
 \end{column}
 \begin{column}{.35\textwidth}
@@ -163,13 +162,13 @@ Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mi
 Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inícializálása\;
 \For{$i = 0 \rightarrow max_i$}{
 	\For{$t = 0 \rightarrow max_t$}{
-		$s_t$ megfigyelése és $a_t \sim \pi(s_t,a_t)$ cselekvés választása\;
-		$a_t$ végrehajtása és $s_{t+1}$, $r_t$ megfigyelése\;
-		$s_t, a_t, r_t, s_{t+1}$ eltárolása a tapasztalat memóriában\;
+		$s$ megfigyelése és $a \sim \pi(s,a)$ cselekvés választása\;
+		$a$ végrehajtása és $s'$, $r$ megfigyelése\;
+		$s, a, r, s'$ eltárolása a tapasztalat memóriában\;
 	}
 	\For{$c = 0 \rightarrow max_c$}{
-		$e_t = s_t, a_t, r_t, s_{t+1} \sim D$\tcc*[t]{Mintavétel a tapasztalat memóriából}
-		Gradiens ereszkedés végrehajtása $\left( r + \gamma \underset{a'}{max}Q_\theta(s',a') - Q_\theta(sa) \right)^2$ hibán
+		$e = s, a, r, s' \sim D$\tcc*[t]{Mintavétel a tapasztalat memóriából}
+		Gradiens ereszkedés végrehajtása $\left( r + \gamma \underset{a'}{max}Q_\theta(s',a') - Q_\theta(s,a) \right)^2$ hibán\;
 	}		
 }
 \end{algorithm}
@@ -258,14 +257,14 @@ Ebben az esetben a $\tau$ hiperparaméter szabályozza az \textbf{átlagolási r
 Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inícializálása\;
 \For{$i = 0 \rightarrow max_i$}{
 	\For{$t = 0 \rightarrow max_t$}{
-		$s_t$ megfigyelése és $a_t \sim \pi(s_t,a_t)$ cselekvés választása\;
-		$a_t$ végrehajtása és $s_{t+1}$, $r_t$ megfigyelése\;
-		$s_t, a_t, r_t, s_{t+1}$ eltárolása a tapasztalat memóriában\;
+		$s$ megfigyelése és $a \sim \pi(s,a)$ cselekvés választása\;
+		$a$ végrehajtása és $s'$, $r$ megfigyelése\;
+		$s, a, r, s'$ eltárolása a tapasztalat memóriában\;
 	}
 	\For{$c = 0 \rightarrow max_c$}{
-		$e_t = s_t, a_t, r_t, s_{t+1} \sim D$\tcc*[t]{Mintavétel a tapasztalat memóriából}
-		$Q^*(s_t,a_t) \leftarrow r_t + \gamma Q_\theta(s_{t+1}, argmax_{a'}Q_{\bar{\theta}}(s_{t+1},a'))$\;
-		Gradiens ereszkedés végrehajtása a $(Q^*(s_t,a_t) - Q_\theta(s_t,a_t))^2$ hibán\;
+		$e = s, a, r, s' \sim D$\tcc*[t]{Mintavétel a tapasztalat memóriából}
+		$Q^*(s,a) \leftarrow r + \gamma Q_\theta(s', argmax_{a'}Q_{\bar{\theta}}(s',a'))$\;
+		Gradiens ereszkedés végrehajtása a $(Q^*(s,a) - Q_\theta(s,a))^2$ hibán\;
 		$\bar{\theta} \leftarrow \tau \theta + (1 - \tau) \bar{\theta}$\tcc*[t]{Paraméterek frissítése}
 	}		
 }
@@ -332,7 +331,7 @@ A hálózatok között a paraméterek másolását explicit másolással, vagy P
 \end{columns}
 \end{frame}
 
-\section{Aktor-kritikus architektúrák}
+\section{Aktor-kritikus}
 
 \begin{frame}
 \tableofcontents[currentsection]
@@ -344,7 +343,7 @@ A hálózatok között a paraméterek másolását explicit másolással, vagy P
 Az aktor-kritikus architektúra egy kettős tanulási eljárás, amely kombinálja a politikaalapú (\textbf{aktor}) és az értékalapú (\textbf{kritikus}) eljárásokat a tanítási folyamat javítása és a gyorsabb konvergencia érdekében.\par\smallskip
 \begin{itemize}
 	\item \textbf{Aktor}: Az állapothoz tartozó cselekvés kiválasztásáért felel. Egy politikát tanul meg, ami az állapotokhoz cselekvéseket rendel. Célja, hogy maximalizálja a várható kumulált hozamot. 
-	\item \textbf{Kritikus}: Az állapotból elérhető várható hozamot becsüli meg, tehát az állapot-érték függvényt. A kritikus segíti az aktort azzal, hogy visszajelzést ad neki az általa megtett cselekvések minőségéről. 
+	\item \textbf{Kritikus}: Feladata megbecsülni a $V(s)$ állapot-érték függvényt. A kritikus segíti az aktort azzal, hogy visszajelzést ad neki az általa megtett cselekvések minőségéről. 
 \end{itemize}
 \end{column}
 \begin{column}{.4\textwidth}
@@ -355,15 +354,15 @@ Az aktor-kritikus architektúra egy kettős tanulási eljárás, amely kombinál
 \end{columns}
 \end{frame}
 
-\begin{frame}{Az aktor-kritikus költségfüggvénye}
+\begin{frame}{Az aktor-kritikus költségfüggvény}
 \begin{columns}
 \begin{column}{.5\textwidth}
 Az előnyalapú aktor-kritikus eljárásokban az aktor az $A(s,a)$ előnyfüggvényt becsüli meg a saját neurális fejében. A kritikus pedig egy logaritmikus valószínűségi eloszlást.
 \begin{block}{Az AAC költségfüggvénye}
 \[
-J(\theta) = \sum_{t=0}^{T-1} log \pi_\theta (a_t \vert s_t) A(s_t,a_t)
+J(\theta) = \sum_{t=0}^{T-1} log \pi_\theta (a \vert s) A(s,a)
 \]
-Ahol $\pi_\theta (a_t \vert s_t)$ az a valószínűség, hogy a $\pi_\theta$ szerint mekkora valószínűséggel hajtja végre az ügynök $a_t$ cselekvést $s_t$ állapotból, és $A(s,a)$ az előnyfüggvény.
+Ahol $\pi_\theta (a \vert s)$ az a valószínűség, hogy a $\pi_\theta$ szerint mekkora valószínűséggel hajtja végre az ügynök $a$ cselekvést $s$ állapotból, és $A(s,a)$ az előnyfüggvény.
 \end{block}
 \end{column}
 \begin{column}{.5\textwidth}
@@ -372,6 +371,36 @@ Ahol $\pi_\theta (a_t \vert s_t)$ az a valószínűség, hogy a $\pi_\theta$ sze
 \end{center}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{A modellezés folyamata}
+\begin{enumerate}
+	\item \textbf{Inícializáció}: Az aktor és kritikus hálózatok kezdősúlyainak megadása: $\theta$, $\phi$, tanulási sebesség beállítása: $\alpha$
+	\item \textbf{Tapasztalat gyűjtése}: az aktor interakcióba lép a környezettel
+	\item \textbf{Előny kiszámítása}: $A(s,a) = (V(s) - (r + V(s')))^2$ megadja, hogy egy adott $a$ cselekvés mennyire jövedelmező a többihez képest
+	\item \textbf{Aktor frissítése}: gradiens ereszkedés a $log \pi_\theta (a \vert s) A(s,a)$ előny értéken
+	\item \textbf{Kritikus frissítése}: gradiens ereszkedés a $(V(s) - (r + V(s')))^2$ hibán
+	\item \textbf{Iteráció} folytatása a kilépésig
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{algorithm}[H]
+\caption{Előnyalapú aktor-kritikus tanítás}
+\SetAlgoLined
+Aktor $\pi_\theta(s)$ és kritikus $V_\phi(s)$ inícializálása\;
+\For{$i = 0 \rightarrow max_i$}{
+	$s$ inícializálása a kezdőállapottal\;
+	\While{$s \neq s_T$}{
+		$a \leftarrow \pi_\theta(s)$\tcc*[t]{Az aktor cselekvést választ}
+		$a$ végrehajtása a környezetben, $r$ és $s'$ megfigyelése\;		
+		$A(s,a) \leftarrow r + \gamma V_\phi(s') - V_\phi(s)$\tcc*[t]{Előny kiszámítása}
+		$\theta \leftarrow \theta + \alpha \nabla log \pi_\theta (a \vert s) A(s, a)$\tcc*[t]{Aktor frissítése}
+		$\phi \leftarrow \phi + \alpha \nabla A(s,a)^2$\tcc*[t]{Kritikus frissítése}
+	}
+}
+\end{algorithm}
+Ahol $\theta$ az aktor, és $\phi$ a kritikus paraméterlistája.
 \end{frame}
 
 \end{document}

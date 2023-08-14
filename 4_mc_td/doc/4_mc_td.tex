@@ -71,8 +71,8 @@ MDP\left(S,A,P,R,s_{0},\gamma\right)
 \only<2>{Az MDP folyamata:\\
 \begin{enumerate}
 	\item Az ügynök $s_{0}$ állapotból indul
-	\item Az ügynök $\pi$ politika szerint cselekszik: $a_{t}\sim\pi(s_{t})$
-	\item A környezet reagál a cselekvésre, és visszaadja az ügynöknek $r_{t+1}$ jutalmat és $s_{t+1}$ következő állapotot
+	\item Az ügynök $\pi$ politika szerint cselekszik $s$ függvényében: $a \sim \pi(s)$
+	\item A környezet reagál a cselekvésre, és visszaadja az ügynöknek $r$ jutalmat és $s'$ következő állapotot ($s_{t+1}$)
 	\item Ez ismétlődik amíg a kilépési kritérium be nem teljesül
 \end{enumerate}
 Cél: Az optimális politika megtalálása. A politika optimális, ha a hozamának várható értéke maximális:
@@ -329,17 +329,17 @@ A DP algoritmusok esetén nem mintavétel történik, hanem egy teljes sokaság 
 \begin{column}{.55\textwidth}
 \begin{block}{TD állapot-érték frissítési szabály}
 \[
-V(s_t) \leftarrow V(s_t) + \alpha \left[ r_{t+1} + \gamma V(s_{t+1}) - V(s_t) \right]
+V(s) \leftarrow V(s) + \alpha \left[ r + \gamma V(s') - V(s) \right]
 \]
 \vspace{-0.5cm}
 \begin{itemize}
 	\item $\alpha$: Tanulási sebesség
-	\item $r_{t+1}$: Következő jutalom 
+	\item $r$: Jutalom
 \end{itemize}
 \end{block}
-A zárójelben lévő kifejezés a \textbf{TD hiba}, ami a $s_t$ jelen állapot értéke és a jobb becslés, $r_{t+1} + \gamma V(s_{t+1})$ közötti távolságot adja meg. A megerősítéses tanulásban számos helyen jelen van: 
+A zárójelben lévő kifejezés a \textbf{TD hiba}, ami a $s_t$ jelen állapot értéke és a jobb becslés, $r + \gamma V(s')$ közötti távolságot adja meg. A megerősítéses tanulásban számos helyen jelen van: 
 \[
-\delta_t=r_{t+1} + \gamma V(s_{t}) - V(s_t)
+\delta_t=r + \gamma V(s') - V(s)
 \]
 \end{column}
 \begin{column}{.5\textwidth}
@@ -361,7 +361,7 @@ $V(s_T) \leftarrow 0$\tcc*[t]{Terminális állapot értékének 0-ra állítása
 	$s \leftarrow s_0$\tcc*[t]{Kezdőállapot felvétele}
 	\While{$s \neq s_T$}{
 		$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választás $s$ állapotból $\pi$ szerint}
-		$a$ végrehajtása, $r, s$ megfigyelése\;
+		$a$ végrehajtása, $r, s'$ megfigyelése\;
 		$V(s) \leftarrow V(s) + \alpha \left[ r + \gamma V(s') - V(s) \right]$\;
 		$s \leftarrow s'$\tcc*[t]{Aktuális állapot frissítése}
 	}
@@ -398,12 +398,12 @@ TD becsléssel lehetséges a $v_\pi$ mellett a $q_\pi$ értékfüggvény is. Ebb
 \begin{center}
 \begin{block}{SARSA frissítési szabálya}
 \[
-Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \left[ r_{t+1} + \gamma Q(s_{t+1},a_{t+1}) - Q(s_t,a_t) \right]
+Q(s,a) \leftarrow Q(s,a) + \alpha \left[ r + \gamma Q(s',a') - Q(s,a) \right]
 \]
 \vspace{-0.5cm}
 \begin{itemize}
-	\item $Q(s_t,a_t)$: $s$ állapot és $a$ cselekvés minőség függvénye $t$ időlépésben
-	\item $Q(s_{t+1},a_{t+1})$: a következő állapot és cselekvés minőség függvénye $t+1$ időlépésben
+	\item $Q(s,a)$: $s$ állapot és $a$ cselekvés minőség függvénye $t$ időlépésben
+	\item $Q(s',a')$: a következő állapot és cselekvés minőség függvénye $t+1$ időlépésben
 \end{itemize}
 \end{block}
 \end{center}
@@ -419,7 +419,7 @@ Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \left[ r_{t+1} + \gamma Q(s_{t+1},a_{t
 \begin{frame}{A SARSA folyamat modellje}
 \begin{columns}
 \begin{column}{.5\textwidth}
-A SARSA frissítési szabálya szerint a tanítási epizód minden lépése alkalmával \textbf{politika kiértékelés} fog végrehajtódni, amikor egy $(s_t,a_t,r_t,s_{t+1},a_{t+1})$ sorozattal találkozik a modell. Ha gyakoribb a mintavétel nagyobb a számításigény, viszont pontosabb is a becslés.\par\smallskip
+A SARSA frissítési szabálya szerint a tanítási epizód minden lépése alkalmával \textbf{politika kiértékelés} fog végrehajtódni, amikor egy $(s,a,r,s',a')$ sorozattal találkozik a modell. Ha gyakoribb a mintavétel nagyobb a számításigény, viszont pontosabb is a becslés.\par\smallskip
 A \textbf{politika javítás} lépésében amikor az ügynök cselekvést választ gyakori az $\varepsilon$-mohó stratégia alkalmazása, ezzel is ösztönözve a felfedezést és nem vélt magas jutalmak megszerzését.
 \end{column}
 \begin{column}{.5\textwidth}
@@ -441,7 +441,7 @@ $Q(s_t,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapot értéke $0$}
 	$s \leftarrow s_0$\tcc*[t]{Kezdőállapot felvétele}
 	$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választása $s$ állapotból $\pi$ szerint}
 	\While{$s \neq s_T$}{
-		$a$ végrehajtása, $s', r$ megfigyelése\;
+		$a$ végrehajtása, $r, s'$ megfigyelése\;
 		$a' \leftarrow \pi(s')$\tcc*[t]{Cselekvés választása $s'$ állapotból $\pi$ szerint}
 		$Q(s,a) \leftarrow Q(s,a) + \alpha \left[ r + \gamma Q(s',a') - Q(s,a) \right]$\;
 		$s \leftarrow s'$, $a \leftarrow a'$\tcc*[t]{Jelenlegi állapot és cselekvés frissítése}

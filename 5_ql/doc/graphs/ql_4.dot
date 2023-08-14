@@ -9,7 +9,7 @@ digraph qlearning {
     interact -> learn
     learn -> update
     update -> interact
-    interact -> replay [label=" [s,a,r,s']"]
-    replay -> learn [label=" minta [s,a,r,s']"]
+    interact -> replay [label=" s,a,r,s'"]
+    replay -> learn [label="mintavétel: s,a,r,s'"]
 
 }

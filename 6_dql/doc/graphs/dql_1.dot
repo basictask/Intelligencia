@@ -12,5 +12,5 @@ digraph dql {
     qsa -> cost [label="Q(s,a)"]
     qnet -> qsaprime [label="s'"]
     qnet -> qsa [label="s, a"]
-    replay -> qnet [label="[s, a, s']"]
+    replay -> qnet [label=" s, a, r, s'"]
 }
