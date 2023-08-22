@@ -129,7 +129,7 @@ A mély $Q$-tanulás során a költségfüggvény a négyzetes Bellman hiba vár
 J(\theta) = E_{s,a,r,s' \sim D} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
 \]
 \end{block}	
-Ahol $s,a,s'$ a $D$ tapasztalat visszajátszási memóriából vett minta. A $Q$-hálózat megkeresi az $s'$ következő állapothoz tartozó legnagyobb értékű cselekvést, $a'$-t, és lekérdezi a memóriából vett $s$ aktuális állapothoz és $a$ aktuális cselekvéshez tartozó $Q$-értéket. Ez a TD hibának egy változata.  
+Ahol $s,a,r,s'$ a $D$ tapasztalat visszajátszási memóriából vett minta. A $Q$-hálózat megkeresi az $s'$ következő állapothoz tartozó legnagyobb értékű cselekvést, $a'$-t, és lekérdezi a memóriából vett $s$ aktuális állapothoz és $a$ aktuális cselekvéshez tartozó $Q$-értéket. Ez a TD hibának egy változata.  
 \end{column}
 \begin{column}{.25\textwidth}
 \begin{center}
@@ -158,8 +158,8 @@ Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mi
 \begin{algorithm}[H]
 \caption{Mély $Q$-tanulás}
 \SetAlgoLined
-\textbf{Input}: $\tau \sim [0,1]$ átlagolási ráta,
-Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inícializálása\;
+\textbf{Input}: $\tau \in [0,1]$ átlagolási ráta\\
+Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inicializálása\;
 \For{$i = 0 \rightarrow max_i$}{
 	\For{$t = 0 \rightarrow max_t$}{
 		$s$ megfigyelése és $a \sim \pi(s,a)$ cselekvés választása\;
@@ -254,7 +254,7 @@ Ebben az esetben a $\tau$ hiperparaméter szabályozza az \textbf{átlagolási r
 \caption{Dupla mély $Q$-tanulás (DDQN)}
 \SetAlgoLined
 \textbf{Input}: $\tau \sim [0,1]$ átlagolási ráta,
-Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inícializálása\;
+Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inicializálása\;
 \For{$i = 0 \rightarrow max_i$}{
 	\For{$t = 0 \rightarrow max_t$}{
 		$s$ megfigyelése és $a \sim \pi(s,a)$ cselekvés választása\;
@@ -375,7 +375,7 @@ Ahol $\pi_\theta (a \vert s)$ az a valószínűség, hogy a $\pi_\theta$ szerint
 
 \begin{frame}{A modellezés folyamata}
 \begin{enumerate}
-	\item \textbf{Inícializáció}: Az aktor és kritikus hálózatok kezdősúlyainak megadása: $\theta$, $\phi$, tanulási sebesség beállítása: $\alpha$
+	\item \textbf{Inicializáció}: Az aktor és kritikus hálózatok kezdősúlyainak megadása: $\theta$, $\phi$, tanulási sebesség beállítása: $\alpha$
 	\item \textbf{Tapasztalat gyűjtése}: az aktor interakcióba lép a környezettel
 	\item \textbf{Előny kiszámítása}: $A(s,a) = (V(s) - (r + V(s')))^2$ megadja, hogy egy adott $a$ cselekvés mennyire jövedelmező a többihez képest
 	\item \textbf{Aktor frissítése}: gradiens ereszkedés a $log \pi_\theta (a \vert s) A(s,a)$ előny értéken
@@ -388,9 +388,9 @@ Ahol $\pi_\theta (a \vert s)$ az a valószínűség, hogy a $\pi_\theta$ szerint
 \begin{algorithm}[H]
 \caption{Előnyalapú aktor-kritikus tanítás}
 \SetAlgoLined
-Aktor $\pi_\theta(s)$ és kritikus $V_\phi(s)$ inícializálása\;
+Aktor $\pi_\theta(s)$ és kritikus $V_\phi(s)$ inicializálása\;
 \For{$i = 0 \rightarrow max_i$}{
-	$s$ inícializálása a kezdőállapottal\;
+	$s$ inicializálása a kezdőállapottal\;
 	\While{$s \neq s_T$}{
 		$a \leftarrow \pi_\theta(s)$\tcc*[t]{Az aktor cselekvést választ}
 		$a$ végrehajtása a környezetben, $r$ és $s'$ megfigyelése\;		

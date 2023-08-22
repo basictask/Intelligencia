@@ -9,11 +9,11 @@ digraph dql {
 
     {rank="same"; actor critic}
 
-    cost -> actor [label="   "]
-    cost -> critic [label="   "]
+    cost -> actor [label="∇    "]
+    cost -> critic [label="∇"]
     critic -> cost [label="V(s)"]
-    actor -> env [label="Cselekvés"]
-    env -> actor [label="Állapot"]
-    env -> critic [label="Állapot"]
-    env -> critic [label=" Jutalom"]
+    actor -> env [label="a"]
+    env -> actor [label="s"]
+    env -> critic [label="s  "]
+    env -> critic [label="r"]
 }

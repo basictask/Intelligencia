@@ -205,7 +205,7 @@ $V(s) \leftarrow random()$, minden $s \in S$-re\;
 $Hozam(s) \leftarrow $ \textbf{üres lista}, minden $s \in S$-re\; 
 \For{$i=0 \rightarrow max_i$}{
 	Epizód lejátszása $\pi$ politikával: $s_0, a_0, r_1, s_1, a_1, r_2, ..., s_{T-1}, a_{T-1}, r_T$\;
-	$G \leftarrow 0$\tcc*[t]{Hozam inícializálása $0$ értékkel}
+	$G \leftarrow 0$\tcc*[t]{Hozam inicializálása $0$ értékkel}
 	\For{$t=T-1 \rightarrow 0$}{
 		$G \leftarrow \gamma G+R_{t+1}$\tcc*[t]{Hozam diszkontálása és kumulálása}
 		\If{$s_t$ \textbf{not in} $s_0, s_1, ..., s_{t-1}$}{
@@ -228,7 +228,7 @@ $Hozam(s,a) \leftarrow$ üres lista minden $s \in S$-re és $a \in A$-ra\;
 \For{$i=0 \rightarrow max_i$}{
 	$s_0 \in S$ és $a_0 \in A$ véletlenszerű kiválasztása\;
 	Epizód lejátszása $s_0, a_0$-ból $\pi$ politikával: $s_0, a_0, r_1, s_1, a_1, r_2, ..., s_{T-1}, a_{T-1}, r_T$\;
-	$G \leftarrow 0$\tcc*[t]{Hozam inícializálása $0$ értékkel}
+	$G \leftarrow 0$\tcc*[t]{Hozam inicializálása $0$ értékkel}
 	\For{$t=T-1 \rightarrow 0$}{
 		$G \leftarrow \gamma G+R_{t+1}$\tcc*[t]{Hozam diszkontálása és kumulálása}
 		\If{$\left(s_t, a_t \right)$ \textbf{not in} $s_0, s_1, ...s_{t-1}$}{
@@ -355,7 +355,7 @@ A zárójelben lévő kifejezés a \textbf{TD hiba}, ami a $s_t$ jelen állapot 
 \caption{TD algoritmus $v_\pi$ megbecslésére}
 \SetAlgoLined
 \textbf{Input}: $\pi$ politika ami kiértékelésre kerül; $\alpha \in [0,1]$ tanulási sebesség\par\smallskip
-$V(s) \leftarrow random()$, minden $s \in S$-re\tcc*[t]{Állapot-értékek inícializálása}
+$V(s) \leftarrow random()$, minden $s \in S$-re\tcc*[t]{Állapot-értékek inicializálása}
 $V(s_T) \leftarrow 0$\tcc*[t]{Terminális állapot értékének 0-ra állítása}
 \For{$i=0 \rightarrow max_i$}{
 	$s \leftarrow s_0$\tcc*[t]{Kezdőállapot felvétele}
