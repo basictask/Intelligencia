@@ -36,7 +36,6 @@ digraph neural_network {
     input1 -> hidden4
     input2 -> hidden4
     input3 -> hidden4
-
     hidden1 -> output1
     hidden2 -> output1
     hidden3 -> output1

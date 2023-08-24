@@ -389,7 +389,7 @@ Vannak esetek, amikor a gradiens nem meghatározható (szaturál), például ami
 \begin{columns}
 \begin{column}{.4\textwidth}
 A neurális hálózatot \textbf{neuronok összessége} alkotja. Az egyes neuronok egyszerű elemi műveleteket végeznek. A neuronnak több inputja (kapcsolata) van, és mindegyikhez egy súly tartozik.\par\smallskip
-A neuron kiszámítja az inputjainak a súlyozott összegét ($z=x_1w_1 + x_2w_2 + ... + x_nw_n$), majd ezt az értéket behelyettesíti egy aktivációs függvénybe ($o=\varphi(z)$). 
+A neuron kiszámítja az inputjainak a súlyozott összegét ($z=x_1w_1 + x_2w_2 + ... + x_nw_n$), majd ezt az értéket behelyettesíti egy aktivációs függvénybe ($h=\varphi(z)$). 
 \end{column}
 \begin{column}{.6\textwidth}
 \begin{center}
@@ -405,7 +405,7 @@ A neuron kiszámítja az inputjainak a súlyozott összegét ($z=x_1w_1 + x_2w_2
 Ebben az esetben a neuronok rétegekben foglalnak helyet. A kapcsolataik az előző réteg kimeneteivel állnak összeköttetésben. A legelső réteg neuronjai a bemeneti adattal állnak összeköttetésben. Minden bemeneti jellemzőhöz egy neuron tartozik.\par\smallskip
 \begin{block}{Teljesen becsatolt neuronréteg kimenete}
 \[
-h_{w,b}(X)=\varphi(XW+b)
+h_{W,b}(X)=\varphi(XW+b)
 \]
 \vspace{-0.5cm}
 \begin{itemize}
@@ -418,7 +418,7 @@ h_{w,b}(X)=\varphi(XW+b)
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
-\includegraphics[width=7cm, keepaspectratio]{images/ql_22.png}
+\includegraphics[width=7cm, keepaspectratio]{../../7_dl/doc/graphs/dl_0.png}
 \end{center}
 \end{column}
 \end{columns}
