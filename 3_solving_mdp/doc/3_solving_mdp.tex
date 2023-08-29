@@ -415,11 +415,11 @@ Ha adott egy $MDP(S,A,P,R,\gamma,s_{0})$, a feladat megtalálni az optimális á
 Miután egy $\pi$ politika javult $v_\pi$ segítségével annak érdekében, hogy egy $\pi'$ jobb politikát eredményezzen ki lehet számítani $v_{\pi'}$ javított állapot-érték függvényt és felhasználni egy újabb javított politika, $\pi''$ kiszámítására. Ezáltal egy monoton javuló politika - értékfüggvény sorozatot eredményezve:
 \begin{small}
 \[
-\pi_{0}\stackrel{E}{\longrightarrow}V_{\pi_{0}}\stackrel{I}{\longrightarrow}\pi_{1}\stackrel{E}{\longrightarrow}V_{\pi_{1}}\stackrel{I}{\longrightarrow}\pi_{2}\stackrel{E}{\longrightarrow}\hdots\stackrel{I}{\longrightarrow}\pi_{*}\stackrel{E}{\longrightarrow}V_{*}
+\pi_{0}\stackrel{K}{\longrightarrow}V_{\pi_{0}}\stackrel{J}{\longrightarrow}\pi_{1}\stackrel{K}{\longrightarrow}V_{\pi_{1}}\stackrel{J}{\longrightarrow}\pi_{2}\stackrel{K}{\longrightarrow}\hdots\stackrel{J}{\longrightarrow}\pi_{*}\stackrel{K}{\longrightarrow}V_{*}
 \]
 \begin{itemize}
-	\item $E$: Kiértékelés (evaluation)\\
-	\item $I$: Javítás (improvement)
+	\item $K$: Kiértékelés
+	\item $J$: Javítás
 	\item $V_{*}$: Optimális állapot-érték függvény
 	\item $\pi_{*}$: Optimális politika
 \end{itemize}

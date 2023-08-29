@@ -69,7 +69,7 @@ Az első perceptron modellt Warren McCulloh és Walter Pitts hozta létre, elős
 \begin{columns}
 \begin{column}{.4\textwidth}
 Az egyes neuronok egyszerű elemi műveleteket végeznek. A neuronnak több $x$ inputja (kapcsolata) van, és mindegyikhez egy $w$ \textbf{súly} tartozik.\par\smallskip
-A neuron kiszámítja az inputjainak a súlyozott összegét 
+A neuron kiszámítja az inputjainak a súlyozott szorzatösszegét:
 \begin{block}{}
 \vspace{-0.5cm}
 \[
@@ -161,32 +161,6 @@ Az osztályozó hálózatnak \textbf{annyi output neuronja van, ahány kategóri
 \tableofcontents[currentsection]
 \end{frame}
 
-\begin{frame}{Hiba-visszaáramoltató algoritmus neurális hálózat súlyok tanítására}
-\begin{enumerate}
-	\item \textbf{Inicializáció}: súlyok és torzítások kezdőértékeinek véletlenszerű megadása
-	\item \textbf{Előreáramoltatás}: rétegek output értékének kiszámítása: 
-	\begin{itemize}
-		\item Rejtett réteg: $h_h = \varphi(W_h \cdot x + b_h)$
-		\item Output réteg: $h_o = \varphi(W_o \cdot h_h + b_o)$
-	\end{itemize}
-	\item \textbf{Költség kiszámítása}: regresszió esetén pl.: $MSE = \sum \left( h_o - y \right)$
-	\item \textbf{Visszaáramoltatás}: 
-	\begin{itemize}
-		\item Rejtett réteg hibája: $\delta_h=(W_o \cdot \delta_o) \odot \varphi(z_h)$
-		\item Output réteg hibája: $\delta_o=(h_o - y) \odot \varphi(z_o)$
-	\end{itemize}
-	\item \textbf{Gradiens ereszkedés} a súlyokon és torzításokon:
-	\begin{itemize}
-		\item Rejtett réteg: $W_h \leftarrow W_h - \alpha \cdot \delta_h \cdot x^\top$
-		\item Rejtett réteg: $b_h \leftarrow b_h - \alpha \cdot \delta_h$	
-		\item Output réteg: $W_o \leftarrow W_o - \alpha \cdot \delta_o \cdot h_o^\top$
-		\item Output réteg: $b_o \leftarrow b_o - \alpha \cdot \delta_o$
-
-	\end{itemize}
-	\item \textbf{Ismétlés} a meghatározott lépésszámig
-\end{enumerate}
-\end{frame}
-
 \begin{frame}{Transzfertanulás}
 \begin{columns}
 \begin{column}{.5\textwidth}
@@ -204,8 +178,8 @@ Jellemzően az alsó rétegek lesznek rögzítettek, és a felső rétegek pedig
 \begin{frame}{Optimalizációs algoritmusok}
 \begin{columns}
 \begin{column}{.5\textwidth}
-A matematikában az optimalizációs algoritmusok melyeknek célja megtalálni a legjobb megoldást egy olyan problémára, ahol valamilyen korlátozásokkal kell \textbf{egy célfüggvényt minimalizálni}.\par\smallskip
-Mivel a neurális hálók által reprezentált nemlineáris függvények minimum helyei nem számíthatók ki zárt formájú függvénnyel, az optimalizáló algoritmusok iteratívak. 
+A matematikában az optimalizációs algoritmusok célja megtalálni a legjobb megoldást egy olyan problémára, ahol valamilyen korlátozásokkal kell \textbf{egy célfüggvényt minimalizálni}.\par\smallskip
+Mivel a neurális hálók által reprezentált nemlineáris függvények minimum helyei nem számíthatók ki zárt formájú függvénnyel mint pl. a másodfokú függvény esetén, iteratív optimalizációs algoritmusokra van szükség. 
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
@@ -215,15 +189,126 @@ Mivel a neurális hálók által reprezentált nemlineáris függvények minimum
 \end{columns}
 \end{frame}
 
-\begin{frame}{Gradiens ereszkedés}
+\begin{frame}{Kötegelt gradiens ereszkedés}
 \begin{columns}
-\begin{column}{.5\textwidth}
-% ITT TARTOK
+\begin{column}{.7\textwidth}
+\begin{algorithm}[H]
+\caption{Kötegelt gradiens ereszkedés}
+\SetAlgoLined
+\textbf{Input}: $\alpha$ tanulási sebesség, $f(\theta)$ célfüggvény\\
+$\theta_0 \leftarrow 0$\tcc*[t]{Paraméterek inicializálása} 
+\For{$t = 0 \rightarrow max_t$}{
+	$\nabla f(\theta_t)$ gradiens kiszámítása\;
+	$\theta_{t+1} = \theta_t - \alpha \cdot \nabla f(\theta_t)$\;
+}
+\end{algorithm}
+Ahol $\theta$ a célfüggvényt meghatározó paraméterek vektora, $\nabla f(\theta_t)$ a célfüggvény gradiense, $\alpha \in [0,1]$ a tanulási sebesség.
 \end{column}
-\begin{column}{.5\textwidth}
-
+\begin{column}{.3\textwidth}
+\begin{center}
+\includegraphics[height=5cm, width=5cm, keepaspectratio]{images/gd_batch.png}
+\end{center}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Mini-kötegelt gradiens ereszkedés}
+\begin{columns}
+\begin{column}{.7\textwidth}
+\begin{algorithm}[H]
+\caption{Mini-kötegelt gradiens ereszkedés}
+\SetAlgoLined
+\textbf{Input}: $\alpha$ tanulási sebesség, $f(\theta)$ célfüggvény\\
+$\theta_0 \leftarrow 0$\tcc*[t]{Paraméterek inicializálása} 
+\For{$t = 0 \rightarrow max_t$}{
+	$B$ miniköteg mintázása a tanító halmazból\;
+	$\nabla f(\theta_t,B)$ gradiens kiszámítása a minikötegen\;
+	$\theta_{t+1} = \theta_t - \alpha \cdot \nabla f(\theta_t,B)$\;
+}
+\end{algorithm}
+Ahol $B$ a teljes tanító halmazból vett véletlenszerű minta. A minta számosságát hiperparaméter szabályozza. 
+\end{column}
+\begin{column}{.3\textwidth}
+\begin{center}
+\includegraphics[height=5cm, width=5cm, keepaspectratio]{images/gd_minibatch.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Sztochasztikus gradiens ereszkedés}
+\begin{columns}
+\begin{column}{.7\textwidth}
+\begin{algorithm}[H]
+\caption{Sztochasztikus gradiens ereszkedés}
+\SetAlgoLined
+\textbf{Input}: $\alpha$ tanulási sebesség, $f(\theta)$ célfüggvény\\
+$\theta_0 \leftarrow 0$\tcc*[t]{Paraméterek inicializálása} 
+\For{$t = 0 \rightarrow max_t$}{
+	$p$ adatpont kiválasztása az adathalmazból\;
+	$\nabla f(\theta_t,p)$ gradiens kiszámítása a pontban\;
+	$\theta_{t+1} = \theta_t - \alpha \cdot \nabla f(\theta_t,p)$\;
+}
+\end{algorithm}
+\end{column}
+\begin{column}{.3\textwidth}
+\begin{center}
+\includegraphics[height=5cm, width=5cm, keepaspectratio]{images/gd_stochastic.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Momentum gradiens ereszkedés}
+\begin{columns}
+\begin{column}{.7\textwidth}
+\begin{algorithm}[H]
+\SetAlgoLined
+\caption{Momentum gradiens ereszkedés}
+\textbf{Input}: $\alpha$ tanulási sebesség, $\beta$ lendület komponens\\
+$f(\theta)$ célfüggvény\\
+$\theta_0 \leftarrow 0$\tcc*[t]{Paraméterek inicializálása}
+$v \leftarrow 0$\tcc*[t]{Sebesség komponens inicializálása}
+\For{$t = 0 \rightarrow max_t$}{
+	$\nabla f(\theta_t)$ gradiens kiszámítása\;
+	$v \leftarrow v \cdot \beta + (1-v) \cdot \nabla f(\theta)$\;
+	$\theta_{t+1} \leftarrow \theta_t - \alpha \cdot v$\tcc*[t]{Paraméterek frissítése}
+}
+\end{algorithm}
+A $v$ sebesség komponens akkumulálja a súlyozott múltbeli gradienseket, ezért fog hasonlítani az optimalizáció röppályája egy való életben elgurított golyóéra, amire érvényesek a newtoni mechanika elvei. 
+\end{column}
+\begin{column}{.3\textwidth}
+\begin{center}
+\includegraphics[width=5cm, height=5cm, keepaspectratio]{images/gd_momentum.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Hiba-visszaáramoltató algoritmus neurális hálózat súlyok tanítására}
+\begin{enumerate}
+	\item \textbf{Inicializáció}: súlyok és torzítások kezdőértékeinek véletlenszerű megadása
+	\item \textbf{Előreáramoltatás}: rétegek output értékének kiszámítása: 
+	\begin{itemize}
+		\item Rejtett réteg: $h_h = \varphi(W_h \cdot x + b_h)$
+		\item Output réteg: $h_o = \varphi(W_o \cdot h_h + b_o)$
+	\end{itemize}
+	\item \textbf{Költség kiszámítása}: regresszió esetén pl.: $MSE = \sum \left( h_o - y \right)^2$
+	\item \textbf{Visszaáramoltatás}: 
+	\begin{itemize}
+		\item Rejtett réteg hibája: $\delta_h=(W_o \cdot \delta_o) \odot \varphi(z_h)$
+		\item Output réteg hibája: $\delta_o=(h_o - y) \odot \varphi(z_o)$
+	\end{itemize}
+	\item \textbf{Gradiens ereszkedés} a súlyokon és torzításokon:
+	\begin{itemize}
+		\item Rejtett réteg: $W_h \leftarrow W_h - \alpha \cdot \delta_h \cdot x^\top$
+		\item Rejtett réteg: $b_h \leftarrow b_h - \alpha \cdot \delta_h$	
+		\item Output réteg: $W_o \leftarrow W_o - \alpha \cdot \delta_o \cdot h_o^\top$
+		\item Output réteg: $b_o \leftarrow b_o - \alpha \cdot \delta_o$
+
+	\end{itemize}
+	\item \textbf{Ismétlés} a meghatározott lépésszámig
+\end{enumerate}
 \end{frame}
 
 \section{Konvolúciós hálózatok}
@@ -312,6 +397,65 @@ $max\{-2, -4, 14, -11\}=14$
 \tableofcontents[currentsection]
 \end{frame}
 
+\begin{frame}{Önkódoló architektúra}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Az önkódoló architektúrák feladata megismerni \textbf{az inputnak egy tömörített reprezentációját}. Mivel nincs szükség címkére, az önkódoló egy \textbf{felügyelet nélküli} tanítási módszernek tekinthető. Viszont az \textbf{output az inputnak egy rekonstrukciója}, ezért tekinthető egy \textbf{önfelügyelt} tanítási módszernek is.
+\only<1>{\begin{block}{Kódoló}
+A hálózat azon része, amelyik az inputot egy csökkentett méretű látens dimenzióba tömöríti az inputot. Egy $h=f(x)$ kódoló függvénnyel reprezentálható.
+\end{block}}
+\only<2>{\begin{block}{Látens tér}
+A hálózat azon része, amelyik tartalmazza az input csökkentett dimenziószámú reprezentációját.
+\end{block}}
+\only<3>{\begin{block}{Dekódoló}
+A hálózat azon része, amelyik a látens reprezentációt rekonstruálja. Struktúrája hasonló a kódolóéhoz. Egy $r=g(h)$ függvénnyel jelölhető.
+\end{block}}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[height=7cm, width=7cm, keepaspectratio]{graphs/dl_4.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Konvolúciós önkódolók}
+A konvolúciós önkódoló architektúrák kombinálják az önkódolók eredeti koncepcióját a konvolúciós rétegekkel. Az architektúra jól illeszkedik képfeldolgozó feladatokra, mint zajszűrés, tömörítés és mintázatok elsajátítása. Ebben az esetben \textbf{a hálózat inputja és outputja is egy kép}.
+\begin{center}
+\includegraphics[height=7cm, width=9cm, keepaspectratio]{images/dl_9.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Zajszűrő önkódolók}
+A \textbf{kódoló} zajos adatot fogad inputként, és átalakítja egy alacsonyabb dimenziós reprezentációvá. Ennek a reprezentációnak a feladata megragadni az input belső struktúráját és fontos mintázatait.\\
+A \textbf{dekódoló} a kódolt reprezentációt fogadja inputként és a célja, hogy rekonstruálja az eredeti, zajmentes adatot.
+\begin{center}
+\includegraphics[width=9cm, keepaspectratio]{images/dl_10.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Variációs önkódolók}
+\begin{columns}
+\begin{column}{.7\textwidth}
+A variációs önkódolók az önkódoló mélytanuló architektúrák \textbf{probabilisztikus, generatív} változatai. A hagyományos önkódolóktól eltérően ahelyett, hogy egy input adat-szám leképező függvényt tanulnának meg, \textbf{az adathalmaznak a valószínűségeloszlását tanulják meg reprezentálni}.\par\smallskip
+A kódoló egy $P(z|x)$ valószínűségeloszlásra képezi rá az input adatot. Ezt az eloszlást $\mu$ várható érték és $\sigma$ szóródás határozza meg.\par\smallskip
+A dekódoló mintát vesz a látens tér eloszlásából: $z = \mu + \sigma \cdot \varepsilon$, ahol $\varepsilon$ a zaj és a $P(x'|z)$ valószínűségeloszlás alapján állítja elő az outputot.\par\smallskip
+Mivel a variációs önkódolók megismerik az adatok alacsony szintű eloszlását, lehetséges új mintaadatokat generálni az eloszlásokból való mintavétellel. 
+\end{column}
+\begin{column}{.3\textwidth}
+\begin{center}
+\includegraphics[height=7cm, keepaspectratio]{graphs/dl_6.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Szegmentációs önkódolók}
+Az önkódoló architektúrák használhatóak képszegmentálásra is. Ebben az esetben a hálózat feladata \textbf{felosztani a képet különálló régiókra szemantikai értelmezés szerint}.\par\smallskip Szegmentáció esetén a cél egy különböző képet előállítani mint az eredeti, amelynek az értelmezése is különbözik az eredetiétől. Ebben az esetben egy képből lesz egy szemantikai maszk, amely mindin pixelről eldönti, melyik osztályba tartozik. 
+\begin{center}
+\includegraphics[width=12cm, keepaspectratio]{images/dl_11.png}
+\end{center} 
+\end{frame}
 
 \end{document}
 
