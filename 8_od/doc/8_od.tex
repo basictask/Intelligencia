@@ -254,14 +254,14 @@ Később ezen \textbf{területeknek a kereteződobozai lesznek átadva egy oszt�
 \end{columns}
 \end{frame}
 
-\begin{frame}{Predikció objektum detekció esetén}
+\begin{frame}{R-CNN architektúra objektum detekcióra}
 \begin{columns}
 \begin{column}{.4\textwidth}
 Az objektum detekció folyamata területjavasolással:
 \begin{enumerate}
 	\item A területjavasoló \textbf{kiválaszt érdekelt régiókat} a képről. Ezek lehetnek bármekkora méretűek.
 	\item A javasolt régiók \textbf{fix méretűre vetítése}. Ez leggyakrabban $224 \cdot 224$ a gyors osztályozás miatt. 
-	\item A lokalizációs hálózat \textbf{megbecsüli az osztályokat és a kereteződobozok koordinátáit} a vetített terület alapján
+	\item A lokalizációs hálózat \textbf{megbecsüli az osztályokat és a kereteződobozok koordinátáit} a vetített terület alapján.
 \end{enumerate}
 \end{column}
 \begin{column}{.6\textwidth}
@@ -275,7 +275,221 @@ Az objektum detekció folyamata területjavasolással:
 \end{columns}
 \end{frame}
 
+\section{Tanítás}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Objektum detektció kiértékelése}
+\begin{columns}
+\begin{column}{.65\textwidth}
+A pontosság és visszatérés mérhető objektum detekció esetén is. A \textbf{TP}, \textbf{FP} és \textbf{FN} osztályozás viszont csak specifikusan értelmezhető:
+\begin{itemize}
+	\item \textbf{TP} (valós pozitív): a becsült osztály megegyezik a valóssal, és $IoU>50\%$.
+	\item \textbf{FP} (hamis pozitív): a becsült osztály nem egyezik meg a valóssal \emph{vagy} $IoU<50\%$.
+	\item \textbf{FN} (hamis negatív): olyan valós kereteződoboz, amelyikhez nem tartozik predikció.
+	\item \textbf{TN} (hamis negatív): nem értelmezett objektum detekció esetén.
+\end{itemize}
+\end{column}
+\begin{column}{.35\textwidth}
+\begin{center}
+\includegraphics[height=7cm, width=5cm, keepaspectratio]{images/od_8.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Az objektum detekció mérőszámai}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A detekció pontosságának két fontos mutatója:
+\begin{itemize}
+	\item \textbf{Pontosság}: A megbecsült elemek közül hány volt valós pozitív? 
+	\[
+	P=\frac{TP}{TP+FP}
+	\]
+	\item \textbf{Visszahívás}: A valós pozitívak közül hány elem lett megbecsülve? 
+	\[
+	R=\frac{TP}{TP+FN}
+	\]
+\end{itemize}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/od_11.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Átlagos pontosság}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Az átlagos pontosság a pontosság-visszahívás görbe alatti terület. 
+\begin{block}{Átlagos pontosság (AP)}
+Az átlagos pontosság a pontossági értékek súlyozott átlaga minden pontossági küszöbértéken kiértékelve:
+\[
+AP = \frac{1}{n} \sum_{R=0}^1 P(R)
+\]
+Ahol $n$ a mintavételi gyakoriság, $P(\cdot)$ a pontosság és $R$ a visszahívás értéke. Az $R$ küszöbérték $n$ db értéket vesz fel $0$ és $1$ között. 
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/od_12.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Közepes átlagos pontosság}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{block}{Közepes átlagos pontosság (mAP)}
+A közepes átlagos pontosság az összes osztályra kiszámított átlagos pontosságok átlaga:
+\[
+mAp = \frac{1}{N} \sum_{i=0}^{N-1} AP_i = \frac{1}{N} \sum_{i=0}^{N-1} \frac{1}{n} \sum_{R=0}^1 P_i(R)
+\]
+Ahol $N$ az oszályok számossága, $n$ a küszöbértékeni mintavételek száma, $AP_i$ az átlagos pontosság  az $i$. osztályra.
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/od_13.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Térbeli piramis lazítás}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Térbeli piramis pooling (SPP) réteg az inputot \textbf{több, különböző méretű max pooling réteggel dolgozza fel}. Például ha érkezik egy konvolúciós rétegból valamilyen aktiváció feldolgozza egy $1 \cdot 1$, $2 \cdot 2$ és $4 \cdot 4$ max pooling szűrővel is.\par\smallskip
+Ha a piramis pooling réteg után egy teljesen becsatolt réteg következik, a különböző pooling rétegek által adott \textbf{outputot kilapítja, konkatenálja majd úgy adja tovább} a következő rétegnek.\par\smallskip
+Lapítás során az input mátrixból 1 dimenziós vektor lesz. Pl. $4 \cdot 4 \rightarrow 16 \cdot 1$.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[height=7cm, keepaspectratio]{graphs/od_4.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{További architektúrák}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Fast R-CNN}
+\begin{columns}
+\begin{column}{.4\textwidth}
+Az eredeti R-CNN architektúra nagyon lassan futott, hiszen a sok műveletet igénylő konvolúciós szűrés \textbf{minden javasolt érdekelt területre lefutott}.\par\smallskip
+A Fast-RCNN az eredeti architektúrát úgy módosítja, hogy \textbf{először a konvolúciós rétegeken áramoltatja át az input adatot}, majd a konvolúciós rétegek outputján keresi meg az érdekelt területeket, amiket vetít és beosztályoz a régióalapú hálózattal.
+\end{column}
+\begin{column}{.6\textwidth}
+\only<1>{
+\begin{center}
+\includegraphics[height=6cm, keepaspectratio]{graphs/od_5.png}\\
+\vspace{-0.7cm}
+\includegraphics[height=1.5cm, width=2.5cm, keepaspectratio]{images/od_1.png}
+\end{center}}
+\only<2>{
+\begin{center}
+\includegraphics[width=9cm, height=7cm, keepaspectratio]{images/od_14.png}
+\end{center}}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Területi javaslatok lazítása (RoI pooling)}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A területenkénti konvolúciós hálózatk \textbf{fix méretű inputot} várnak a korábbi rétegektől, viszont a területi javaslatok eltérő méretűek.\par\smallskip
+Ebből adódóan szükség van a területi javaslatok átméretezésére. A RoI pooling réteg feladata \textbf{fix méretű mátrixokká transzformálni} a bemeneti mátrixokat.\par\smallskip
+Például egy RoI pooling réteg kimenete bármilyen méretű mátrixra lehet $224 \cdot 224$.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[height=7cm, width=7cm, keepaspectratio]{graphs/od_6.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Faster R-CNN}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A Faster R-CNN architektúra a \textbf{területi javaslatokat egy neurális hálózat segítségével} állítja elő (RPN).\par\smallskip
+Ebben az esetben a területjavasoló hálózatnak már \textbf{tanítható súlyai} vannak. A teljes hálózatot 4 különböző költséggel tanítódik.\par\smallskip
+A Faster R-CNN egy kétlépéses objektum detektor:
+\begin{enumerate}
+	\item \textbf{Első lépés}: Képenként egyszeri futtatással lefut a gerinc hálózat és a területjavasoló hálózat. 
+	\item \textbf{Második lépés}: Régiónként egszeri futtatással 
+\end{enumerate}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=6cm, height=7cm, keepaspectratio]{images/od_15.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Faster R-CNN}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{enumerate}
+	\item \textbf{RPN osztályozás}: A kereteződoboz objektum / nem objektum?
+	\item \textbf{RPN regresszió}: A javasolt doboz és a kereteződoboz közötti transzformáció megbecslése.
+	\item \textbf{Objektum osztáyozás}: A javaslatok osztályának megbecslése.
+	\item \textbf{Objektum regresszió}: A javasolt doboz és objektum doboz közötti transzformáció megbecslése. 
+\end{enumerate}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{graphs/od_7.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Területjavasoló hálózat (RPN) - Osztályozás}
+\only<1>{A területjavasoló hálózat minden képpont körül \textbf{egy rögzített méretű dobozt} hoz létre, amiről eldönti, hogy \textbf{objektum-e} (bináris osztályozás).}
+\only<2>{Minden, az előző lépésben pozitívan osztályozott kereteződobozra a területjavasoló hálózat egy \textbf{korrekciót generál}, ami \textbf{módosíthat az eredeti kereteződoboz} koordinátáin, hogy jobban illeszkedjen a dobozban megtalálható objektumra.}
+\only<1>{\begin{center}
+\includegraphics[width=12cm, keepaspectratio]{images/od_16.png}
+\end{center}}
+\only<2>{\begin{center}
+\includegraphics[width=12cm, keepaspectratio]{images/od_17.png}
+\end{center}}
+\end{frame}
+
+\begin{frame}{Egylépéses detekció - YOLO architektúra}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A YOLO (You Only Look Once) architektúra egy népszerű objektum detektor konfiguráció.\par\smallskip
+Ebben az esetben a hálózat az input képet \textbf{felosztja egy $n \cdot n$ db cellából álló hálóra}. Minden cellához hozzárendel $B$ db \textbf{alapdobozt}, amelynek középpontja a cella közepe.\par\smallskip
+Minden cellára a hálóban megbecsül a $B$ db alapdobozból 5 értéket: $[dx, dy, dh, dw, p]$ ahol az első $4$ érték az eltolást jelenti $x, y, w, h$ dimenziók mentén, $p$ pedig a softmax aktiváció minden osztályra, beleértve a hátteret is. 
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/od_19.png}
+\end{center}
+A YOLO hálózat outputja ebben az esetben $7 \cdot 7 \cdot (5 \cdot B + C)$, ahol $C$ a lehetséges osztályok száma.
+\end{column}
+\end{columns}
+\end{frame}
+
 \end{document}
+
+
+
+
+
+
 
 
 
