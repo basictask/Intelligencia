@@ -122,24 +122,6 @@ Lokalizáció esetén a neurális hálózat két részre ágazik, mivel két kü
 \end{columns}
 \end{frame}
 
-\begin{frame}{Pontosság mérése kereteződobozokkal}
-\begin{columns}
-\begin{column}{.7\textwidth}
-Mivel az objektum detekció egy felügyelt tanulási algoritmus, \textbf{szüksége van címkékre}. Ebben az esetben a címkék a valós osztályt és a kereteződoboz $x,y,w,h$ koordinátáit tartalmazzák.\par\smallskip
-A jóságfüggvény $A$ valós és $B$ becsült kereteződoboz koordinátáit hasonlítja össze az IoU (metszet/unió) mérőszámmal:
-\[
-IoU=\frac{A \cap B}{A \cup B}
-\]
-Tehát minél jobban illeszkedik a becsült doboz a valósra, annál közelebb van a mérőszám $1$-hez. Ha a két doboznak nincs közös területe, $IoU=0$.
-\end{column}
-\begin{column}{.3\textwidth}
-\begin{center}
-\includegraphics[height=7cm, width=7cm, keepaspectratio]{images/od_9.png}
-\end{center}
-\end{column}
-\end{columns}
-\end{frame}
-
 \section{Objektum detekció}
 
 \begin{frame}
@@ -281,7 +263,25 @@ Az objektum detekció folyamata területjavasolással:
 \tableofcontents[currentsection]
 \end{frame}
 
-\begin{frame}{Objektum detektció kiértékelése}
+\begin{frame}{Pontosság mérése kereteződobozokkal}
+\begin{columns}
+\begin{column}{.7\textwidth}
+Mivel az objektum detekció egy felügyelt tanulási algoritmus, \textbf{szüksége van címkékre}. Ebben az esetben a címkék a valós osztályt és a kereteződoboz $x,y,w,h$ koordinátáit tartalmazzák.\par\smallskip
+A jóságfüggvény $A$ valós és $B$ becsült kereteződoboz koordinátáit hasonlítja össze az IoU (metszet/unió) mérőszámmal:
+\[
+IoU=\frac{A \cap B}{A \cup B}
+\]
+Tehát minél jobban illeszkedik a becsült doboz a valósra, annál közelebb van a mérőszám $1$-hez. Ha a két doboznak nincs közös területe, $IoU=0$.
+\end{column}
+\begin{column}{.3\textwidth}
+\begin{center}
+\includegraphics[height=7cm, width=7cm, keepaspectratio]{images/od_9.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Objektum detekció kiértékelése}
 \begin{columns}
 \begin{column}{.65\textwidth}
 A pontosság és visszatérés mérhető objektum detekció esetén is. A \textbf{TP}, \textbf{FP} és \textbf{FN} osztályozás viszont csak specifikusan értelmezhető:
@@ -351,7 +351,7 @@ A közepes átlagos pontosság az összes osztályra kiszámított átlagos pont
 \[
 mAp = \frac{1}{N} \sum_{i=0}^{N-1} AP_i = \frac{1}{N} \sum_{i=0}^{N-1} \frac{1}{n} \sum_{R=0}^1 P_i(R)
 \]
-Ahol $N$ az oszályok számossága, $n$ a küszöbértékeni mintavételek száma, $AP_i$ az átlagos pontosság  az $i$. osztályra.
+Ahol $N$ az oszályok számossága, $n$ a lépésenkénti mintavételek száma, $AP_i$ az átlagos pontosság  az $i$. osztályra.
 \end{block}
 \end{column}
 \begin{column}{.5\textwidth}
@@ -365,7 +365,7 @@ Ahol $N$ az oszályok számossága, $n$ a küszöbértékeni mintavételek szám
 \begin{frame}{Térbeli piramis lazítás}
 \begin{columns}
 \begin{column}{.5\textwidth}
-Térbeli piramis pooling (SPP) réteg az inputot \textbf{több, különböző méretű max pooling réteggel dolgozza fel}. Például ha érkezik egy konvolúciós rétegból valamilyen aktiváció feldolgozza egy $1 \cdot 1$, $2 \cdot 2$ és $4 \cdot 4$ max pooling szűrővel is.\par\smallskip
+Térbeli piramis pooling (SPP) réteg az inputot \textbf{több, különböző méretű max pooling réteggel dolgozza fel}. Például ha érkezik egy konvolúciós rétegből valamilyen aktiváció feldolgozza egy $1 \cdot 1$, $2 \cdot 2$ és $4 \cdot 4$ max pooling szűrővel is.\par\smallskip
 Ha a piramis pooling réteg után egy teljesen becsatolt réteg következik, a különböző pooling rétegek által adott \textbf{outputot kilapítja, konkatenálja majd úgy adja tovább} a következő rétegnek.\par\smallskip
 Lapítás során az input mátrixból 1 dimenziós vektor lesz. Pl. $4 \cdot 4 \rightarrow 16 \cdot 1$.
 \end{column}
@@ -404,11 +404,11 @@ A Fast-RCNN az eredeti architektúrát úgy módosítja, hogy \textbf{először 
 \end{columns}
 \end{frame}
 
-\begin{frame}{Területi javaslatok lazítása (RoI pooling)}
+\begin{frame}{Területi javaslatok lazítása (RoI pooling, RoI lazítás)}
 \begin{columns}
 \begin{column}{.5\textwidth}
-A területenkénti konvolúciós hálózatk \textbf{fix méretű inputot} várnak a korábbi rétegektől, viszont a területi javaslatok eltérő méretűek.\par\smallskip
-Ebből adódóan szükség van a területi javaslatok átméretezésére. A RoI pooling réteg feladata \textbf{fix méretű mátrixokká transzformálni} a bemeneti mátrixokat.\par\smallskip
+A területenkénti konvolúciós hálózatok \textbf{fix méretű inputot} várnak a korábbi rétegektől, viszont a területi javaslatok eltérő méretűek.\par\smallskip
+Ebből adódóan szükség van a területi javaslatok átméretezésére. A területi javaslat lazító réteg feladata \textbf{fix méretű mátrixokká transzformálni} a bemeneti mátrixokat.\par\smallskip
 Például egy RoI pooling réteg kimenete bármilyen méretű mátrixra lehet $224 \cdot 224$.
 \end{column}
 \begin{column}{.5\textwidth}
@@ -426,8 +426,8 @@ A Faster R-CNN architektúra a \textbf{területi javaslatokat egy neurális hál
 Ebben az esetben a területjavasoló hálózatnak már \textbf{tanítható súlyai} vannak. A teljes hálózatot 4 különböző költséggel tanítódik.\par\smallskip
 A Faster R-CNN egy kétlépéses objektum detektor:
 \begin{enumerate}
-	\item \textbf{Első lépés}: Képenként egyszeri futtatással lefut a gerinc hálózat és a területjavasoló hálózat. 
-	\item \textbf{Második lépés}: Régiónként egszeri futtatással 
+	\item \textbf{1. fázis}: Képenként egyszeri futtatással lefut a gerinc hálózat és a területjavasoló hálózat. 
+	\item \textbf{2. fázis}: Régiónként egyszeri futtatással 
 \end{enumerate}
 \end{column}
 \begin{column}{.5\textwidth}
@@ -441,12 +441,12 @@ A Faster R-CNN egy kétlépéses objektum detektor:
 \begin{frame}{Faster R-CNN}
 \begin{columns}
 \begin{column}{.5\textwidth}
-\begin{enumerate}
+\begin{itemize}
 	\item \textbf{RPN osztályozás}: A kereteződoboz objektum / nem objektum?
 	\item \textbf{RPN regresszió}: A javasolt doboz és a kereteződoboz közötti transzformáció megbecslése.
-	\item \textbf{Objektum osztáyozás}: A javaslatok osztályának megbecslése.
+	\item \textbf{Objektum osztályozás}: A javaslatok osztályának megbecslése.
 	\item \textbf{Objektum regresszió}: A javasolt doboz és objektum doboz közötti transzformáció megbecslése. 
-\end{enumerate}
+\end{itemize}
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}

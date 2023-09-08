@@ -6,7 +6,7 @@ digraph od {
     convnet [label="Konvolúciós hálózat", shape="rectangle"]
     roi_coords [label="Érdekelt területek koordinátái", shape="rectangle"]
     feature_map [label="Konvolúciós output mátrix", shape="rectangle"]
-    roi_pooling [label="RoI pooling", shape="rectangle"]
+    roi_pooling [label="Területi javaslatok lazítása", shape="rectangle"]
     output [label="Fix méretű mátrix\nminden érdekelt területre", shape="rectangle"]
 
     input -> convnet
