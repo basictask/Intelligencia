@@ -1,5 +1,6 @@
 digraph neural_networks {
     graph [dpi=300]
+    splines="false"
     rankdir = "BT"
 
     original_input [label="Input réteg", shape="rectangle"]
@@ -41,7 +42,7 @@ digraph neural_networks {
     new_h3 -> new_h4
     new_h4 -> new_out
 
-    original_h1 -> new_h1 [style="dashed"] 
-    original_h2 -> new_h2 [style="dashed"]
-    original_h3 -> new_h3 [style="dashed"]
+    original_h1:e -> new_h1:w [style="dashed", constraint="false", minlen=3] 
+    original_h2:e -> new_h2:w [style="dashed", constraint="false", minlen=3]
+    original_h3:e -> new_h3:w [style="dashed", constraint="false", minlen=3]
 }

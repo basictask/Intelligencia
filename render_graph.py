@@ -5,19 +5,30 @@ Output: .png files from each dot file
 """
 
 import os
+import sys
+import datetime
 import subprocess
 
+args_provided = len(sys.argv) > 1
+current_date = datetime.datetime.now().date()
 target_dir = os.path.dirname(os.path.realpath(__file__))
 
 for root, _, files in os.walk(target_dir):
     for file in files:
-        file_path = os.path.join(root, file)
-        if file_path.endswith('.dot'):
+        file_path = os.path.join(root, file)  # Build the absolute path for the file
+        modification_time = os.path.getmtime(file_path)  # Find the modification time for target file 
+        modification_datetime = datetime.datetime.fromtimestamp(modification_time)  # Extract the datetime from the timestamp
+        
+        condition_1 = file_path.endswith('.dot') and modification_datetime.date() == current_date and not args_provided  # Arg not provided --> Render only if the file was modified today
+        condition_2 = file_path.endswith('.dot') and args_provided  # Args provided --> Render all the dot files
+        
+        if condition_1 or condition_2:
             print('Rendering: ' + file_path + '... ', end = '') 
             output_file = os.path.splitext(file_path)[0] + '.png'
             command = f'dot -Tpng {file_path} -o {output_file}' 
             subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             print('Done')
+        
 
 print('Done')
 
