@@ -205,13 +205,16 @@ $=$
 	\item $x_t$: Input vektor $t$. eleme.
 	\item $\hat{y}_t$: Output vektor $t$. eleme.
 	\item $h_t$: Rejtett réteg aktivációja (\textbf{cella állapota}) $t$ időben.
-	\item $w_x$: Input súlyai \\(időben állandó).
-	\item $w_y$: Output súlyai \\(időben állandó).
+	\item $W_x$: Input súlyai \\(időben állandó, tanítható).
+	\item $W_y$: Output súlyai \\(időben állandó, tanítható).
 \end{itemize}
 Ebben az esetben az output
+\begin{block}{}
+\vspace{-0.2cm}
 \[
 \hat{y}_t = f(x_t, h_{t-1})
 \]
+\end{block}
 $x_t$ aktuális input és $h_{t-1}$ előző állapot függvénye.
 \end{column}
 \begin{column}{.7\textwidth}
@@ -233,7 +236,7 @@ Ahol $tanh(\cdot)$ a hiperbolikus tangens függvény, $h_{t-1}$ az előző cella
 \end{block}
 \begin{block}{Output számítása}
 \[
-\hat{y} = tanh\left(w_y \cdot h_t + b_y\right)
+\hat{y} = tanh\left(W_y \cdot h_t + b_y\right)
 \]
 \end{block}
 \end{column}
@@ -355,21 +358,61 @@ Minden $t$ időlépésben kiszámolja $L_t$ költséget, amelyet a végén aggre
 \tableofcontents[currentsection]
 \end{frame}
 
-\begin{frame}{Hagyományos LSTM hálózat}
+\begin{frame}{Hagyományos RNN hálózat}
+A hagyományos LSTM hálózat két bemenete az $x_t$  \textbf{input vektor aktuális eleme} és a $h_{t-1}$ \textbf{előző cella aktiváció}. Ez alapján állítja elő az aktuális cella állapotot:
 \begin{columns}
 \begin{column}{.5\textwidth}
-A hagyományos LSTM hálózat két bemenete az $x_t$  \textbf{input vektor aktuális eleme} és a $h_{t-1}$ \textbf{előző cella aktiváció}.\par\smallskip
-Ez alapján állítja elő az aktuális outputot:
 \begin{block}{}
 \vspace{-0.5cm}
 \[
 h_t = tanh\left(W_h \cdot h_{t-1} + W_x \cdot x_t + b_h\right)
 \]
 \end{block}
+Ennek az architektúrának több hátránya is van:
+\begin{itemize}
+	\item Igazából \textbf{csak egy nagyon mély hálózat}. 
+	\item A hiperbolikus tangens függvény gradiensei \textbf{a szélsőértékek felé haladva eltűnnek}. 
+\end{itemize}
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
-\includegraphics[height=7cm, width=7cm, keepaspectratio]{graphs/recurrent_17.png}
+\includegraphics[height=7cm, width=7cm, keepaspectratio]{images/recurrent_5.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{LSTM mint az RNN kiterjesztése}
+\begin{columns}
+\begin{column}{.35\textwidth}
+\begin{block}{LSTM architektúra}
+Az LSTM (Long Short Term Memory) egy speciális neurális hálózat \textbf{architektúra szekvenciális adatok feldolgozására}.\par\smallskip
+\textbf{Memóriacellákból} és különböző \textbf{kapukból} (\textbf{input}, \textbf{felejtés}, \textbf{output}) áll amelyek segítik az információfolyam irányítását.  
+\end{block}
+\end{column}
+\begin{column}{.65\textwidth}
+\begin{center}
+\includegraphics[height=7cm, width=9.5cm, keepaspectratio]{images/recurrent_6.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{LSTM cella felépítése}
+\begin{columns}
+\begin{column}{.4\textwidth}
+\only<1>{\begin{block}{Cella állapot}
+A cella állapot ($C_t$) LSTM hálózatokban egy \textbf{hosszútávú memória} ami \textbf{több időlépésen keresztül} képes információt eltárolni.\par\smallskip
+A cella \textbf{állapot kapukon keresztül képes változni}, amik meghatározzák, hogyan adódik hozzá vagy vonódik ki információ a cella állapotból. 
+\end{block}}
+\only<2>{\begin{block}{Cella output}
+A cella outputja ($h_t$) \textbf{a hálózat aktivációja} $t$ időlépésben.\par\smallskip
+A cella outputja az input vektor $t$. eleme és az előző cella aktivációja $h_{t-1}$ alapján áll elő és a következő, $t+1$-edik cella inputjául szolgál. 
+\end{block}}
+\end{column}
+\begin{column}{.6\textwidth}
+\begin{center}
+\includegraphics[height=7cm, width=8.5cm, keepaspectratio]{images/recurrent_12.png}
 \end{center}
 \end{column}
 \end{columns}
