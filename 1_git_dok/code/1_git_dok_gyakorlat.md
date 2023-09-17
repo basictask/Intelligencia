@@ -25,9 +25,9 @@ File / New repository
 4. **Git ignore**: a gitignore-hoz adott fájlok nem lesznek feltöltve a tárhelyre. Itt érdemes kiválasztani az adott programnyelvhez tartozó ignore konfigurációt. A .gitignore a tárhely gyökerében lévő szöveges állomány, amihez saját magunk is hozzáírhatunk ha vannak olyan fájlok, amelyeket nem szeretnénk feltölteni a tárhelyre. Ilyenek lehetnek a nagyméretű állományok vagy személyes információt / konfigurációt tartalmazó állományok.
 5. **License**: milyen másolhatósági / továbbadhatósági szabályok vonatkoznak a tárhelyre. Ezt legtöbb esetben elhagyhatjuk.  
 
-Ezután a tárhely létrejön a számítógépen. Ha megadtuk az e-mail címet és nevet a Git parancssoros területén és ez egyezik a GitHub-on használt e-mail címmel és jelszóval, a parancssor fel fogja ismerni a felhasználót, és lehetsléges parancssorból elvégezni a Git műveleteket.  
+Ezután a tárhely létrejön a számítógépen. Ha megadtuk az e-mail címet és nevet a Git parancssoros területén és ez egyezik a GitHub-on használt e-mail címmel és jelszóval, a parancssor fel fogja ismerni a felhasználót, és lehetséges parancssorból elvégezni a Git műveleteket.  
 
-A legtöbb (de nem minden) műveletet ugyanúgy el lehet végezni parancssoron mint az asztali felületen. A kurzus során a hallgató váalsztja meg, melyiket használja. A továbbiakban viszont az egyszerűség kedvéért a parancssoros műveleteket fogjuk taglalni. 
+A legtöbb (de nem minden) műveletet ugyanúgy el lehet végezni parancssoron mint az asztali felületen. A kurzus során a hallgató választja meg, melyiket használja. A továbbiakban viszont az egyszerűség kedvéért a parancssoros műveleteket fogjuk taglalni. 
 
 ## Gitignore szerkesztése
 Belépés a tárhely gyökerébe:
