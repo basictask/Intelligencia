@@ -54,7 +54,7 @@ ctrl + x
 Ezek a definíciók példa jellegűek. A valósan ignorált fájlok és típusok tárhelytől függően változhatnak.
 
 ## Változtatások elmentése és feltöltése a tárolóra
-A tárhely győkerébe navigálás:
+A tárhely gyökerébe navigálás:
 ```
 cd c/Users/Jakab/GitHub/desktop-tutorial
 ```
@@ -93,7 +93,7 @@ git checkout new_branch
 Változtatások hozzáadása és feltöltése az új ágra:
 ```
 git add .
-git commit -m "valamilyen üzeenet"
+git commit -m "valamilyen üzenet"
 git push origin new_branch
 ```
 

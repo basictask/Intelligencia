@@ -279,7 +279,8 @@ Ahol $e \approx 2.71828$ a természetes logaritmus értéke.
 \end{column}
 \begin{column}{.7\textwidth}
 \begin{center}
-\includegraphics[height=7cm, width=10cm, keepaspectratio]{graphs/recurrent_9.png}
+\includegraphics<1>[height=7cm, width=10cm, keepaspectratio]{graphs/recurrent_18.png}
+\includegraphics<2>[height=7cm, width=10cm, keepaspectratio]{graphs/recurrent_9.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -401,14 +402,10 @@ Az LSTM (Long Short Term Memory) egy speciális neurális hálózat \textbf{arch
 \begin{frame}{LSTM cella felépítése}
 \begin{columns}
 \begin{column}{.4\textwidth}
-\only<1>{\begin{block}{Cella állapot}
-A cella állapot ($C_t$) LSTM hálózatokban egy \textbf{hosszútávú memória} ami \textbf{több időlépésen keresztül} képes információt eltárolni.\par\smallskip
-A cella \textbf{állapot kapukon keresztül képes változni}, amik meghatározzák, hogyan adódik hozzá vagy vonódik ki információ a cella állapotból. 
-\end{block}}
-\only<2>{\begin{block}{Cella output}
+\begin{block}{Cella output}
 A cella outputja ($h_t$) \textbf{a hálózat aktivációja} $t$ időlépésben.\par\smallskip
 A cella outputja az input vektor $t$. eleme és az előző cella aktivációja $h_{t-1}$ alapján áll elő és a következő, $t+1$-edik cella inputjául szolgál. 
-\end{block}}
+\end{block}
 \end{column}
 \begin{column}{.6\textwidth}
 \begin{center}
@@ -416,6 +413,145 @@ A cella outputja az input vektor $t$. eleme és az előző cella aktivációja $
 \end{center}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Elemi műveletek az LSTM cellában}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\only<1>{\begin{block}{Cella állapot}
+A cella állapot ($C_t$) LSTM hálózatokban egy \textbf{hosszútávú memória} ami \textbf{több időlépésen keresztül} képes információt eltárolni.\par\smallskip
+A cella \textbf{állapot kapukon keresztül képes változni}, amik meghatározzák, hogyan adódik hozzá vagy vonódik ki információ a cella állapotból.
+\end{block}}
+\only<2>{
+A cella állapot két operátora:
+\begin{itemize}
+	\item $\bigotimes$: Elemenkénti szorzás:
+	\begin{block}{}
+	\vspace{-0.6cm}
+	\[
+	a \otimes b = [a_1 \cdot b_1, a_2 \cdot b_2, \ldots, a_n \cdot b_n]
+	\]
+	\end{block}
+	\item $\bigoplus$: Elemenkénti összeadás:
+	\begin{block}{}
+	\vspace{-0.6cm}
+	\[
+	a \oplus b = [a_1 + b_1, a_2 + b_2, \ldots, a_n + b_n]	
+	\]
+	\end{block}
+\end{itemize}}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/recurrent_7.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Az LSTM cella kapui}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\only<1>{\begin{block}{Felejtési kapu}
+A felejtési kapu az LSTM cellában egy matematikai kapu, amely két inputot fogad: $C_{t-1}$ előző cella állapotot és $x_t$ aktuális állapotot.\par\smallskip 
+A kapu segítségével \textbf{a modell szelektíven tud törölni információt az előző cella állapotából}. 
+A felejtési kapu outputja: 
+\[
+f_t = \sigma \left( W_f \cdot \left[ h_{t-1}, x_t \right] + b_f \right)
+\]
+Ahol $\sigma$ a szigmoid függvény, $W_f$ a kapu súlymátrixa és $b_f$ a torzítása.
+\end{block}}
+\only<2>{A szigmoid függvény célja, hogy $]0,1[$ intervallumba szorítsa be az input értékeket. Például felejtés esetén a\textbf{ $0$ közeli érték azt jelenti, hogy az információ nem fontos}.
+\begin{center}
+\includegraphics[width=7cm, height=5cm, keepaspectratio]{images/sigmoid.png}
+\end{center}}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/recurrent_8.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Az LSTM cella kapui}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{block}{Input kapu}
+Az input kapu eldönti, \textbf{melyik új információ adódik hozzá a memóriához} az input vektor aktuális eleme alapján.
+\begin{itemize}
+	\item Input kapu: az új információ memóriába áramlását irányítja:
+	\[
+	i_t = \sigma \left( W_i \cdot \left[ h_{t-1}, x_t \right] + b_i \right) 
+	\]
+	\item Cellaállapot jelölt kapu: a már meglévő információ memóriába áramlását irányítja: 
+	\[
+	\tilde{C}_t = tanh \left( W_{\tilde{C}} \cdot \left[ h_{t-1}, x_t \right] + b_{\tilde{C}} \right)
+	\]
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/recurrent_9.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Az LSTM cella kapui}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{block}{Cellaállapot előállítása}
+Az előző cellaállapot $C_{t-1}$ és az aktuális cellaállapot jelölt $\tilde{C}_t$ alapján. \textbf{Ez a komponens adja a cella memóriáját, és feladata a fontos információk hosszú szakaszokon át való megtartása}. 
+\[
+C_t = f_t \otimes C_{t-1} \oplus i_t \otimes \tilde{C}_t
+\]
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/recurrent_11.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Az LSTM cella kapui}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{block}{Output kapu}
+Az output kapu képes \textbf{szelektíven átadni fontos információt a következő cella inputjának}.
+\begin{itemize}
+	\item Output kapu kimenete: megadja a cella állapotából mi mentődjön át a következő cella állapotába:
+	\[
+	o_t = \sigma \left( W_o \left[ h_{t-1}, x_t \right] + b_o \right)
+	\]
+	\item Rejtett állapot: a cella állapota $t$ időlépésben:
+	\[
+	h_t = o_t \otimes tanh \left( \tilde{C}_t \right)
+	\]
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/recurrent_10.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Példa LSTM használatára: képfeliratozás}
+\begin{center}
+\includegraphics[width=12cm, height=7cm, keepaspectratio]{images/recurrent_13.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Példa LSTM használatára: videó feliratozás}
+\begin{center}
+\includegraphics[width=12cm, height=7cm, keepaspectratio]{images/recurrent_14.png}
+\end{center}
 \end{frame}
 
 \end{document}
