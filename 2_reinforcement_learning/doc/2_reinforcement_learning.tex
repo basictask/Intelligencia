@@ -152,10 +152,10 @@ $s_1 \rightarrow a_1 \rightarrow s_2 \rightarrow a_2 \rightarrow ... \rightarrow
 \begin{frame}{A kredit hozzárendelési probléma}
 \begin{columns}
 \begin{column}{.5\textwidth}
-\only<1>{A megerősítéses tanulásban a jutalmak általában ritkák és késleltetettek.\\
+\only<1>{A megerősítéses tanulásban \textbf{a jutalmak általában ritkák és késleltetettek}.\\
 Például: ha az ügynök életben maradt 100 lépésen keresztül, és a 101. lépésben meghal, honnan tudjuk, melyik lépés volt érte a felelős?\par\smallskip
-A probléma megoldására a tanulás egy diszkont rátát ($\gamma$) alkalmaz.\\
-A diszkont ráta megadja a jövőbeli jutalmak jelenbeli értékét. Valamely $r$ jutalom értéke $k$ időlépés után $\gamma^{k-1}$.} 
+A probléma megoldására \textbf{a tanulás folyamata egy diszkont rátát ($\gamma$) alkalmaz}.\\
+A diszkont ráta megadja \textbf{a jövőbeli jutalmak jelenbeli értékét}. Valamely $r$ jutalom értéke $k$ időlépés után $\gamma^{k-1}$.} 
 \only<2>{Ha az ügynök  háromszor egymás után jobbra megy, és $+10$ jutalmat kap az első lépés után, $0$-t a második lépés után, és végül $-50$-et a harmadik lépés után, akkor feltéve, hogy $\gamma=0.8$ diszkontálási tényezőt használ, az első lépés hozama $10+\gamma 0+\gamma^2 (-50)=-22$ lesz. \par\smallskip
 Ha a diszkontálási tényező közel van a $0$-hoz, akkor a jövőbeli jutalmak nem számítanak sokat az azonnali jutalmakhoz képest. Ha viszont a diszkontálási tényező közel van $1$-hez, akkor a jutalmak a jövőben majdnem ugyanannyit számítanak, mint az azonnali jutalmak.}
 \end{column}
@@ -200,7 +200,7 @@ Az ügynök nem nyerhet semmit azáltal, hogy ismeri az előző állapotokat.
 \begin{columns}
 \begin{column}{.5\textwidth}
 \only<1>{\begin{block}{Markov döntési folyamat (MDP)}
-Az ügynök minden lépésben választhat egy cselekvés közül. A környezet állapot átmeneti valószínűsége a következő állapotba a választott cselekvésen fog múlni. Ezenkívül némelyik állapot átmenetek jutalommal (pozitív vagy negatív) járnak.
+Az ügynök \textbf{minden lépésben választhat cselekvések közül}. A környezet állapot átmeneti valószínűsége és \textbf{a következő állapot a választott cselekvésen fog múlni}. Ezenkívül \textbf{némelyik állapot átmenetek jutalommal} (pozitív vagy negatív) járnak.
 \end{block}}
 \only<2>{Ha az ügynök az $s_0$ állapotban kezd, választhat az $a_0$, $a_1$ vagy $a_2$ cselekvések között. Ha az $a_1$ cselekvést választja, biztosan az $s_0$ állapotban marad jutalom nélkül. De ha az $a_0$ cselekvést választja, akkor $70\%$ esélye van arra, hogy $+10$ jutalmat kapjon és az $s_0$ állapotban maradjon. Előbb-utóbb az $s_1$ állapotba fog megérkezni. Itt csak két lehetséges cselekvés van: $a_0$ és $a_2$. Az $a_0$ cselekvéssel ugyanabban az állapotban marad, vagy továbblép az $s_2$ állapotba és $-50$ jutalmat kap. Az $s_2$ állapotban csak az $a_1$ cselekvést teheti meg, amely visszavezeti az $s_0$ állapotba, $+40$ jutalommal.}
 \end{column}
@@ -251,8 +251,8 @@ A probléma felírása:
 \begin{columns}
 \begin{column}{.5\textwidth}
 Az értékfüggvények az állapotok függvényei amik megadják, hogy mennyire jó az ügynöknek, hogy egy adott állapotban áll.
-\begin{block}{Állapot-érték függvény (value)}
-Egy $s$ állapot állapot-értéke ($v_{\pi}(s)$) valamely $\pi$ politika szerint a várható hozam, ha az ügynök $s$ állapotból indul, és utána $\pi$ szerint hozza döntéseit:\\
+\begin{block}{Állapot-érték függvény}
+Egy $s$ állapot állapot-értéke ($V_{\pi}(s)$) valamely $\pi$ politika szerint a várható hozam, \textbf{ha az ügynök $s$ állapotból indul, és utána $\pi$ szerint hozza döntéseit}:\\
 \[
 V_{\pi}(s)=E_{\pi}\left[G_{t}|S_{t}=s\right]=
 \]
@@ -266,14 +266,14 @@ V_{\pi}(s)=E_{\pi}\left[G_{t}|S_{t}=s\right]=
 \includegraphics[width=5cm, height=5cm, keepaspectratio]{images/reinf_9.png}
 \end{center}
 \begin{small}
-Példa: golfozásban a \emph{putter} a kis hatótávú golfütőre vonatkozik. A diagramon azt látjuk, mennyire jó egy adott pozícióból ütni annak az ügynöknek, aki csak a putter ütőt használja. A terminális állapotban az érték $0$, és minél távolabb van tőle, annál inkább csökken az értéke. A homokon a politika $-\infty$ értéket kap.
+Példa: golfozásban a \emph{putter} a kis hatótávú golfütőre vonatkozik. A diagramon az látható, mennyire jó egy adott pozícióból ütni annak az ügynöknek, aki csak a putter ütőt használja. A terminális állapotban az érték $0$, és minél távolabb van tőle, annál inkább csökken az értéke. A homokon állapotnak $-\infty$ értéke van.
 \end{small}
 \end{column}
 \end{columns}
 \end{frame}
 
 \begin{frame}{Állapot-értékek a Breakout-ban}
-A Breakout egy retró Atari játék, amiben a cél az, hogy az ütővel a játékos leüsse az összes téglát. A diagramon az adott állapothoz tartozó állapot-érték látható. Amikor felkerül a labda az állapot-érték is magasabb, mert ott potenciálisan több téglát tud kiütni. 
+A Breakout egy retró Atari játék, amiben a cél az, hogy az ütővel a játékos leüsse az összes téglát. A kép az adott állapothoz tartozó állapot-értéket mutatja. Amikor felkerül a labda az állapot-érték is magasabb, mert ott potenciálisan több téglát tud kiütni. 
 \begin{center}
 \includegraphics[width=9cm, height=7cm, keepaspectratio]{images/breakout.png}
 \end{center}
@@ -284,7 +284,7 @@ A Breakout egy retró Atari játék, amiben a cél az, hogy az ütővel a játé
 \begin{column}{.62\textwidth}
 Hasonlóan az előzőhöz lehetséges definiálni egy adott állapot-cselekvés páros minőségének függvényét, amely megadja mennyire jó az ügynöknek, hogy egy adott állapotban áll, majd adott cselekvést hajt végre.
 \begin{block}{Állapot-cselekvés minőség függvény (quality)}
-Egy $(s,a)$ állapot-cselekvés páros minőség függvénye valamely $\pi$ politika szerint a várható hozam, ha az ügynök $s$ állapotból indul, $a$ cselekvést hajtja végre, majd utána $\pi$ szerint hozza döntéseit:\\
+Egy $(s,a)$ állapot-cselekvés páros minőség függvénye valamely $\pi$ politika szerint a várható hozam, \textbf{ha az ügynök $s$ állapotból indul, $a$ cselekvést hajtja végre, majd utána $\pi$ szerint hozza döntéseit}:\\
 \[
 Q_{\pi}(s,a)=E_{\pi}\left[G_{t}|S_{t}=s,A_{t}=a\right]=
 \]
@@ -298,7 +298,7 @@ Q_{\pi}(s,a)=E_{\pi}\left[G_{t}|S_{t}=s,A_{t}=a\right]=
 \includegraphics[width=5cm, height=5cm, keepaspectratio]{images/reinf_10.png}
 \end{center}
 \begin{small}
-Példa: golfozásban a \emph{driver} a nagy  hatótávú ütőre vonatkozik. Ebben az esetben a $q(s, driver)$ minőség függvény azt adja meg mennyire jövedelmező a játékosnak egy adott helyen állni, és onnan a driver ütőt választani a következő lövéshez.
+Példa: golfozásban a \emph{driver} a nagy  hatótávú ütőre vonatkozik. Ebben az esetben a $Q(s, driver)$ minőség függvény azt adja meg mennyire jövedelmező a játékosnak egy adott helyen állni, és onnan a driver ütőt választani a következő lövéshez.
 \end{small}
 \end{column}
 \end{columns}
@@ -313,7 +313,7 @@ Példa: golfozásban a \emph{driver} a nagy  hatótávú ütőre vonatkozik. Ebb
 \begin{frame}{Állapot-érték Bellman szabály}
 \begin{columns}
 \begin{column}{.6\textwidth}
-Az értékfüggvények egy alapvető tulajdonsága, hogy betartanak egy rekurzív kapcsolati rendszert. Minden $\pi$ politikára és bármely $s$ állapot esetén érvényes a következő konzisztencia kritérium $s$ állapot és $s'$ következő állapotai között:
+Az értékfüggvények egy alapvető tulajdonsága, hogy b\textbf{etartanak egy rekurzív kapcsolati rendszert}. Minden $\pi$ politikára és bármely $s$ állapot esetén érvényes a következő konzisztencia kritérium $s$ állapot és $s'$ következő állapotai között:
 \begin{block}{Állapot-érték Bellman szabály}
 \[
 V_{\pi}(s)=\sum_{a}\pi(a|s)\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]
@@ -366,7 +366,7 @@ Q_{\pi}(s,a)=\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\rig
 \begin{columns}
 \begin{column}{.5\textwidth}
 Hogyan válasszon cselekvést az ügynök?\\
-A legegyszerűbb cselekvés kiválasztási szabály, ha az ügynök mindig a számára elérhető legnagyobb értékű cselekvést választja. Ha több ilyen is van, tetszőlegesen választhat közöttük. 
+\textbf{A legegyszerűbb cselekvés kiválasztási szabály, ha az ügynök mindig a számára elérhető legnagyobb értékű cselekvést választja}. Ha több ilyen is van, tetszőlegesen választhat közöttük. 
 \begin{center}
 \begin{block}{Mohó cselekvés választás}
 \[
