@@ -130,7 +130,7 @@ Jelölés:\\
 \begin{column}{.5\textwidth}
 \begin{itemize}
 	\item Az ügynök és a környezet egymásra hatnak. Az ügynök cselekszik, ennek hatására a környezet megváltozik. Az ügynök megfigyeli a környezetet, majd ismét cselekszik:
-$s_1 \rightarrow a_1 \rightarrow s_2 \rightarrow a_2 \rightarrow ... \rightarrow s_t \rightarrow a_t$
+	$s_1 \rightarrow a_1 \rightarrow s_2 \rightarrow a_2 \rightarrow ... \rightarrow s_t 			\rightarrow a_t$
 	\item A jutalom azonnali, és cselekvés-állapot párosért jár: $R(s, a)$
 	\item A környezet változását az átmeneti valószínűségek adják: $P(s'|s, a)$, ami $s'$ következő állapot valószínűsége $s$ állapotból, $a$ cselekvést követően. Ez a \textbf{környezet dinamikája}.
 \end{itemize}
@@ -138,9 +138,12 @@ $s_1 \rightarrow a_1 \rightarrow s_2 \rightarrow a_2 \rightarrow ... \rightarrow
 \begin{column}{.5\textwidth}
 \begin{itemize}
 	\item Az ügynök célja a lehető legmagasabb jutalom összegyűjtése hosszú távon: 
+	\begin{block}{}
+	\vspace{-0.2cm}
 	\[
 	E_{\pi}(r_{1}+r_{2}+r_{3}+...)\rightarrow{max}
 	\]
+	\end{block}		
 \end{itemize}
 \begin{center}
 \includegraphics[width=7.5cm, keepaspectratio]{images/reinf_4.png}
@@ -316,7 +319,7 @@ Példa: golfozásban a \emph{driver} a nagy  hatótávú ütőre vonatkozik. Ebb
 Az értékfüggvények egy alapvető tulajdonsága, hogy b\textbf{etartanak egy rekurzív kapcsolati rendszert}. Minden $\pi$ politikára és bármely $s$ állapot esetén érvényes a következő konzisztencia kritérium $s$ állapot és $s'$ következő állapotai között:
 \begin{block}{Állapot-érték Bellman szabály}
 \[
-V_{\pi}(s)=\sum_{a}\pi(a|s)\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]
+V_{\pi}(s)=\sum_{a}\pi(a|s)\sum_{s',r}p\left(s',r|s,a\right)\left[r + \gamma V_{\pi}\left(s'\right)\right]
 \]\\
 $\;minden\;s\in S-re$
 \end{block}
@@ -341,7 +344,7 @@ Azt tudjuk, hogy mennyire jövedelmező egy $s$ állapotból $\pi$-t követni - 
 Ezt adja meg az állapot-cselekvés minőség függvény: mennyire jövedelmező egy ügynöknek $s$ állapotból $a$ cselekvést választani, majd utána $\pi$ politikát követni:\\
 \begin{block}{Állapot-cselekvés minőség Bellman szabály}
 \[
-Q_{\pi}(s,a)=\sum_{s',r}p\left(s',r|s,a\right)\left[r+\gamma v_{\pi}\left(s'\right)\right]
+Q_{\pi}(s,a)=\sum_{s',r}p\left(s',r|s,a\right)\left[r + \gamma V_{\pi}\left(s'\right)\right]
 \]
 \end{block}
 \end{column}

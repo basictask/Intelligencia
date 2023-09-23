@@ -36,7 +36,7 @@
 % Title page
 \section{Bevezetés}
 \title[]{Üzleti Intelligencia}
-\subtitle{}
+\subtitle{11. Előadás: Transzformáló architektúrák}
 \author[Kuknyó Dániel]{Kuknyó Dániel\\Budapesti Gazdasági Egyetem}
 \date{2023/24\\1.félév}
 \makebeamertitle
@@ -51,4 +51,183 @@
 \tableofcontents[currentsection]
 \end{frame}
 
+\begin{frame}{Visszacsatolásos neurális hálózatok alapjai}
+\renewcommand{\arraystretch}{2.}
+\begin{tabularx}{\textwidth}{m{4cm}m{5cm}m{5cm}}
+\textbf{Alkalmazás} & \textbf{Input} & \textbf{Output} \\
+	Beszédfelismerés & \includegraphics[width=.25\textwidth, keepaspectratio]{../../10_recurrent/doc/images/recurrent_1.png} & "Milyen szép időnk van ma!" \\
+	Szemantikai értelmezés & "Ez egy rossz film volt." & \includegraphics[width=.2\textwidth, keepaspectratio]{../../10_recurrent/doc/images/recurrent_2.png} \\
+	DNS szekvencia elemzés & AGCCCTGTACTAG & AGC\textcolor{red}{CCTGT}ACTAG \\
+	Gépi fordítás & "Willst du mit mir tanzen?" & "Szeretnél velem táncolni?" \\
+	Videók elemzése & \includegraphics[width=.3\textwidth, keepaspectratio]{../../10_recurrent/doc/images/recurrent_3.png} & Futás \\
+	Nevek felismerése & Tegnap Józsi letörölte a\par termelési adatbázist. & Tegnap
+\textcolor{red}{Józsi} letörölte a\par termelési adatbázist. \\
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Szavak reprezentálása 1-hot vektorokkal}
+\begin{columns}
+\begin{column}{.7\textwidth}
+\renewcommand{\arraystretch}{3.}
+\begin{tabularx}{\textwidth}{m{3cm}m{5cm}}
+\textbf{Input:} & A kedvenc sportom a foci.\\
+\textbf{Reprezentáció:} & $X = \left[ x_{1},\;x_{2},\;x_{3},\;x_{4},\;x_{5},\right]$\\
+\textbf{Szókincs}: & $\left[ \underset{1}{a},\;\underset{2}{foci},\;\underset{3}{kedvenc},\;\underset{4}{sportom} \right]$\\
+\textbf{Reprezentáció}: & $foci = \left[ 0, 1, 0, 0 \right]$\par
+$sportom = \left[ 0, 0, 0, 1 \right]$
+\end{tabularx}
+\end{column}
+\hspace{-1cm}
+\begin{column}{.45\textwidth}
+\textbf{Problémák}:
+\begin{itemize}
+	\item Ha van egy $10.000$ szóból álló szövegtörzs, minden szava egy $10.000$ elemű vektorként lesz reprezentálva, aminek csak egyetlen eleme $1$, a többi $0$. \textbf{Ez nem egy skálázható megoldás}.
+	\item \textbf{Nincs kapcsolat a szavak között}. A szavak külön-külön vannak kezelve, hasonló jelentésű szavak reprezentációja nagyban eltérhet. 
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Szavak reprezentálása beágyazóvektorokkal}
+\begin{columns}
+\begin{column}{.4\textwidth}
+\begin{block}{Beágyazás}
+Egy szó beágyazása \textbf{egy magas dimenziójú vektortérben való numerikus reprezentáció}. Ezek a vektorok tartalmazzák a szavak \textbf{struktúráját, szemantikáját, és szintaktikai szerkezetét}.\par\smallskip
+Ezáltal képesek a mélytanuló modellek elsajátítani a szavak közötti hasonlóságokat és az egyes szavak jelentését. 
+\end{block}
+\end{column}
+\begin{column}{.6\textwidth}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+& \textbf{Férfi} & \textbf{Nő} & \textbf{Király} & \textbf{Királynő} & \textbf{Alma} \\
+\hline
+\textbf{Nem} & $-1$ & $1$ & $-0.95$ & $0.97$ & $0.0$\\
+\hline
+\textbf{Előkelő} & $0.01$ & $0.02$ & $0.93$ & $0.95$ & $-0.01$\\
+\hline
+\textbf{Kor} & $0.03$ & $0.02$ & $0.7$ & $0.68$ & $0.03$\\
+\hline
+\textbf{Étel} & $0.04$ & $0.01$ & $0.02$ & $0.01$ & $0.96$\\
+\hline
+\end{tabular}
+\end{center}
+Tehát ebben az esetben például a férfi szó beágyazóvektora:
+\begin{block}{}
+\vspace{-0.2cm}
+\[
+e_{\textit{férfi}} = \left[ -1,\;1,\;-0.95,\;0.97,\;0.0 \right]
+\]
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Beágyazóvektorok reprezentálása}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A beágyazóvektorok használatával lehetőség nyílik a szavak hasonlóságának kiszámítására.\par\smallskip
+Az egymáshoz jelentés tartalmilag k\textbf{özelebb álló szavak beágyazóvektorainak matematikai távolsága alacsonyabb lesz, mint az egymástól távolabb eső szavaké}.
+\par\smallskip
+Ezáltal továbbá lehetséges analógiák kiszámítása is. \emph{A férfi és a király olyanok egymásnak, mint a nő és a királynő.}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/embedding_vectors_.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Beágyazások vizualizálása}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Dimenziócsökkentő algoritmusok segítségével lehetőség nyílik \textbf{a magasabb dimenziós vektorok alacsonyabb térben való reprezentációjára}. Az egyik ilyen algoritmus a T-SNE, ami egy jól működő algoritmus komplex input adatok esetén.\par\smallskip
+Ez hasznos a következő problémák esetén:
+\begin{itemize}
+	\item Vizualizáció
+	\item Klaszterezés
+	\item Adatminőség mérése
+	\item Szemantikai kapcsolatok elemzése
+	\item Hiperparaméter hangolás
+\end{itemize}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/transformer_1.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Transzformáló architektúrák}
+
+\begin{frame}{}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Hagyományos visszacsatolásos architektúrák}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A visszacsatolásos neurális hálózatok (RNN) olyan mesterséges neurális hálózatok, amelyek képesek kezelni \textbf{időbeli szekvenciákat és más időfüggő adatokat}.\par\smallskip
+Ezek a hálózatok olyan struktúrával rendelkeznek, amely lehetővé teszi a \textbf{korábbi lépések eredményeinek visszacsatolását az aktuális lépésbe}. Ennek eredményeként képesek tartani az emlékezetüket korábbi állapotokról, és ezáltal kezelni a szekvenciális adatokat
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[height=5.5cm, width=\textwidth, keepaspectratio]{../../10_recurrent/doc/graphs/recurrent_4.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Önkódoló architektúrák}
+Az önkódoló neurális hálózatok feladata az inputot átmásolni az outputba úgy, hogy közben megismeri az adatok alacsony szintű struktúráját:
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{itemize}
+	\item \textbf{Kódoló}: A bemeneti adatokat tömöríti egy rövidebb, alacsony dimenziójú reprezentációba.
+	\item \textbf{Látens tér}: Az az alacsony dimenziójú tér, amelyben a kódoló reprezentálja a bemeneti adatokat. Ez a tér tartalmazza az információkat a bemenetről kompakt formában.
+	\item \textbf{Dekódoló}: Feladata a látens térben lévő reprezentációt visszaalakítani eredeti vagy közelítőleges formájára.
+\end{itemize}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[height=7cm, width=7cm, keepaspectratio]{../../7_dl/doc/graphs/dl_4.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Transzformáló architektúrák}
+A transzformálók feladata \textbf{két szekvencia közötti leképezés megtanulása}. A transzformálónak két fő része van: a \textbf{kódoló} és a \textbf{dekódoló}. A \textbf{kódoló a bemeneti szekvenciát dolgozza fel}, míg a \textbf{dekódoló kibővíti a kódolt információt}. A kódoló és a dekódoló között összekapcsoló rétegek, \textbf{figyelmi mechanizmusok} segítenek az információáramlás szabályozásában.
+\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_1.png}
+\end{center}
+
+\end{frame}
+
+
+
+
+
+
+
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

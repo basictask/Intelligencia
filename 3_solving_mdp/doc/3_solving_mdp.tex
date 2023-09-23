@@ -58,6 +58,7 @@
 \[
 MDP\left(S,A,P,R,s_{0},\gamma\right)
 \]
+\vspace{-0.4cm}
 \begin{itemize}
 	\item $S$: állapotok halmaza
 	\item $A$: cselekvések halmaza
@@ -75,9 +76,12 @@ MDP\left(S,A,P,R,s_{0},\gamma\right)
 	\item Ez ismétlődik amíg a kilépési kritérium be nem teljesül
 \end{enumerate}
 Cél: Az optimális politika megtalálása. A politika optimális, ha a hozamának várható értéke maximális:
+\begin{block}{}
+\vspace{-0.5cm}
 \[
 E_{\pi}\left(r_{1} + \gamma r_{2} + \gamma^{2}r_{3} + ...\right) \rightarrow max
-\]}
+\]
+\end{block}}
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
@@ -173,10 +177,11 @@ A következő valós példák alkalmasak a felfedezés/kizsákmányolás dilemma
 \begin{frame}{A rabló probléma}
 \begin{columns}
 \begin{column}{.5\textwidth}
-\only<1>{A $k$-karú rabló problémája egy elméleti megerősítéses tanulás probléma. A játékos egy rablógépen játszik, amelynek $k$ karja van. \\
-Minden karhúzás után egy állandó eloszlásból választott jutalmat kap az ügynök. Az ügynök célja, hogy olyan politikát válasszon, ami az elvárt hozamot maximalizálja $1000$ cselekvés vagy \emph{időlépés} után.}
-\only<2>{Az ügynöknek számon kell tartania, mennyi a jutalom várható értéke, ha adott egy $a$ cselekvés. Ez a $Q(s,a)$ állapot-cselekvés minőség függvény. A rabló problémában csak egy állapot van, ezért elég csak a cselekvésekhez tartozóan számon tartani:
+\only<1>{A $k$-karú rabló problémája \textbf{egy elméleti megerősítéses tanulás probléma}. A játékos egy rablógépen játszik, amelynek $k$ karja van. \\
+\textbf{Minden karhúzás után egy állandó eloszlásból választott jutalmat kap az ügynök}. Az ügynök célja, hogy olyan politikát válasszon, ami \textbf{az elvárt hozamot maximalizálja} $1000$ cselekvés vagy \emph{időlépés} után.}
+\only<2>{\textbf{Az ügynöknek számon kell tartania, mennyi a jutalom várható értéke}, ha adott egy $a$ cselekvés. Ez a $Q(s,a)$ állapot-cselekvés minőség függvény. A rabló problémában \textbf{csak egy állapot van}, ezért elég csak a cselekvésekhez tartozóan számon tartani:
 \begin{block}{}
+\vspace{-0.2cm}
 \[
 Q_{*}(a)=E\left[r_{t}|a_{t}=a\right]
 \]
@@ -200,8 +205,8 @@ Q_{n}=\frac{r_{1}+r_{2}+...+r_{n-1}}{n-1}
 \begin{frame}{A rabló folyamat modellje}
 \begin{columns}
 \begin{column}{.5\textwidth}
-A példában egy kétkarú rabló folyamat modellje látható. A modell egyetlen állapotot tartalmaz. az ügynök minden lépésben innen választhat, hogy melyik kart húzza meg. Ez a két cselekvéssel egyezik meg: $a_{1}, a_{2}$.\par\smallskip
-A jutalmak minden cselekvés után egy normál eloszlásból származnak, valamilyen $\mu_{1}$ és $\mu_{2}$ várható értékkel és $1$ szórással: $r\sim N(\mu,1)$.
+A példában egy kétkarú rabló folyamat modellje látható. A modell \textbf{egyetlen állapotot tartalmaz}. az ügynök minden lépésben innen választhat, hogy melyik kart húzza meg. Ez a két cselekvéssel egyezik meg: $a_{1}, a_{2}$.\par\smallskip
+A jutalmak \textbf{minden cselekvés után egy normál eloszlásból származnak}, valamilyen $\mu_{1}$ és $\mu_{2}$ várható értékkel és $1$ szórással: $r\sim N(\mu,1)$.
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
@@ -235,7 +240,7 @@ A jutalmak minden cselekvés után egy normál eloszlásból származnak, valami
 \begin{columns}
 \begin{column}{.5\textwidth}
 Hogy meg lehessen mérni a mohó és $\varepsilon$-mohó stratégiák teljesítményét, szükség van egy teszt rablóra. A példában szereplő egy $10$-karú rabló. Minden karhoz tartozóan a jutalmak eloszlása Gauss-i eloszlást követ $1$ varianciával, viszont nem $0$ átlaggal. \par\smallskip
-Valamelyik karok nagyobb valószínűséggel járnak magas jutalommal mint a többi. Az ügynök feladata megtalálni melyik kartól remélhet nagyobb jutalmat. Ehhez szükség van arra, hogy végig próbálja őket.
+\textbf{Valamelyik karok nagyobb valószínűséggel járnak magas jutalommal mint a többi}. Az ügynök feladata megtalálni melyik kartól remélhet nagyobb jutalmat. Ehhez szükség van arra, hogy végig próbálja őket.
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
