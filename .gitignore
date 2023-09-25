@@ -1,4 +1,5 @@
 # Self-added file extensions
+*.backup
 
 # LaTeX
 *.aux
