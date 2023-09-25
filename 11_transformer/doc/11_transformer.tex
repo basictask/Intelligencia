@@ -116,7 +116,7 @@ Tehát ebben az esetben például a férfi szó beágyazóvektora:
 \begin{block}{}
 \vspace{-0.2cm}
 \[
-e_{\textit{férfi}} = \left[ -1,\;1,\;-0.95,\;0.97,\;0.0 \right]
+e_{\textit{férfi}} = \left[ -1,\;0.01,\;0.03,\;0.04 \right]
 \]
 \end{block}
 \end{column}
@@ -142,7 +142,7 @@ Ezáltal továbbá lehetséges analógiák kiszámítása is. \emph{A férfi és
 \begin{frame}{Beágyazások vizualizálása}
 \begin{columns}
 \begin{column}{.5\textwidth}
-Dimenziócsökkentő algoritmusok segítségével lehetőség nyílik \textbf{a magasabb dimenziós vektorok alacsonyabb térben való reprezentációjára}. Az egyik ilyen algoritmus a T-SNE, ami egy jól működő algoritmus komplex input adatok esetén.\par\smallskip
+Dimenziócsökkentő algoritmusok segítségével lehetőség nyílik \textbf{a magasabb dimenziós vektorok alacsonyabb térben való reprezentációjára}. Az egyik ilyen algoritmus a T-SNE, ami jól használható komplex input adatok esetén.\par\smallskip
 Ez hasznos a következő problémák esetén:
 \begin{itemize}
 	\item Vizualizáció
@@ -199,18 +199,50 @@ Az önkódoló neurális hálózatok feladata az inputot átmásolni az outputba
 \end{frame}
 
 \begin{frame}{Transzformáló architektúrák}
-A transzformálók feladata \textbf{két szekvencia közötti leképezés megtanulása}. A transzformálónak két fő része van: a \textbf{kódoló} és a \textbf{dekódoló}. A \textbf{kódoló a bemeneti szekvenciát dolgozza fel}, míg a \textbf{dekódoló kibővíti a kódolt információt}. A kódoló és a dekódoló között összekapcsoló rétegek, \textbf{figyelmi mechanizmusok} segítenek az információáramlás szabályozásában.
+A transzformáló architektúrák rendkívül sokoldalúak és hatékonyak a mesterséges mélytanulásban. A transzformálók feladata \textbf{két szekvencia közötti leképezés megtanulása}. Rendkívül jól teljesítenek olyan területeken mint a \textbf{természetes nyelvfeldolgozás, képfelismerés, hangfeldolgozás, megerősítéses tanulás}.
 \begin{center}
 \includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_1.png}
 \end{center}
-
 \end{frame}
 
+\begin{frame}{Gépi fordítás}
+A transzformáló architektúrák \textbf{jól képesek teljesíteni a gépi fordítás területén}. Hasonlóan az önkódoló architektúrákhoz a fő részei a \textbf{kódoló} az input feldolgozására, a \textbf{látens} tér az input reprezentálására és a \textbf{dekódoló} az output előállítására. 
+\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_2.png}
+\end{center}
+\end{frame}
 
+\begin{frame}{Kódoló}
+A transzformáló architektúrákban a kódoló feladata az input adatok feldolgozása és egy \textbf{értelmes, kontextusban gazdag reprezentáció létrehozása}. Az kódolónak alapvető szerepe van az input sorozat megértésében és az alatta rejlő információk megragadásában. Az általa feldolgozott információ a $z$ kontextus vektorban kerül átadásra a dekódolónak, ami megfelel az utolsó cella rejtett állapotának.\par\medskip
+\begin{center}
+\includegraphics[width=14cm, keepaspectratio]{graphs/transformer_3.png}
+\end{center}
+\end{frame}
 
+\begin{frame}{Dekódoló}
+A dekódoló feladata a transzformáló architektúrákban \textbf{az output sorozat létrehozása az input sorozat kontextualizált reprezentációjának felhasználásával}. Dekódolás a legelső cella null inputot kap, és utána minden cella az előző cella outputját kapja meg inputként: $x_0 = null,\; x_i = y_i,\; i>0$. 
+\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_4.png}
+\end{center}
+\end{frame}
 
+\begin{frame}{A transzformálók problémája}
+Ha hosszú szekvenciákat kell generálniuk, a transzformálók gradiensei nagyon alacsonyak lesznek hiba visszaáramoltatás közben. Ez az \textbf{eltűnő gradiensek problémája}, és ahhoz vezet, hogy a hálózat elfelejti a korábbi információkat.\par\smallskip
+Továbbá a modellnek \textbf{minden fontos információt egyetlen kontextus vektorba kell besűrítenie}. Ezzel a $z$ vektor lesz a tanulás szűk keresztmetszete. 
+\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_5.png}
+\end{center}
+\end{frame}
 
+\section{Figyelmi mechanizmus}
 
+\begin{frame}{}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{}
+
+\end{frame}
 
 \end{document}
 

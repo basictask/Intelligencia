@@ -1,0 +1,22 @@
+digraph eps_greedy {
+    graph [dpi=300]
+    rankdir = "LR"
+
+    start [label="start"]
+    subgraph cluster_1 {
+        label="Duna"
+        style="filled"
+        fillcolor="lightblue"
+        a1 [label="", style="invis"]
+        bridgeA [label=<      <B>A</B>  híd      >, shape="rectangle", style="filled", fillcolor="white"]
+        a2 [label="", style="invis"]
+        bridgeB [label=<      <B>B</B>  híd      >, shape="rectangle", style="filled", fillcolor="white"]
+        a3 [label="", style="invis"]
+    }
+    goal [label="cél"]
+
+    start -> bridgeA:w [minlen=2]
+    start -> bridgeB:w [minlen=2]
+    bridgeA:e -> goal [minlen=2]
+    bridgeB:e -> goal [minlen=2]
+}
