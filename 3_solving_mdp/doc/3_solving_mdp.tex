@@ -97,7 +97,7 @@ E_{\pi}\left(r_{1} + \gamma r_{2} + \gamma^{2}r_{3} + ...\right) \rightarrow max
 A legegyszerűbb cselekvés kiválasztási szabály, ha az ügynök mindig azt a cselekvést választja, ami számára a lehető legnagyobb várható hozammal rendelkezik.
 \begin{center}
 \begin{block}{Mohó cselekvés választás}
-Mohó politika mindig azt a cselekvést fogja választani, amelyik - egy lépéses távlatban - a lehető legnagyobb várható jutalommal fog járni az ügynök számára $v_{\pi}$ szerint.
+Mohó politika mindig azt a cselekvést fogja választani, amelyik - egy lépéses távlatban - a lehető legnagyobb várható jutalommal fog járni az ügynök számára $V_{\pi}$ szerint.
 \[
 a_{t}=\underset{a}{argmax}\:Q_{t}(a)
 \]
@@ -134,7 +134,7 @@ Ahol $A$ az összes cselekvés halmaza.
 \end{column}
 \begin{column}{.5\textwidth}
 Az ügynök tehát $\varepsilon$ valószínűséggel véletlen cselekvést választ az ismeretlen, de nagyobb jutalom reményében. Ez a \textbf{felfedezés} művelete.\\
-$\varepsilon$ valószínűséggel pedig a már ismert és a legnagyobb várható jutalommal járó cselekvést hajtja végre. Ez a \textbf{kizsákmányolás} művelete.
+$1-\varepsilon$ valószínűséggel pedig a már ismert és a legnagyobb várható jutalommal járó cselekvést hajtja végre. Ez a \textbf{kizsákmányolás} művelete.
 \begin{center}
 \includegraphics[width=7cm, height=6cm, keepaspectratio]{graphs/solving_1.png}
 \end{center}
@@ -357,10 +357,10 @@ V(s)\leftarrow E_{\pi}\left[r + \gamma V(s')\right]
 \]
 \begin{itemize}
 	\item $E_{\pi}$: Várható érték $\pi$ politika alatt
-	\item $V(s)$: Cselekvés-érték függvény az aktuális $s$ állapotban
+	\item $V(s)$: Állapot-érték függvény az aktuális $s$ állapotban
 	\item $r$: Jutalom a cselekvésért
 	\item $\gamma$: Diszkont faktor
-	\item $V(s')$: állapot-érték függvény $s_{t+1}$ következő állapotban.
+	\item $V(s')$: Állapot-érték függvény $s_{t+1}$ következő állapotban.
 \end{itemize}
 \end{block}
 \end{column}
@@ -374,7 +374,7 @@ A megerősítéses tanulásban a dinamikus programozás egy szélességi bejár�
 \end{frame}
 
 \begin{frame}{Markov döntési folyamatok dinamikus programozása}
-A Markov döntési folyamatok kielégítik a dinamikus programozás feltételeit.\\
+\textbf{A Markov döntési folyamatok kielégítik a dinamikus programozás feltételeit}.\\
 Az értékfüggvény eltárolja és újra felhasználja a kiszámított megoldásokat: ez egy gyorsítótárként szolgál azoknak az információknak az MDP-ről, ami megadja, hogy mennyi a jutalom várható értéke egy $s$ állapotból indulva:
 \begin{block}{}
 \[
@@ -394,7 +394,7 @@ V_{\pi}(s) = \sum_{a}\pi(a|s) \sum_{s',r}p\left(s',r|s,a\right) \left[ r + \gamm
 \begin{column}{.5\textwidth}
 A dinamikus programozási eljárások akkor tudnak megoldani megerősítéses tanulási problémákat, ha adott a környezet dinamikája (az állapotok, az állapotátmeneti valószínűségek, jutalmak). Ezért két fő felhasználása van:\\
 \begin{block}{1. Politika kiértékelés}
-Ha adott egy $MDP(S,A,P,R,\gamma,s_{0})$ és egy $\pi$ politika, a feladat megtalálni $\pi$-hez tartozó $v_{\pi}$ állapot-érték függvényt ahhoz, hogy meg lehessen mondani mennyire jövedelmező a politika. 
+Ha adott egy $MDP(S,A,P,R,\gamma,s_{0})$ és egy $\pi$ politika, a feladat megtalálni $\pi$-hez tartozó $V_{\pi}$ állapot-érték függvényt ahhoz, hogy meg lehessen mondani mennyire jövedelmező a politika. 
 \end{block}
 \end{column}
 \begin{column}{.5\textwidth}
@@ -417,7 +417,7 @@ Ha adott egy $MDP(S,A,P,R,\gamma,s_{0})$, a feladat megtalálni az optimális á
 \begin{frame}{Politika iteráció}
 \begin{columns}
 \begin{column}{.6\textwidth}
-Miután egy $\pi$ politika javult $v_\pi$ segítségével annak érdekében, hogy egy $\pi'$ jobb politikát eredményezzen ki lehet számítani $v_{\pi'}$ javított állapot-érték függvényt és felhasználni egy újabb javított politika, $\pi''$ kiszámítására. Ezáltal egy monoton javuló politika - értékfüggvény sorozatot eredményezve:
+Miután egy $\pi$ politika javult $V_\pi$ segítségével annak érdekében, hogy egy $\pi'$ jobb politikát eredményezzen ki lehet számítani $V_{\pi'}$ javított állapot-érték függvényt és felhasználni egy újabb javított politika, $\pi''$ kiszámítására. Ezáltal egy monoton javuló politika - értékfüggvény sorozatot eredményezve:
 \begin{small}
 \[
 \pi_{0}\stackrel{K}{\longrightarrow}V_{\pi_{0}}\stackrel{J}{\longrightarrow}\pi_{1}\stackrel{K}{\longrightarrow}V_{\pi_{1}}\stackrel{J}{\longrightarrow}\pi_{2}\stackrel{K}{\longrightarrow}\hdots\stackrel{J}{\longrightarrow}\pi_{*}\stackrel{K}{\longrightarrow}V_{*}
