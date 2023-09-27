@@ -1,5 +1,5 @@
 digraph fibonacci {
-    //graph [dpi = 300];  
+    graph [dpi = 300];  
     
     F5 [label="fib(5)"]
     F5L [label="fib(4)"]

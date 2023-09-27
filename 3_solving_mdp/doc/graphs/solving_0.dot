@@ -4,8 +4,8 @@ digraph bandit {
     nodestep=5.0;
 
     s [label="s"];
-    a1 [label="a1", style=filled, fillcolor=black, fontcolor=white, shape=circle, fixedsize=true, width=0.3];
-    a2 [label="a2", style=filled, fillcolor=black, fontcolor=white, shape=circle, fixedsize=true, width=0.3];
+    a1 [label=<a<sub>1</sub>>, style=filled, fillcolor=black, fontcolor=white, shape=circle, fixedsize=true, width=0.4];
+    a2 [label=<a<sub>2</sub>>, style=filled, fillcolor=black, fontcolor=white, shape=circle, fixedsize=true, width=0.4];
     
     s -> a1
     s -> a2

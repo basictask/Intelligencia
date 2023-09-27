@@ -1,21 +1,21 @@
 digraph dynamic_programming {
   graph [dpi = 300];
 
-  F5 [label="F5"]
-  F5L [label="F4"]
-  F5R [label="F3"]
-  F5LL [label="F3"]
-  F5LR [label="F2"]
-  F5RL [label="F2"]
-  F5RR [label="F1"]
-  F5LLL [label="F2"]
-  F5LLR [label="F1"]
-  F5LRL [label="F1"]
-  F5LRR [label="F0"]
-  F5RLL [label="F1"]
-  F5RLR [label="F0"]
-  F5LLLL [label="F1"]
-  F5LLLR [label="F0"]
+  F5 [label=<F<sub>5</sub>>]
+  F5L [label=<F<sub>4</sub>>]
+  F5R [label=<F<sub>3</sub>>]
+  F5LL [label=<F<sub>3</sub>>]
+  F5LR [label=<F<sub>2</sub>>]
+  F5RL [label=<F<sub>2</sub>>]
+  F5RR [label=<F<sub>1</sub>>]
+  F5LLL [label=<F<sub>2</sub>>]
+  F5LLR [label=<F<sub>1</sub>>]
+  F5LRL [label=<F<sub>1</sub>>]
+  F5LRR [label=<F<sub>0</sub>>]
+  F5RLL [label=<F<sub>1</sub>>]
+  F5RLR [label=<F<sub>0</sub>>]
+  F5LLLL [label=<F<sub>1</sub>>]
+  F5LLLR [label=<F<sub>0</sub>>]
 
   F5 -> F5L
   F5 -> F5R
