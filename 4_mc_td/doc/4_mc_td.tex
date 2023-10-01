@@ -136,7 +136,7 @@ A központban egy egyszerű ötlet áll: epizódonkénti nyers tapasztalatok ala
 \begin{frame}{Értékfüggvények a Monte Carlo tanításban}
 \begin{columns}
 \begin{column}{.8\textwidth}
-Mivel a MC epizódonként vesz mintát a hozamokból, az értékfüggvények csak sok epizód hozamának átlagolásaként számítódhatnak ki.\par\smallskip
+\textbf{Mivel a MC epizódonként vesz mintát a hozamokból, az értékfüggvények csak sok epizód hozamának átlagolásaként számítódhatnak ki}.\par\smallskip
 \only<1>{Az \textbf{állapot-érték függvény} megadja, mennyi a várható hozam, ha az ügynök adott $s$ állapotban áll, és onnan $\pi$ politikát követi:
 \begin{block}{}
 \[
@@ -167,8 +167,8 @@ $t$ aktuális időlépéstől a $T$ terminális állapotba vezető időlépésig
 \begin{frame}{MC politika kiértékelés}
 \begin{columns}
 \begin{column}{.5\textwidth}
-\only<1>{A $V_{\pi}(s)$ állapot-érték függvény egy állapotonkénti vektor, amely minden állapot esetén számon tartja az adott $s$ állapotból indulva összegyűjtött jutalmak várható értékét ha az ügynök egy adott $\pi$ politika szerint cselekszik.}
-\only<2>{A $Q_{\pi}(s,a)$ állapot-cselekvés minőség függvény egy mátrix, amely az állapot-cselekvés párokhoz tartozóan tárolja el, hogy egy adott $s$ állapotból $a$ cselekvést végrehajtva mennyi a jutalom várható értéke ha az ügynök egy adott $\pi$ politika szerint cselekszik.}
+\only<1>{A $V_{\pi}(s)$ \textbf{állapot-érték függvény egy állapotonkénti vektor, amely minden állapot esetén számon tartja az adott $s$ állapotból indulva összegyűjtött jutalmak várható értékét} ha az ügynök egy adott $\pi$ politika szerint cselekszik.}
+\only<2>{A $Q_{\pi}(s,a)$ \textbf{állapot-cselekvés minőség függvény egy mátrix, amely az állapot-cselekvés párokhoz tartozóan tárolja el, hogy egy adott $s$ állapotból $a$ cselekvést végrehajtva mennyi a jutalom várható értéke} ha az ügynök egy adott $\pi$ politika szerint cselekszik.}
 \par\smallskip
 Az értékfüggvény \textbf{diszkrét} adatszerkezetben tartja számon a hozamok várható értékét, ezért diszkrét állapotokat és cselekvéseket feltételez.
 \end{column}
@@ -198,12 +198,13 @@ Mindkét esetben a valós értékhez való konvergencia garantált, ahogy a lát
 
 \begin{frame}{}
 \begin{algorithm}[H]
-\caption{Első látogatás alapú Monte Carlo algoritmus $v_{\pi}$ becslésére}
+\caption{Első látogatás alapú Monte Carlo algoritmus $V_{\pi}$ becslésére}
 \SetAlgoLined
 \textbf{Input:} A kiértékelendő $\pi$ politika\par\smallskip
 $V(s) \leftarrow random()$, minden $s \in S$-re\;
 $Hozam(s) \leftarrow $ \textbf{üres lista}, minden $s \in S$-re\; 
 \For{$i=0 \rightarrow max_i$}{
+	$s_0 \in S$ és $a_0 \in A$ véletlenszerű kiválasztása\;
 	Epizód lejátszása $\pi$ politikával: $s_0, a_0, r_1, s_1, a_1, r_2, ..., s_{T-1}, a_{T-1}, r_T$\;
 	$G \leftarrow 0$\tcc*[t]{Hozam inicializálása $0$ értékkel}
 	\For{$t=T-1 \rightarrow 0$}{
@@ -313,7 +314,7 @@ Csakúgy mint a MC, nyers tapasztalatokból tud tanulni, ezért \textbf{nincs sz
 \begin{columns}
 \begin{column}{.7\textwidth}
 Az ábrán az időbeli különbségek frissítési diagramja látható. Az $s_1$ állapothoz tartozó állapot-érték csak a következő állapot és a következő állapothoz tartozó jutalom alapján frissül. \par\smallskip
-A TD tanítás csak az egyes lépések által kapott jutalomból vesz mintát, és ez alapján számítja ki adott állapotonként a hozamok várható értékét. Az MC és TD becslés a \textbf{mintavevő frissítések} algoritmusainak körébe tartoznak, mert ahhoz, hogy ki lehessen számolni, előre meg kell ismerni a következő állapothoz (vagy állapotokhoz) tartozó jutalmakat.\par\smallskip
+\textbf{A TD tanítás csak az egyes lépések által kapott jutalomból vesz mintát, és ez alapján számítja ki adott állapotonként a hozamok várható értékét}. Az MC és TD becslés a \textbf{mintavevő frissítések} algoritmusainak körébe tartoznak, mert ahhoz, hogy ki lehessen számolni, előre meg kell ismerni a következő állapothoz (vagy állapotokhoz) tartozó jutalmakat.\par\smallskip
 A DP algoritmusok esetén nem mintavétel történik, hanem egy teljes sokaság alapján egy várható érték számolódik ki.
 \end{column}
 \begin{column}{.3\textwidth}
@@ -328,19 +329,23 @@ A DP algoritmusok esetén nem mintavétel történik, hanem egy teljes sokaság 
 \begin{columns}
 \begin{column}{.55\textwidth}
 \begin{block}{TD állapot-érték frissítési szabály}
+\vspace{-0.25cm}
 \[
 V(s) \leftarrow V(s) + \alpha \left[ r + \gamma V(s') - V(s) \right]
 \]
-\vspace{-0.5cm}
+\vspace{-0.75cm}
 \begin{itemize}
 	\item $\alpha$: Tanulási sebesség
 	\item $r$: Jutalom
 \end{itemize}
 \end{block}
 A zárójelben lévő kifejezés a \textbf{TD hiba}, ami a $s_t$ jelen állapot értéke és a jobb becslés, $r + \gamma V(s')$ közötti távolságot adja meg. A megerősítéses tanulásban számos helyen jelen van: 
+\begin{block}{}
+\vspace{-0.2cm}
 \[
 \delta_t=r + \gamma V(s') - V(s)
 \]
+\end{block}
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
@@ -352,7 +357,7 @@ A zárójelben lévő kifejezés a \textbf{TD hiba}, ami a $s_t$ jelen állapot 
 
 \begin{frame}{}
 \begin{algorithm}[H]
-\caption{TD algoritmus $v_\pi$ megbecslésére}
+\caption{TD algoritmus $V_\pi$ megbecslésére}
 \SetAlgoLined
 \textbf{Input}: $\pi$ politika ami kiértékelésre kerül; $\alpha \in [0,1]$ tanulási sebesség\par\smallskip
 $V(s) \leftarrow random()$, minden $s \in S$-re\tcc*[t]{Állapot-értékek inicializálása}
@@ -394,7 +399,7 @@ A robot célja eljutni a bal alsó kockáról a zöld kockára jutalomért. Ha a
 \begin{frame}{Politikaalapú TD irányítás: SARSA}
 \begin{columns}
 \begin{column}{.8\textwidth}
-TD becsléssel lehetséges a $v_\pi$ mellett a $q_\pi$ értékfüggvény is. Ebben az esetben nem állapot-állapot átmeneteket hanem állapot-cselekvés állapot-cselekvés átmeneteket tanul az algoritmus. \textbf{Formálisan mindkettő Markov folyamat} jutalmazási rendszerrel. \par\smallskip
+TD becsléssel lehetséges a $V_\pi$ mellett a $Q_\pi$ értékfüggvény kiszámolása is. Ebben az esetben nem állapot-állapot átmeneteket hanem \textbf{állapot-cselekvés állapot-cselekvés átmenetekből vesz mintát az algoritmus}. \textbf{Formálisan mindkettő Markov folyamat} jutalmazási rendszerrel. \par\smallskip
 \begin{center}
 \begin{block}{SARSA frissítési szabálya}
 \[
@@ -431,10 +436,11 @@ A \textbf{politika javítás} lépésében amikor az ügynök cselekvést válas
 \end{frame}
 
 \begin{frame}{SARSA algoritmusa}
+\begin{small}
 \begin{algorithm}[H]
-\caption{SARSA algoritmus $Q \approx q_*$ megbecslésére}
+\caption{SARSA algoritmus $Q \approx Q_*$ megbecslésére}
 \SetAlgoLined
-\textbf{Input}: $\alpha$: tanulási sebesség; $\varepsilon > 0$: algoritmus hibahatára\par\smallskip
+\textbf{Input}: $\alpha$: tanulási sebesség;\par\smallskip
 $Q(s,a) \leftarrow random()$, minden $s \in S$-re és $a \in A$-ra\;
 $Q(s_t,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapot értéke $0$}
 \For{$i=0 \rightarrow max_i$}{
@@ -448,6 +454,8 @@ $Q(s_t,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapot értéke $0$}
 	}	
 }
 \end{algorithm}
+\end{small}
+Ahol $\pi$ minden lépésben a $Q$ táblából származik.
 \end{frame}
 
 \section{$n$-lépéses különbségek}
@@ -508,23 +516,31 @@ Megegyezik az eddig vizsgált állapot-cselekvés minőség függvénnyel kivév
 \end{frame}
 
 \begin{frame}{Frissítési szabályok}
-\begin{block}{Dinamikus programozás}
+\begin{columns}
+\begin{column}{.2\textwidth}
+\end{column}
+\begin{column}{.6\textwidth}
+\begin{block}{\begin{center}Dinamikus programozás\end{center}}
 \[
-V(s_t) \leftarrow E_\pi \left[ r_{t+1} + \gamma V(s_{t+1}) \right]
+V(s) \leftarrow E_\pi \left[ r + \gamma V(s') \right]
 \]
 \end{block}
 \vspace{0.5cm}
-\begin{block}{Monte Carlo}
+\begin{block}{\begin{center}Monte Carlo\end{center}}
 \[
-V(s_t) \leftarrow V(s_t) + \alpha \left[ G_t - V(s_t) \right]
+V(s) \leftarrow V(s) + \alpha \left[ G_t - V(s) \right]
 \]
 \end{block}
 \vspace{0.5cm}
-\begin{block}{Időbeli különbségek}
+\begin{block}{\begin{center}Időbeli különbségek\end{center}}
 \[
-V(s_t) \leftarrow V(s_t) + \alpha \left[ r_{t+1} + \gamma V(s_{t+1}) - V(s_t) \right]
+V(s) \leftarrow V(s) + \alpha \left[ r + \gamma V(s') - V(s) \right]
 \]
 \end{block}
+\end{column}
+\begin{column}{.2\textwidth}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Frissítések mélysége függvény szerint}

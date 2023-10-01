@@ -1,5 +1,8 @@
 # Self-added file extensions
 *.backup
+*.mkv
+*.DS_Store
+.DS_Store
 
 # LaTeX
 *.aux
@@ -183,3 +186,5 @@ cython_debug/
 *.dvi
 
 *.xlsx
+.DS_Store
+.DS_Store
