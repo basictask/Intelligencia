@@ -53,7 +53,7 @@
 
 \begin{frame}{Bevezetés a $Q$-tanulásba}
 A megerősítéses tanulásban a $Q_\pi(s,a)$ minőségfüggvény megadja, hogy mennyire jövedelmező az ügynöknek, ha $s$ állapotban állva, $a$ cselekvést végrehajtva majd onnan $\pi$ politikát követve mekkora a várható hozam.\par\smallskip
-Ha adott minden állapotra és cselekvésre az optimális $Q(s,a)$ érték, onnan levezethető a $\pi_*$ optimális politika, amelynek várható hozama maximális.
+\textbf{Ha adott minden állapotra és cselekvésre az optimális $Q(s,a)$ érték, onnan levezethető a $\pi_*$ optimális politika, amelynek várható hozama maximális}.
 \begin{center}
 \includegraphics[width=12cm, keepaspectratio]{images/ql_1.png}
 \begin{block}{}
@@ -68,13 +68,13 @@ Q_\pi(s,a)=E_\pi \left[ G_t \vert s_t=s, a_t=a \right] = E_\pi \left[ \sum_{k=0}
 \begin{columns}
 \begin{column}{.75\textwidth}
 A megerősítéses tanulásban az egyik nagy áttörést egy politikafüggetlen TD algoritmus kifejlesztése hozta el.\par\smallskip
-Ebben az esetben a becsült állapot-cselekvés minőség függvény, $Q$, direkten becsüli meg  $q_*$ optimális állapot-cselekvés minőség függvényt a követett politikától teljesen függetlenül.
+Ebben az esetben a becsült állapot-cselekvés minőség függvény, $Q$, \textbf{direkten becsüli meg  $Q_*$ optimális állapot-cselekvés minőség függvényt} a követett politikától teljesen függetlenül.
 \begin{block}{$Q$-tanulás}
 \[
 Q(s,a) \leftarrow Q(s,a) + \alpha \left[ r + \gamma \underset{a'}{max}Q(s',a') - Q(s,a) \right]
 \]
 \end{block}
-Az egyetlen különbség a SARSA algoritmusától, hogy a referencia a következő állapotból elérhető legjobb minőségű cselekvés értéke: $\underset{a}{max}Q(s_{t+1},a)$.
+Az egyetlen különbség a SARSA algoritmusától, hogy a referencia a következő állapotból ($s'$) elérhető legjobb minőségű cselekvés értéke: $\underset{a'}{max}Q(s',a')$.
 \end{column}
 \begin{column}{.25\textwidth}
 \begin{center}
@@ -86,15 +86,17 @@ Az egyetlen különbség a SARSA algoritmusától, hogy a referencia a következ
 
 \begin{frame}{$Q$-tanulás eljárása}
 \begin{columns}
-\begin{column}{.5\textwidth}
+\begin{column}{.4\textwidth}
 \begin{center}
 A $Q$-tanulás folyamata\par\medskip
 \includegraphics[height=6cm, keepaspectratio]{graphs/ql_1.png}
 \end{center}
 \end{column}
-\begin{column}{.5\textwidth}
+\begin{column}{.6\textwidth}
+\only<1>{
 \begin{center}
-Példa $Q$-táblára\par\medskip
+Példa $Q$-táblára:
+\par\medskip
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 & \text{$a_0$} & \text{$a_1$} & \text{$a_2$} & \text{$a_3$} \\
@@ -112,9 +114,37 @@ Példa $Q$-táblára\par\medskip
 \text{$s_5$} & $-0.36$ & $0.08$ & $-0.51$ & $0.64$ \\
 \hline
 \end{tabular}
-\end{center}
 \par\medskip
+\end{center}
 A $Q$-tábla tárolja el a $Q(s,a)$ értékeket minden $s \in S$ és $a \in A$ párosra. 
+}
+\only<2>{
+\begin{center}
+Tehát az optimális politika:
+\par\medskip
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+& \text{$a_0$} & \text{$a_1$} & \text{$a_2$} & \text{$a_3$} \\
+\hline
+\text{$s_0$} & $0.76$ & $0.41$ & \textcolor{red}{$0.92$} & $-0.14$ \\
+\hline
+\text{$s_1$} & $-0.65$ & $0.31$ & $-0.07$ & \textcolor{red}{$0.55$} \\
+\hline
+\text{$s_2$} &  $0.23$ & $-0.99$ & \textcolor{red}{$0.67$} & $-0.43$ \\
+\hline
+\text{$s_3$} & $-0.81$ & \textcolor{red}{$0.79$} & $-0.58$ & $0.17$ \\
+\hline
+\text{$s_4$} & $0.62$ & $-0.28$ & \textcolor{red}{$0.96$} & $-0.72$ \\
+\hline
+\text{$s_5$} & $-0.36$ & $0.08$ & $-0.51$ & \textcolor{red}{$0.64$} \\
+\hline
+\end{tabular}
+\end{center}
+\par\smallskip
+\[
+\{ s_0:a_2, s_1:a_3, s_2:a_2, s_3:a_1, s_4:a_2, s_5:a_3 \} 
+\]
+}
 \end{column}
 \end{columns}
 \end{frame}
@@ -127,7 +157,7 @@ A $Q$-tábla tárolja el a $Q(s,a)$ értékeket minden $s \in S$ és $a \in A$ p
 $Q(s,a) \leftarrow random()$ for $s \in S$, $a \in A$\tcc*[t]{$Q$ értékek inícializálása}
 $Q(s_T,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapot $0$-ra állítása}
 \For{$i=0 \rightarrow max_i$}{
-	$s \leftarrow s_0$\tcc*[t]{$s$ inícializálása}
+	$s \leftarrow s_0$\tcc*[t]{$s$ inicializálása}
 	\While{$s \neq s_T$}{
 		$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választása $\pi$ szerint, pl. $\varepsilon$-mohó}
 		$a$ végrehajtása, $r, s'$ megfigyelése\;
@@ -140,7 +170,7 @@ A politikát a $Q$-tábla határozza meg.
 \end{frame}
 
 \begin{frame}{Dupla $Q$-tanulás}
-A kettős tanulás ötlete természetesen kiterjed a teljes MDP algoritmusaira. A $Q$-tanulásban a becsült $Q$-értékek torzítottak lehetnek, ha alacsony a minta számossága, vagy zaj van a rendszerben. Egy módja a $Q$-tanulás regularizálásának, ha egy helyet\textbf{ két $Q$-táblát tart nyilván az algoritmus}, $Q_1$-et és $Q_2$-t.\par\smallskip
+A kettős tanulás ötlete természetes módon kiterjed a teljes MDP algoritmusaira. A $Q$-tanulásban a becsült $Q$-értékek torzítottak lehetnek, ha alacsony a minta számossága, vagy zaj van a rendszerben. Egy módja a $Q$-tanulás regularizálásának, ha egy helyet\textbf{ két $Q$-táblát tart nyilván az algoritmus}, $Q_1$-et és $Q_2$-t.\par\smallskip
 A $Q$-tanulással analóg dupla $Q$-tanulás nevű kettős tanulási algoritmus két részre osztja az időlépéseket, \textbf{minden lépésnél egy érmét feldobva}. Ha az érme fejre esik, a frissítés a következő:
 \begin{block}{}
 \[
@@ -153,11 +183,11 @@ Ha az érme pedig írásra esik, akkor ugyanez a frissítés $Q_1$ és $Q_2$ fel
 \begin{frame}{Dupla $Q$-tanulás eljárása}
 \begin{columns}
 \begin{column}{.5\textwidth}
-Mivel két $Q$ táblát kell nyilván tartania, az algoritmus memóriaigénye megkétszereződik. A becsült értékek viszont jóval torzítatlanabbak lesznek, mint az egyszeres $Q$ tanulás esetében. A lépésenkénti számításigény nem növekszik az extra $Q$-tábla bevonásával.
+\textbf{Mivel két $Q$ táblát kell nyilván tartania, az algoritmus memóriaigénye megkétszereződik}. A becsült értékek viszont jóval torzítatlanabbak lesznek, mint az egyszeres $Q$ tanulás esetében. A lépésenkénti számításigény nem növekszik az extra $Q$-tábla bevonásával.
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
-\includegraphics[height=7cm, keepaspectratio]{graphs/ql_2.png}
+\includegraphics[height=6cm, keepaspectratio]{graphs/ql_2.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -172,7 +202,7 @@ Mivel két $Q$ táblát kell nyilván tartania, az algoritmus memóriaigénye me
 $Q_1(s,a) \leftarrow random()$, $Q_2(s,a) \leftarrow random()$ for $s \in S$, $a \in A$\;
 $Q_1(s_T,\cdot) \leftarrow 0$, $Q_2(s_T,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapotok $0$-ra állítása}
 \For{$i=0 \rightarrow max_i$}{
-	$s$ inícializálása\;
+	$s$ inicializálása\;
 	\While{$s \neq s_T$}{
 		$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választása $\pi$ szerint, pl. $\varepsilon$-mohó}
 		$a$ végrehajtása, $r$ és $s'$ megfigyelése\;
@@ -386,10 +416,23 @@ Vannak esetek, amikor a gradiens nem meghatározható (szaturál), például ami
 \end{frame}
 
 \begin{frame}{A neuron}
+A neurális hálózatot \textbf{neuronok összessége} alkotja. Az egyes neuronok egyszerű elemi műveleteket végeznek. A neuronnak több inputja (kapcsolata) van, és mindegyikhez egy súly tartozik.
 \begin{columns}
 \begin{column}{.4\textwidth}
-A neurális hálózatot \textbf{neuronok összessége} alkotja. Az egyes neuronok egyszerű elemi műveleteket végeznek. A neuronnak több inputja (kapcsolata) van, és mindegyikhez egy súly tartozik.\par\smallskip
-A neuron kiszámítja az inputjainak a súlyozott összegét ($z=x_1w_1 + x_2w_2 + ... + x_nw_n$), majd ezt az értéket behelyettesíti egy aktivációs függvénybe ($h=\varphi(z)$). 
+A neuron kiszámítja az inputjainak a súlyozott összegét:
+\begin{block}{}
+\vspace{-0.7cm}
+\[
+z=x_1w_1 + x_2w_2 + ... + x_nw_n
+\]
+\end{block}
+majd ezt az értéket behelyettesíti egy aktivációs függvénybe:
+\begin{block}{}
+\vspace{-0.2cm}
+\[
+h=\varphi(z)
+\] 
+\end{block}
 \end{column}
 \begin{column}{.6\textwidth}
 \begin{center}
@@ -400,9 +443,9 @@ A neuron kiszámítja az inputjainak a súlyozott összegét ($z=x_1w_1 + x_2w_2
 \end{frame}
 
 \begin{frame}{Többrétegű hálózatok}
+Ebben az esetben a neuronok rétegekben foglalnak helyet. A\textbf{ kapcsolataik az előző réteg kimeneteivel állnak összeköttetésben. A legelső réteg neuronjai a bemeneti adattal állnak összeköttetésben}, bemeneti jellemzőnként egy neuronnal.\par\smallskip
 \begin{columns}
 \begin{column}{.5\textwidth}
-Ebben az esetben a neuronok rétegekben foglalnak helyet. A kapcsolataik az előző réteg kimeneteivel állnak összeköttetésben. A legelső réteg neuronjai a bemeneti adattal állnak összeköttetésben. Minden bemeneti jellemzőhöz egy neuron tartozik.\par\smallskip
 \begin{block}{Teljesen becsatolt neuronréteg kimenete}
 \[
 h_{W,b}(X)=\varphi(XW+b)
@@ -454,7 +497,7 @@ Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mi
 \end{column}
 \begin{column}{.35\textwidth}
 \begin{center}
-\includegraphics[height=7cm, keepaspectratio]{graphs/ql_4.png}
+\includegraphics[height=6cm, keepaspectratio]{graphs/ql_4.png}
 \end{center}
 \end{column}
 \end{columns}

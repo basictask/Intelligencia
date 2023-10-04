@@ -123,8 +123,9 @@ A $Q$-hálózat költségfüggvénye az \textbf{átlagos négyzetes Bellman hiba
 \begin{frame}{A DQN költségfüggvénye}
 \begin{columns}
 \begin{column}{.75\textwidth}
-A mély $Q$-tanulás során a költségfüggvény a négyzetes Bellman hiba várható értéke:
+A mély $Q$-tanulás során a költségfüggvény \textbf{a négyzetes Bellman hiba várható értéke}:
 \begin{block}{}
+\vspace{-0.5cm}
 \[
 J(\theta) = E_{s,a,r,s' \sim D} \left[ \left( r + \gamma \underset{a'}{max} Q_\theta(s',a') - Q_\theta(s,a) \right)^2 \right]
 \]
@@ -148,7 +149,7 @@ Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mi
 \end{column}
 \begin{column}{.35\textwidth}
 \begin{center}
-\includegraphics[height=7cm, keepaspectratio]{../../5_ql/doc/graphs/ql_4.png}
+\includegraphics[height=6cm, keepaspectratio]{../../5_ql/doc/graphs/ql_4.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -214,7 +215,7 @@ A $Q_{\bar{\theta}}$ célhálózat pedig kiértékeli az online hálózat által
 J(\theta) = E_{s,a,r,s' \sim D} \left[ \left( r + \gamma Q_{\bar{\theta}}(s',a^*) - Q_\theta(s,a) \right)^2 \right]
 \]
 \end{block}
-Ahol $E_{s,a,r,s' \sim D}$ a tapasztalat visszajátszásból származó miniköteg, $\gamma$ a diszkont ráta. 
+Ahol $\{s,a,r,s' \sim D\}$ a tapasztalat visszajátszásból származó miniköteg, $\gamma$ a diszkont ráta. 
 \end{column}
 \begin{column}{.3\textwidth}
 \begin{center}
@@ -239,6 +240,7 @@ Ebben az esetben a $\tau$ hiperparaméter szabályozza az \textbf{átlagolási r
 \[
 \bar{\theta} \leftarrow \tau \theta + (1 - \tau) \bar{\theta}
 \]
+\vspace{-0.5cm}
 \begin{itemize}
 	\item $\bar{\theta}$: Célhálózat paraméterei
 	\item $\theta$: Online hálózat paraméterei
@@ -279,7 +281,7 @@ Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memó
 
 \begin{frame}{Az előny függvény}
 A megerősítéses tanulás harmadik értékfüggvénye a $V(s)$ és a $Q(s,a)$ mellett.\par\smallskip
-Matematikailag az előny függvény $s$ állapotra és $a$ cselekvésre a cselekvés $Q$ értékének és az állapot értékének a különbsgée:
+Matematikailag az előny függvény $s$ állapotra és $a$ cselekvésre a cselekvés $Q(s,a)$ minőségének és $s$ állapot $V(s)$ értékének a különbsége:
 \begin{block}{Előny függvény}
 Az előny függvény megadja, \textbf{mennyivel jobb vagy rosszabb} egy adott $a$ cselekvést végrehajtani egy $s$ állapotból a többi elérhető cselekvéshez képest.
 \[
@@ -325,7 +327,7 @@ A hálózatok között a paraméterek másolását explicit másolással, vagy P
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
-\includegraphics[width=6cm, keepaspectratio]{graphs/dql_6.png}
+\includegraphics[width=7.5cm, keepaspectratio]{graphs/dql_6.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -348,7 +350,7 @@ Az aktor-kritikus architektúra egy kettős tanulási eljárás, amely kombinál
 \end{column}
 \begin{column}{.4\textwidth}
 \begin{center}
-\includegraphics[height=5.5cm, keepaspectratio]{graphs/dql_7.png}
+\includegraphics[height=6cm, keepaspectratio]{graphs/dql_7.png}
 \end{center}
 \end{column}
 \end{columns}
