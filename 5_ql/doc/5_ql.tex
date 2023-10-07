@@ -153,7 +153,7 @@ Tehát az optimális politika:
 \begin{algorithm}[H]
 \caption{$Q$-tanulás algoritmusa $\pi \approx \pi_*$ megbecslésére}
 \SetAlgoLined
-\textbf{Input}: $\alpha$ tanulási sebesség; $\varepsilon > 0$ hibahatár\par
+\textbf{Input}: $\alpha$ tanulási sebesség\par
 $Q(s,a) \leftarrow random()$ for $s \in S$, $a \in A$\tcc*[t]{$Q$ értékek inícializálása}
 $Q(s_T,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapot $0$-ra állítása}
 \For{$i=0 \rightarrow max_i$}{
@@ -198,7 +198,7 @@ Ha az érme pedig írásra esik, akkor ugyanez a frissítés $Q_1$ és $Q_2$ fel
 \caption{Dupla $Q$-tanulás algoritmusa}
 \SetAlgoLined
 \begin{small}
-\textbf{Input}: $\alpha$ tanulási sebesség; $\varepsilon > 0$ hibahatár\par
+\textbf{Input}: $\alpha$ tanulási sebesség\par
 $Q_1(s,a) \leftarrow random()$, $Q_2(s,a) \leftarrow random()$ for $s \in S$, $a \in A$\;
 $Q_1(s_T,\cdot) \leftarrow 0$, $Q_2(s_T,\cdot) \leftarrow 0$\tcc*[t]{Terminális állapotok $0$-ra állítása}
 \For{$i=0 \rightarrow max_i$}{
@@ -207,7 +207,7 @@ $Q_1(s_T,\cdot) \leftarrow 0$, $Q_2(s_T,\cdot) \leftarrow 0$\tcc*[t]{Terminális
 		$a \leftarrow \pi(s)$\tcc*[t]{Cselekvés választása $\pi$ szerint, pl. $\varepsilon$-mohó}
 		$a$ végrehajtása, $r$ és $s'$ megfigyelése\;
 		\eIf{$p > 0.5$}{
-			 $Q_1(s,a) \leftarrow Q_1(s,a) + \alpha \left[ r + \gamma Q_2\left(s', \underset{a'}{argmax} Q_1(s',a')\right) - Q_1(s,a) \right]$
+			$Q_1(s,a) \leftarrow Q_1(s,a) + \alpha \left[ r + \gamma Q_2\left(s', \underset{a'}{argmax} Q_1(s',a')\right) - Q_1(s,a) \right]$
 		}{
 			$Q_2(s,a) \leftarrow Q_2(s,a) + \alpha \left[ r + \gamma Q_1\left(s', \underset{a'}{argmax} Q_2(s',a')\right) - Q_2(s, a) \right]$
 		}
