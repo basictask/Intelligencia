@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{afterpage}
 \usepackage{graphicx}
+\usepackage{tabularx}
 \usepackage{geometry}
 \usepackage{amsmath}
 \usepackage{babel}
@@ -108,12 +109,66 @@ $P(C,1,D)=0.98$, $P_\text{dugó}(C,1,D)=0.75$, $R_\text{dugó}(C,1,D)=-65$, $R_\
 $P(C,2,D)=0.77$, $P_\text{dugó}(C,2,D)=0.53$, $R_\text{dugó}(C,2,D)=-58$, $R_\text{norm}(C,2,D)=-10$\\
 
 \subsection{Dinamikus programozás (2)}
-Oldja meg a problémát dinamikus programozással. Ehhez tartozóan implementálja a politika iteráció eljárását (politika kiértékelés, politika javítás). Futtassa a szimulációt adott konvergencia kritériumig. Mutassa meg, hogy az ügynök megtanulta optimalizálni a jutalmat. Írja le röviden az eljárás elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában
+Oldja meg a problémát dinamikus programozással. Ehhez tartozóan implementálja a politika iteráció eljárását (politika kiértékelés, politika javítás). Futtassa a szimulációt adott konvergencia kritériumig. Mutassa meg, hogy az ügynök megtanulta optimalizálni a jutalmat. Írja le röviden az eljárás elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában.
 
 \subsection{Sztochasztikus becslés (2)}
-Oldja meg a problémát sztochasztikus becsléssel. Ehhez tartozóan implementálja a Monte Carlo és időbeli különbségek politika keresési eljárásait. Futtassa a szimulációt adott konvergencia kritériumig. Mutassa meg, hogy az ügynök megtanulta optimalizálni a jutalmat. Írja le röviden az eljárás elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában
+Oldja meg a problémát sztochasztikus becsléssel. Ehhez tartozóan implementálja a Monte Carlo és időbeli különbségek politika keresési eljárásait. Futtassa a szimulációt adott konvergencia kritériumig. Mutassa meg, hogy az ügynök megtanulta optimalizálni a jutalmat. Írja le röviden az eljárás elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában.
 
 \newpage
+
+\section{Tőzsde}
+
+Az ügynök egy tőzsdén akar befektetni és eladni. A tőzsde úgy működik, hogy minden reggel 10 részvény közül választhat, ami zárás után dől el, hogy jövedelmezett-e vagy nem. Minden nap csak egy részvényt választhat.
+
+\begin{center}
+\includegraphics[width=\textwidth, keepaspectratio]{graphs/2_tozsde.png}
+\end{center}
+
+Az ügynök a jutalmát a befektetésekből kapja meg. Minden befektetésnek a jutalma egy normális eloszlásból származik, ahol $\mu$ a várható érték és $\sigma$ a variancia. 
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Részvény & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+\hline
+$\mu$ & $0.76$ & $-1.23$ & $1.54$ & $-0.48$ & $1.94$ & $-0.82$ & $-1.27$ & $0.92$ & $-1.99$ & $1.30$ \\
+\hline
+$\sigma$ & $0.34$ & $0.72$ & $0.61$ & $0.87$ & $0.28$ & $0.51$ & $0.18$ & $0.43$ & $0.95$ & $0.75$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Minden nap az ügynök választhat, hogy a legjobban jövedelmező befektetést választja, vagy kockáztat és véletlenszerűen teszi meg a tétet. 
+
+\subsection{$\varepsilon$-mohó ügynök (1)}
+
+Implementálja a befektetés környezetét és optimalizálja a befektetési stratégia $\varepsilon$ értékét. Mutassa meg, hogy az ügynök képes optimalizálni a jutalmat a tanítási iterációk alatt. Adja meg az optimális $\varepsilon$ értéket 2 tizedesjegy pontossággal. Hasonlítsa össze a mohó stratégia és az optimális stratégia jutalmait az egyes részvényeken. Ábrázolja az összehasonlítást. Írja le röviden az eljárás elméleti alapjait és a saját tapasztalatait, eredményeit egy Jupyter markdown cellában.
+
+\newpage
+
+\section{MDP}
+
+Implementálja az alábbi $MDP(S,A,P,R,s_0,\gamma)$ Markov döntési folyamatot. Az állapotok valószínűsége tizedes törtekként szerepel, a jutalmak pedig $+$ és $-$ előjellel a kapcsolatokon. Használja az alábbi paramétereket: $s_0 = 0, \; \gamma=0.98$
+
+\begin{center}
+\includegraphics[width=\textwidth, height=14cm, keepaspectratio]{graphs/3_mdp.png}
+\end{center}
+
+\subsection{Bellman egyenletek (1)}
+Számolja ki a $V(s)$ és $Q(s,a)$ értékeket a Bellman egyenlettel a környezeti dinamikát felhasználva. Mutassa meg, hogy az értékek a valóshoz konvergálnak. Írja le az eljárás elméleti alapjait és a saját tapasztalatait röviden egy Jupyter markdown cellában. 
+
+\subsection{$Q$-tanulás (2)}
+Implementálja a $Q$-tanulás és dupla $Q$-tanulás algoritmusát az adott Markov döntési folyamatra. Ábrázolja és hasonlítsa össze a $Q$-táblákat az értékek konvergenciáját mindkét esetben. Írja le az eljárás elméleti alapjait és a saját tapasztalatait röviden egy Jupyter markdown cellában.
+
+
+
+
+
+
+
+
+
+
 
 
 
