@@ -5,7 +5,9 @@
 \usepackage{graphicx}
 \usepackage{tabularx}
 \usepackage{geometry}
+\usepackage{listings}
 \usepackage{amsmath}
+\usepackage{xcolor}
 \usepackage{babel}
 \usepackage{float}
 \usepackage{multirow}
@@ -50,6 +52,20 @@
     pdfpagemode=FullScreen,
 }
 
+\lstdefinestyle{mystyle}{
+    language=Python, % Specify the programming language
+    basicstyle=\ttfamily, % Set the font style (typewriter font)
+    keywordstyle=\color{blue}, % Define keywords color
+    commentstyle=\color{green}, % Define comments color
+    numbers=none, % Display line numbers
+    numberstyle=\tiny\color{gray}, % Line number font style
+    breaklines=true, % Enable line wrapping
+    frame=single, % Add a frame around the code
+    tabsize=4 % Set the tab size
+}
+
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
 \begin{document}
 
 \begin{titlepage}
@@ -88,7 +104,7 @@ Néha pedig átirányítódik a másik hídra annak ellenére, hogy a másik út
 A cél az, hogy olyan stratégiát találjon az ügynök, ami a leghamarabb eljuttatja a céljához. A jutalmak a negatív időt jelentik, amelyre szüksége van az adott út/híd átlépéséhez.
 
 Az $A$, $B$, $C$  állapotokhoz és minden cselekvéshez a jutalom a következőképpen számolódik ki:
-\[R(s,a) = 
+\[R(s,a,s') = 
 \begin{cases}
 _{\textit{Ha dugó van}}^{\textit{Ha nincs dugó}} & _{R(s,\textit{dugó})}^{R(s,\textit{norm})}
 \end{cases}
@@ -158,19 +174,83 @@ Implementálja az alábbi $MDP(S,A,P,R,s_0,\gamma)$ Markov döntési folyamatot.
 Számolja ki a $V(s)$ és $Q(s,a)$ értékeket a Bellman egyenlettel a környezeti dinamikát felhasználva. Mutassa meg, hogy az értékek a valóshoz konvergálnak. Írja le az eljárás elméleti alapjait és a saját tapasztalatait röviden egy Jupyter markdown cellában. 
 
 \subsection{$Q$-tanulás (2)}
-Implementálja a $Q$-tanulás és dupla $Q$-tanulás algoritmusát az adott Markov döntési folyamatra. Ábrázolja és hasonlítsa össze a $Q$-táblákat az értékek konvergenciáját mindkét esetben. Írja le az eljárás elméleti alapjait és a saját tapasztalatait röviden egy Jupyter markdown cellában.
+Implementálja a $Q$-tanulás és dupla $Q$-tanulás algoritmusát az adott Markov döntési folyamatra. Ábrázolja és hasonlítsa össze a $Q$-táblákat illetve az értékek konvergenciáját mindkét esetben. Írja le az eljárás elméleti alapjait és a saját tapasztalatait röviden egy Jupyter markdown cellában.
 
+\newpage
 
+\section{Teljes MDP}
 
+Adott az alábbi programkód, ami egy $MDP(S,A,P,R,s_0,\gamma)$ Markov döntési folyamatot definiál. Másolja be a feladat megoldásához tartozó Jupyter notebook első cellájába és végig hagyja módosítatlanul.
 
+\begin{lstlisting}[style=mystyle]
+import numpy as np
 
+random_seed = 6556
+np.random.seed(random_seed)
 
+n_S = 10
+n_A = 3
+S = list(range(0, n_S))
+A = list(range(0, n_A))
+p_s_a = np.zeros((n_S, n_S, n_A))
+R = np.random.randint(0, 100, (n_S, n_A))
 
+for a in range(n_A):
+    for i, tpr in enumerate(p_s_a[:, :, a]):
+        choosen_indexes = np.random.choice(n_S, 3, replace = False)
+        p_dist = np.random.random(3)    
+        p_sum = sum(p_dist)
+        p_dist = [i/p_sum for i in p_dist]
+        for j, k in enumerate(choosen_indexes):
+            tpr[k] = p_dist[j]
 
+def step(s, a):   
+    sp = np.random.choice(n_S, 1, p=p_s_a[s, :, a])[0]
+    r = R[s, a]    
+    return sp, r
+\end{lstlisting}
+A feladat megoldása során használja a következő paramétereket: $s_0=0, \gamma=0.99$.
 
+\subsection{Mélytanulás (3)}
 
+Oldja meg a Markov Döntési folyamatot mély $Q$-tanulással és dupla mély $Q$-tanulással. Mutassa meg, hogy az ügynök képes optimalizálni a jutalmakat az iterációk során. Hasonlítsa össze az eljárásokat. Ábrázolja az ügynök viselkedését animáción egy epizódon keresztül. Írja le az eljárások elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában. 
 
+\newpage
 
+\section{FrozenLake-v1}
+
+Implementáljon megerősítéses tanulási algoritmust a FrozenLake-v1 megerősítéses tanulási környezetre:
+
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/frozenlake.jpg}
+\end{center}
+
+A következő paramétereket használja: 
+\texttt{\textbf{desc}=None, \textbf{map\_name}="8x8", \textbf{is\_slippery}=True, \textbf{render\_mode}='rgb\_array'}
+
+\subsection{Sztochasztikus becslés (2)}
+
+Oldja meg a FrozenLake-v1 megerősítéses tanulási környezetet Monte Carlo illetve temporális különbségek algoritmusával. Ábrázolja az állapot-értékek konvergenciáját mindkét esetben. Mutassa meg, hogy az ügynök képes optimalizálni a jutalmakat az iterációk alatt. Hasonlítsa össze az eljárásokat. Ábrázolja az ügynök viselkedését animáción egy epizódon keresztül. Írja le az eljárások elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában. 
+
+\subsection{Mélytanulás (3)}
+
+Oldja meg a környezetet dupla mély $Q$-tanulással és párbajozó mély $Q$-tanulással. Mutassa meg, hogy az ügynök képes optimalizálni a jutalmakat az iterációk során. Hasonlítsa össze az eljárásokat. Ábrázolja az ügynök viselkedését animáción egy epizódon keresztül. Írja le az eljárások elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában. 
+
+\section{CartPole-v1}
+
+Implementáljon megerősítéses tanulási algoritmust a CartPole-v1 megerősítéses tanulási környezetre:
+
+\begin{center}
+\includegraphics[width=7cm, keepaspectratio]{images/cartpole.jpg}
+\end{center}
+
+\subsection{Mélytanulás (3)}
+
+Oldja meg a környezetet dupla mély $Q$-tanulással és dupla mély $Q$-tanulással. Mutassa meg, hogy az ügynök képes optimalizálni a jutalmakat az iterációk során. Hasonlítsa össze az eljárásokat. Ábrázolja az ügynök viselkedését animáción egy epizódon keresztül. Írja le az eljárások elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában. 
+
+\subsection{Mélytanulás (3)}
+
+Oldja meg a környezetet párbajozó mély $Q$-tanulással és aktor-kritikus architektúrával. Mutassa meg, hogy az ügynök képes optimalizálni a jutalmakat az iterációk során. Hasonlítsa össze az eljárásokat. Ábrázolja az ügynök viselkedését animáción egy epizódon keresztül. Írja le az eljárások elméleti alapjait és a saját tapasztalatait egy Jupyter markdown cellában. 
 
 \end{document}
 
