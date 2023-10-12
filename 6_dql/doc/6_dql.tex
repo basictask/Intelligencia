@@ -159,8 +159,7 @@ Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mi
 \begin{algorithm}[H]
 \caption{Mély $Q$-tanulás}
 \SetAlgoLined
-\textbf{Input}: $\tau \in [0,1]$ átlagolási ráta\\
-Online hálózat $Q_\theta$, célhálózat $Q_{\bar{\theta}}$, tapasztalat memória $D$ inicializálása\;
+$Q$-hálózat $Q_\theta$ inicializálása, tapasztalat memória $D$ inicializálása\;
 \For{$i = 0 \rightarrow max_i$}{
 	\For{$t = 0 \rightarrow max_t$}{
 		$s$ megfigyelése és $a \sim \pi(s,a)$ cselekvés választása\;
