@@ -295,7 +295,7 @@ Egy $A(s,a)=0$ érték azt jelenti, hogy $a$ cselekvést végrehajtani olyan jö
 \begin{column}{.6\textwidth}
 \only<1>{A párbajozó $Q$-tanulás algoritmusa \textbf{explicit módon kettéválasztja az állapot-érték és előny függvények megbecslését} minden állapot művelet esetén. Ez a szétválasztás teszi lehetővé a hatékonyabb tanulást és jobb általánosítást.\par\smallskip
 Az előnyfüggvény definíciójából kiindulva a minőségfüggvényt ki lehetne számolni úgy, mint $Q(s,a)=V(s)+A(s,a)$, \textbf{viszont ez problémás mert nem feltételezhető, hogy a hálózat minden értékre pontos becslést ad}.\par\smallskip}
-\only<2>{A gyakorlatban a $Q(s,a)$ érték úgy áll elő, hogy a $V(s)$ állapot-értékhez hozzáadódik a választott cselekvés és a legnagyobb előnyű cselekvés $A(s,a)$ értékének különbsége:
+\only<2>{A gyakorlatban a $Q(s,a)$ érték úgy áll elő, hogy a $V(s)$ állapot-értékhez hozzáadódik a választott cselekvés előnyének és az összes cselekvés előnyének különbsége:
 \begin{block}{}
 \vspace{-0.5cm}
 \[
