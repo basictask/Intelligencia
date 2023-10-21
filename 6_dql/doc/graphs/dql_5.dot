@@ -10,16 +10,16 @@ digraph dql {
 
     subgraph cluster1{
         style="dotted"
-        a1 [label="A(s,a1)", shape="rectangle"]
-        a2 [label="A(s,a2)", shape="rectangle"]
-        a3 [label="A(s,a3)", shape="rectangle"]  
+        a1 [label=<A(s,a<sub><font point-size="10">1</font></sub>)>, shape="rectangle"]
+        a2 [label=<A(s,a<sub><font point-size="10">3</font></sub>)>, shape="rectangle"]
+        a3 [label=<A(s,a<sub><font point-size="10">2</font></sub>)>, shape="rectangle"]  
     }
     
     subgraph cluster2{
         style="dotted"
-        q1 [label="Q(s,a1)", shape="rectangle"]
-        q2 [label="Q(s,a2)", shape="rectangle"]
-        q3 [label="Q(s,a3)", shape="rectangle"]  
+        q1 [label=<Q(s,a<sub><font point-size="10">1</font></sub>)>, shape="rectangle"]
+        q2 [label=<Q(s,a<sub><font point-size="10">3</font></sub>)>, shape="rectangle"]
+        q3 [label=<Q(s,a<sub><font point-size="10">2</font></sub>)>, shape="rectangle"]  
     }
 
     a1 -> q1
