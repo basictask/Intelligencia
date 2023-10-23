@@ -127,7 +127,7 @@ e_{\textit{férfi}} = \left[ -1,\;0.01,\;0.03,\;0.04 \right]
 \begin{columns}
 \begin{column}{.5\textwidth}
 A beágyazóvektorok használatával lehetőség nyílik a szavak hasonlóságának kiszámítására.\par\smallskip
-Az egymáshoz jelentés tartalmilag k\textbf{özelebb álló szavak beágyazóvektorainak matematikai távolsága alacsonyabb lesz, mint az egymástól távolabb eső szavaké}.
+Az egymáshoz jelentés tartalmilag \textbf{közelebb álló szavak beágyazóvektorainak matematikai távolsága alacsonyabb lesz, mint az egymástól távolabb eső szavaké}.
 \par\smallskip
 Ezáltal továbbá lehetséges analógiák kiszámítása is. \emph{A férfi és a király olyanok egymásnak, mint a nő és a királynő.}
 \end{column}
@@ -240,8 +240,151 @@ Továbbá a modellnek \textbf{minden fontos információt egyetlen kontextus vek
 \tableofcontents[currentsection]
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{Figyelem alapjai}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\only<1>{Az alapvető megfontolás, hogy a $z$ kontextusvektornak legyen \textbf{közvetlen kapcsolata nem csak az input szekvencia utolsó eleméhez, hanem mindegyikhez}.\par\smallskip
+Ezáltal a modellnek minden időlépésben minden vektor elemhez lesz hozzáférése, így lehetséges lesz megtanítani arra, \textbf{melyik állapot esetén melyik input elemre kell figyelmet fordítania}.}
+\only<2>{A dekódoló hálózat figyelem értéke $i$ időlépésben:
+\begin{block}{}
+\vspace{-0.2cm}
+\[ 
+e_i=f(y_{i-1}, h_i) \in \mathbb{R}^n 
+\]
+\end{block}
+A figyelmi értékek valószínűséggé alakítva és normalizálva:
+\begin{block}{}
+\[ 
+\alpha_{ij} = \frac{e_{ij}}{\sum_{k=1}^{T_x}e_{ik}} 
+\]
+\end{block}
+Ezáltal kontextus vektor $i$ időlépésben:
+\begin{block}{}
+\[
+z_i = \sum_{j=1}^T \alpha_{ij}h_j
+\]
+\end{block}}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{graphs/transformer_6.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
 
+\begin{frame}{Figyelmi modell}
+\begin{columns}
+\begin{column}{.3\textwidth}
+\begin{block}{}
+\vspace{-0.6cm}
+\[ 
+e_i=f(y_{i-1}, h_i) \in \mathbb{R}^n 
+\]
+\end{block}
+\begin{block}{}
+\[ 
+\alpha_{ij} = \frac{e_{ij}}{\sum_{k=1}^{T_x}e_{ik}} 
+\]
+\end{block}
+\begin{block}{}
+\[
+z_i = \sum_{j=1}^T \alpha_{ij}h_j
+\]
+\end{block}
+\end{column}
+\begin{column}{.7\textwidth}
+\only<1>{\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_7.png}
+\end{center}}
+\only<2>{\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_8.png}
+\end{center}}
+\only<3>{\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_9.png}
+\end{center}}
+\only<4>{\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_10.png}
+\end{center}}
+\only<5>{\begin{center}
+\includegraphics[width=14cm, height=7cm, keepaspectratio]{graphs/transformer_11.png}
+\end{center}}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Figyelmi hőtérkép}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A hőtérkép mutatja, hogy az egyes szavak \textbf{mennyire koncentrálódnak egymásra a fordítási folyamat során}. Ezáltal látható, \textbf{mely szavak között van erős kapcsolat}, és hogyan alakul ki a fordítás folyamata.
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=6cm, height=7cm, keepaspectratio]{images/transformer_2.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Jellemzőalapú figyelem}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A kulcs-érték-lekérdezés struktúra a transzformáló architektúrák \textbf{összetett információlekérdezési rendszerének alapjait képezik}.\par\smallskip
+Az eljárás mögötti intuíció:
+\begin{enumerate}
+	\item A modell lekérdezést (\textbf{Q}) intéz a tárolóhoz.
+	\item A keresőmotor a lekérdezést kulcsokhoz (\textbf{K}) rendeli, amik megfelelően leírják azt.
+	\item Az algoritmus megkeresi a kulcsokra legjobban illeszkedő értékeket (\textbf{V}).
+\end{enumerate}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{graphs/transformer_12.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Kulcs-érték-lekérdezés eljárása}
+\begin{columns}
+\begin{column}{.6\textwidth}
+A gyakorlatban a transzformáló 3 különböző reprezentációt használ a lekérdezéseknek, kulcsoknak és értékeknek. A reprezentáció az $X$ beágyazómátrix és $W_q, W_k, W_v$ súlymátrixok szorzataként számolódik ki. Az eredő dimenziószám kevesebb lesz az eredetinél.\par\smallskip
+Ezáltal előáll a transzformáló architektúra \textbf{önfigyelem} rétege:
+\begin{block}{}
+\vspace{-0.4cm}
+\[
+Figyelem\left( Q,K,V \right) = softmax\left( \frac{Q \cdot K^\intercal}{\sqrt{d_k}}  \right)V
+\]
+\end{block} 
+Ahol $d_k$ a kulcsvektor dimenziószáma.
+\end{column}
+\begin{column}{.4\textwidth}
+\begin{center}
+\includegraphics[width=6cm, height=7cm, keepaspectratio]{graphs/transformer_13.png}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Önfigyelem}
+\begin{columns}
+\begin{column}{.5\textwidth}
+A figyelem nem csak két szekvencia között definiálható, hanem abban az esetben is, \textbf{ha az input és output szekvencia megegyezik}.\par\smallskip
+Ez teszi lehetővé a modellnek, hogy a szekvencián belüli elemekhez \textbf{fontossági súlyokat rendeljen}. Így sajátítja el a modell a különböző elemek \textbf{struktúráját és a közöttük lévő kapcsolatokat}.\par\smallskip
+A figyelmi reprezentáció minden szóra kiszámolódik:
+\begin{block}{}
+\vspace{-0.2cm}
+\[
+A(Q,K,V) = A_1,A_2,\ldots,A_n
+\]
+\end{block}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{center}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/self_attention.png}
+\end{center}
+\end{column}
+\end{columns}
 \end{frame}
 
 \end{document}
