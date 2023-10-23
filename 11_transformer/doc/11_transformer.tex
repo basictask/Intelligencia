@@ -387,6 +387,104 @@ A(Q,K,V) = A_1,A_2,\ldots,A_n
 \end{columns}
 \end{frame}
 
+\begin{frame}{Modellezés folyamata önfigyelemmel}
+\begin{columns}
+\begin{column}{.3\textwidth}
+\begin{block}{}
+\vspace{-0.1cm}
+\[
+e_{ij} = \frac{Q_i \cdot K_j}{\sqrt{d_k}} 
+\]
+\end{block}
+\begin{block}{}
+\vspace{-0.5cm}
+\[
+a_{ij} = softmax(e_{ij})
+\]
+\end{block}
+\begin{block}{}
+\vspace{-0.3cm}
+\[
+\alpha_{ij} = \sum_j \left( a_{ij} \cdot V_i \right)
+\]
+\end{block}
+\end{column}
+\begin{column}{.7\textwidth}
+\only<1>{\begin{center}
+\includegraphics[height=7cm, width=10cm, keepaspectratio]{graphs/transformer_14.png}
+\end{center}}
+\only<2>{\begin{center}
+\includegraphics[height=7cm, width=10cm, keepaspectratio]{graphs/transformer_15.png}
+\end{center}}
+\only<3>{\begin{center}
+\includegraphics[height=7cm, width=10cm, keepaspectratio]{graphs/transformer_16.png}
+\end{center}}
+\only<4>{\begin{center}
+\includegraphics[height=7cm, width=10cm, keepaspectratio]{graphs/transformer_17.png}
+\end{center}}
+\only<5>{\begin{center}
+\includegraphics[height=7cm, width=10cm, keepaspectratio]{graphs/transformer_18.png}
+\end{center}}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Többfejű önfigyelem}
+\begin{columns}
+\begin{column}{.4\textwidth}
+Az önfigyelmi mechanizmust lehetséges megvalósítani több neurális fejjel is. Ezáltal lesz képes a modell \textbf{egyszerre különböző részeire fókuszálni az input szekvenciának}. Minden figyelmi fej különböző mintázatokat és struktúrát képes elsajátítani az adatokból. 
+\end{column}
+\begin{column}{.6\textwidth}
+Ebben az esetben a $Q,K,V$ értékek a fejek outputjainak konkatenálásával jönnek létre:
+\begin{block}{}
+\vspace{-0.2cm}
+\[
+Q=\left[ Q_1,Q_2,\ldots,Q_n \right]
+\]
+\end{block}
+\begin{block}{}
+\vspace{-0.2cm}
+\[
+K=\left[ K_1,K_2,\ldots,K_n \right]
+\]
+\end{block}
+\begin{block}{}
+\vspace{-0.2cm}
+\[
+V=\left[ V_1,V_2,\ldots,V_n \right]
+\]
+\end{block}
+\end{column}
+\end{columns}
+\begin{center}
+\includegraphics[width=12cm, keepaspectratio]{graphs/transformer_19.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Modellezés 3 fejjel}
+\only<1>{
+\begin{center}
+\includegraphics[width=14cm, keepaspectratio]{graphs/transformer_20.png}
+\end{center}}
+\only<2>{
+\begin{center}
+\includegraphics[width=14cm, keepaspectratio]{graphs/transformer_21.png}
+\end{center}}
+\only<3>{
+\begin{center}
+\includegraphics[width=14cm, keepaspectratio]{graphs/transformer_22.png}
+\end{center}}
+\only<4>{
+\begin{center}
+\includegraphics[width=14cm, keepaspectratio]{graphs/transformer_23.png}
+\end{center}}
+\only<5>{
+\begin{center}
+\includegraphics[width=14cm, keepaspectratio]{graphs/transformer_24.png}
+\end{center}}
+Ahol a lekérdezés-kulcs-érték mátrixok a fejek outputjának konkatenáltjai: $Q_i = \left[ Q_{i1}, Q_{i2}, Q_{i3} \right]$, $K_i = \left[ K_{i1}, K_{i2}, K_{i3} \right]$, $V_i = \left[ V_{i1}, V_{i2}, V_{i3} \right]$ és a fejeknek saját tanítható súlyai vannak: $Q_{ij} = X_i \cdot W_{Q_{ij}}$, $K_{ij} = X_i \cdot W_{K_{ij}}$, $V_{ij} = X_i \cdot W_{V_{ij}}$.
+\end{frame}
+
 \end{document}
 
 

@@ -1,0 +1,12 @@
+digraph transformer {
+    //graph [dpi=300]
+    rankdir="BT"
+
+    input_seq [label="Input szekvencia", shape="rectangle"]
+    input_embed [label="Beágyazás", shape="rectangle"]
+    mhattention1 [label="Többfejes figyelem", shape="rectangle  "]
+    fc1 [label="Teljesen becsatolt\nréteg", shape="rectangle"]
+
+    input_seq -> input_embed
+
+}

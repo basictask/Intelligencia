@@ -3,9 +3,9 @@ digraph transformer {
     rankdir = "BT"
 
     X [label=<X = {x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>n</sub>}>, shape="rectangle"]
-    Wq [label=<Q = XW<sub>q</sub>>, shape="rectangle"]
-    Wk [label=<K = XW<sub>k</sub>>, shape="rectangle"]
-    Wv [label=<V = XW<sub>v</sub>>, shape="rectangle"]
+    Wq [label=<Q = XW<sub>Q</sub>>, shape="rectangle", style="filled", fillcolor="orangered3"]
+    Wk [label=<K = XW<sub>K</sub>>, shape="rectangle", style="filled", fillcolor="yellow2"]
+    Wv [label=<V = XW<sub>V</sub>>, shape="rectangle", style="filled", fillcolor="plum"]
     attention [label="Figyelem(Q, K, V)", shape="rectangle"]
 
     X -> Wq

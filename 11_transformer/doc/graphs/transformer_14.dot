@@ -14,23 +14,23 @@ digraph transformer {
     a4 [label=<a<sub>4</sub>>, shape="rectangle", style="filled", fillcolor=""]
     a5 [label=<a<sub>5</sub>>, shape="rectangle", style="filled", fillcolor=""]
 
-    q1 [label=<q<sub>1</sub>>, shape="rectangle", style="filled", fillcolor="orange"]
-    q2 [label=<q<sub>2</sub>>, shape="rectangle", style="filled", fillcolor="orange"]
-    q3 [label=<q<sub>3</sub>>, shape="rectangle", style="filled", fillcolor="orange"]
-    q4 [label=<q<sub>4</sub>>, shape="rectangle", style="filled", fillcolor="orange"]
-    q5 [label=<q<sub>5</sub>>, shape="rectangle", style="filled", fillcolor="orange"]
+    q1 [label=<Q<sub>1</sub>>, shape="rectangle", style="filled", fillcolor="orangered3"]
+    q2 [label=<Q<sub>2</sub>>, shape="rectangle", style="filled", fillcolor="orangered3"]
+    q3 [label=<Q<sub>3</sub>>, shape="rectangle", style="filled", fillcolor="orangered3"]
+    q4 [label=<Q<sub>4</sub>>, shape="rectangle", style="filled", fillcolor="orangered3"]
+    q5 [label=<Q<sub>5</sub>>, shape="rectangle", style="filled", fillcolor="orangered3"]
 
-    k1 [label=<k<sub>1</sub>>, shape="rectangle", style="filled", fillcolor="lawngreen"]
-    k2 [label=<k<sub>2</sub>>, shape="rectangle", style="filled", fillcolor="lawngreen"]
-    k3 [label=<k<sub>3</sub>>, shape="rectangle", style="filled", fillcolor="lawngreen"]
-    k4 [label=<k<sub>4</sub>>, shape="rectangle", style="filled", fillcolor="lawngreen"]
-    k5 [label=<k<sub>5</sub>>, shape="rectangle", style="filled", fillcolor="lawngreen"]
+    k1 [label=<K<sub>1</sub>>, shape="rectangle", style="filled", fillcolor="yellow2"]
+    k2 [label=<K<sub>2</sub>>, shape="rectangle", style="filled", fillcolor="yellow2"]
+    k3 [label=<K<sub>3</sub>>, shape="rectangle", style="filled", fillcolor="yellow2"]
+    k4 [label=<K<sub>4</sub>>, shape="rectangle", style="filled", fillcolor="yellow2"]
+    k5 [label=<K<sub>5</sub>>, shape="rectangle", style="filled", fillcolor="yellow2"]
 
-    v1 [label=<v<sub>1</sub>>, shape="rectangle", style="filled", fillcolor="lightblue"]
-    v2 [label=<v<sub>2</sub>>, shape="rectangle", style="filled", fillcolor="lightblue"]
-    v3 [label=<v<sub>3</sub>>, shape="rectangle", style="filled", fillcolor="lightblue"]
-    v4 [label=<v<sub>4</sub>>, shape="rectangle", style="filled", fillcolor="lightblue"]
-    v5 [label=<v<sub>5</sub>>, shape="rectangle", style="filled", fillcolor="lightblue"]
+    v1 [label=<V<sub>1</sub>>, shape="rectangle", style="filled", fillcolor="plum"]
+    v2 [label=<V<sub>2</sub>>, shape="rectangle", style="filled", fillcolor="plum"]
+    v3 [label=<V<sub>3</sub>>, shape="rectangle", style="filled", fillcolor="plum"]
+    v4 [label=<V<sub>4</sub>>, shape="rectangle", style="filled", fillcolor="plum"]
+    v5 [label=<V<sub>5</sub>>, shape="rectangle", style="filled", fillcolor="plum"]
 
     embed1 [label="Beágyazás", shape="rectangle"]    
     embed2 [label="Beágyazás", shape="rectangle"]    
@@ -43,6 +43,21 @@ digraph transformer {
     //alpha3 [label=<[α<sub><font point-size="10">3,1</font></sub>, α<sub><font point-size="10">3,2</font></sub>, α<sub><font point-size="10">3,3</font></sub>, α<sub><font point-size="10">3,4</font></sub>, α<sub><font point-size="10">3,5</font></sub>] >, shape="plaintext"]
     //alpha4 [label=<[α<sub><font point-size="10">4,1</font></sub>, α<sub><font point-size="10">4,2</font></sub>, α<sub><font point-size="10">4,3</font></sub>, α<sub><font point-size="10">4,4</font></sub>, α<sub><font point-size="10">4,5</font></sub>] >, shape="plaintext"]
     //alpha5 [label=<[α<sub><font point-size="10">5,1</font></sub>, α<sub><font point-size="10">5,2</font></sub>, α<sub><font point-size="10">5,3</font></sub>, α<sub><font point-size="10">5,4</font></sub>, α<sub><font point-size="10">5,5</font></sub>] >, shape="plaintext"]
+
+    z [label="z", shape="rectangle", style="filled", fillcolor="orange"]
+    
+    rnn1 [label="RNN", shape="rectangle", style="filled", fillcolor="lightblue"]
+    rnn2 [label="RNN", shape="rectangle", style="filled", fillcolor="lightblue"]
+    rnn3 [label="RNN", shape="rectangle", style="filled", fillcolor="lightblue"]
+    rnn4 [label="RNN", shape="rectangle", style="filled", fillcolor="lightblue"]
+    rnn5 [label="RNN", shape="rectangle", style="filled", fillcolor="lightblue"]
+    
+    y1 [label=<y<sub>1</sub>>, shape="rectangle", shape="plaintext"]
+    //y2 [label=<y<sub>2</sub>>, shape="rectangle", shape="plaintext"]
+    //y3 [label=<y<sub>3</sub>>, shape="rectangle", shape="plaintext"]
+    //y4 [label=<y<sub>4</sub>>, shape="rectangle", shape="plaintext"]
+    //y5 [label=<y<sub>5</sub>>, shape="rectangle", shape="plaintext"]
+
 
     x1 -> embed1
     x2 -> embed2
@@ -84,7 +99,16 @@ digraph transformer {
     k5 -> alpha1 [minlen=4, constraint="False"]
     v5 -> alpha1 [minlen=4, constraint="False"]
     
+    {rank="same"; rnn1; rnn2; rnn3; rnn4; rnn5;}
 
+    rnn1 -> rnn2 [constraint="false", style="invis", minlen=9]
+    rnn2 -> rnn3 [constraint="false", style="invis", minlen=9]
+    rnn3 -> rnn4 [constraint="false", style="invis", minlen=9]
+    rnn4 -> rnn5 [constraint="false", style="invis", minlen=9]
+
+    alpha1 -> z
+    z -> rnn1
+    rnn1 -> y1
 
 
 
