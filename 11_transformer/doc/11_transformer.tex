@@ -442,12 +442,14 @@ Ebben az esetben a $Q,K,V$ értékek a fejek outputjainak konkatenálásával j�
 Q=\left[ Q_1,Q_2,\ldots,Q_n \right]
 \]
 \end{block}
+\vspace{-0.2cm}
 \begin{block}{}
 \vspace{-0.2cm}
 \[
 K=\left[ K_1,K_2,\ldots,K_n \right]
 \]
 \end{block}
+\vspace{-0.2cm}
 \begin{block}{}
 \vspace{-0.2cm}
 \[
@@ -457,7 +459,7 @@ V=\left[ V_1,V_2,\ldots,V_n \right]
 \end{column}
 \end{columns}
 \begin{center}
-\includegraphics[width=12cm, keepaspectratio]{graphs/transformer_19.png}
+\includegraphics[width=11cm, keepaspectratio]{graphs/transformer_19.png}
 \end{center}
 \end{frame}
 
@@ -483,6 +485,28 @@ V=\left[ V_1,V_2,\ldots,V_n \right]
 \includegraphics[width=14cm, keepaspectratio]{graphs/transformer_24.png}
 \end{center}}
 Ahol a lekérdezés-kulcs-érték mátrixok a fejek outputjának konkatenáltjai: $Q_i = \left[ Q_{i1}, Q_{i2}, Q_{i3} \right]$, $K_i = \left[ K_{i1}, K_{i2}, K_{i3} \right]$, $V_i = \left[ V_{i1}, V_{i2}, V_{i3} \right]$ és a fejeknek saját tanítható súlyai vannak: $Q_{ij} = X_i \cdot W_{Q_{ij}}$, $K_{ij} = X_i \cdot W_{K_{ij}}$, $V_{ij} = X_i \cdot W_{V_{ij}}$.
+\end{frame}
+
+\begin{frame}{Teljes transzformáló architektúra}
+\begin{center}
+\includegraphics[width=14cm, keepaspectratio]{graphs/transformer_25.png}
+\end{center}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{itemize}
+	\item Bemeneti kódolás
+	\item Önfigyelem mechanizmus
+	\item Teljesen becsatolt rétegek
+\end{itemize}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{itemize}
+	\item Reziduális- és réteg normalizálás 
+	\item Szekvencia-szekvencia dekóder
+	\item Kimeneti réteg
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 \end{document}
