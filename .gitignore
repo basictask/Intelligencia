@@ -2,7 +2,10 @@
 *.backup
 *.mkv
 *.DS_Store
+*settings.json
 .DS_Store
+7_dl/code/data/imagenette-160
+7_dl/code/imagenette-160.tgz
 
 # LaTeX
 *.aux
