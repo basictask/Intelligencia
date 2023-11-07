@@ -3,10 +3,13 @@
 *.mkv
 *.DS_Store
 *settings.json
+*.tgz
 .DS_Store
 7_dl/code/data/imagenette-160
 7_dl/code/imagenette-160.tgz
 8_od/code/images/
+7_dl/code/data/
+7_dl/code/runs/
 
 # LaTeX
 *.aux
