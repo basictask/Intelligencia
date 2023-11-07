@@ -95,9 +95,36 @@ h=\varphi(z)
 \begin{frame}{Gyakori aktivációs függvények}
 \begin{columns}
 \begin{column}{.5\textwidth}
-A neuron által kiszámolt súlyozott szorzatösszeg egy aktivációs függvénybe kerül behelyettesítésre. \par\smallskip
+\only<1>{A neuron által kiszámolt súlyozott szorzatösszeg egy aktivációs függvénybe kerül behelyettesítésre. \par\smallskip
 A neurális hálózatok az aktivációs függvények segítségével \textbf{sajátítanak el komplex mintázatokat}. Az aktivációs függvény vezeti be a neurális hálózatokba a \textbf{nemlineáris transzformációt}, enélkül csak egy lineáris transzformáció lenne.\par\smallskip
-A különböző alkalmazásokra külön aktivációs függvények használatosak.
+A különböző alkalmazásokra külön aktivációs függvények használatosak.}
+\only<2>{
+\\
+$
+Sigmoid(x) = \frac{1}{1 + e^x} 
+$\\
+\vspace{0.5cm}
+$
+ReLU(x) = max(0, x)
+$\\
+\vspace{0.5cm}
+$
+ELU(x)=\begin{cases}_{\alpha(e^{x}-1)}^{x} & _{ha\:x<0}^{ha\:x\geq0}\end{cases}
+$\\
+\vspace{0.5cm}
+$
+tanh(x) = \frac{e^{2x} - 1}{e^{2x} + 1}
+$\\
+\vspace{0.5cm}
+$
+Leaky\:ReLU(x)=\begin{cases}
+_{\alpha\cdot x}^{x} & _{ha\:x<0}^{ha\:x\geq0}\end{cases}
+$\\
+\vspace{0.5cm}
+$
+Swish(x,\beta) = \frac{x}{1 + e^{-\beta \cdot x}}
+$\\
+}
 \end{column}
 \begin{column}{.5\textwidth}
 \begin{center}
