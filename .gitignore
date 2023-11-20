@@ -11,6 +11,8 @@
 7_dl/code/data/
 7_dl/code/runs/
 8_od/code/coco128
+9_instance/code/OneFormer/*
+9_instance/code/data
 
 # LaTeX
 *.aux

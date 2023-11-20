@@ -1,0 +1,64 @@
+digraph mdp {
+    graph [dpi=300]
+
+    s0 [label=<s<sub>0</sub>>, shape="circle"]
+    s1 [label=<s<sub>1</sub>>, shape="circle"]
+    s2 [label=<s<sub>2</sub>>, shape="circle"]
+    s3 [label=<s<sub>3</sub>>, shape="circle"]
+    s4 [label=<s<sub>4</sub>>, shape="circle"]
+
+    s0 -> s0_a0
+    s0_a0 -> s1
+    s0_a0 -> s2
+
+    s0 -> s0_a1
+    s0_a1 -> s2
+    s0_a1 -> s3
+
+    s1 -> s1_a0
+    s1 -> s1_a2
+    s1_a0 -> s3
+    s1_a0 -> s4
+    s1_a0 -> s5
+    s1_a2 -> s0
+    s1_a2 -> s2
+
+    s2 -> s2_a0
+    s2 -> s2_a1
+    s2 -> s2_a2
+    s2_a0 -> s3
+    s2_a0 -> s4
+    s2_a1 -> s3
+    s2_a1 -> s4
+    s2_a2 -> s2
+
+    s3 -> s3_a0
+    s3 -> s3_a1
+    s3_a0 -> s2
+    s3_a0 -> s1
+    s3_a1 -> s5
+
+    s4 -> s4_a0
+    s4 -> s4_a1
+    s4 -> s4_a2
+
+    s4_a0 -> s0
+    s4_a1 -> s1
+    s4_a2 -> s2
+    
+    s0_a0 [label=<a<sub>0</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s0_a1 [label=<a<sub>1</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s0_a1 [label=<a<sub>2</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s1_a0 [label=<a<sub>3</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s1_a1 [label=<a<sub>4</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s1_a2 [label=<a<sub>5</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s2_a0 [label=<a<sub>6</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s2_a1 [label=<a<sub>7</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s2_a2 [label=<a<sub>8</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s3_a0 [label=<a<sub>9</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s3_a1 [label=<a<sub>10</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s3_a2 [label=<a<sub>11</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s4_a0 [label=<a<sub>12</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s4_a1 [label=<a<sub>13</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+    s4_a2 [label=<a<sub>14</sub>>, style="filled", fillcolor="black", shape="circle", fontcolor="white"]
+}
