@@ -13,6 +13,7 @@
 8_od/code/coco128
 9_instance/code/OneFormer/*
 9_instance/code/data
+9_instance/code/oneformer/
 
 # LaTeX
 *.aux
