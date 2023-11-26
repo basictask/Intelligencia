@@ -122,19 +122,56 @@ $0$ & $0$ & $1$\\
 Az egyes szavak ilyen módon való kódolása lehetővé teszi, hogy egy neurális hálózat felépítse a saját \textbf{szókincsét}, majd különböző szekvenciákat bináris, azonos hosszúságú vektorok halmazaként reprezentáljon.
 \end{frame}
 
+\begin{frame}{Szavak reprezentálása beágyazóvektorokkal}
+\begin{columns}
+\begin{column}{.4\textwidth}
+\begin{block}{Beágyazás}
+Egy szó beágyazása \textbf{egy magas dimenziójú vektortérben való numerikus reprezentáció}. Ezek a vektorok tartalmazzák a szavak \textbf{struktúráját, szemantikáját, és szintaktikai szerkezetét}.\par\smallskip
+Ezáltal képesek a mélytanuló modellek elsajátítani a szavak közötti hasonlóságokat és az egyes szavak jelentését.\par\smallskip
+Jelölése: $e_x$.
+\end{block}
+\end{column}
+\begin{column}{.6\textwidth}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+& \textbf{Férfi} & \textbf{Nő} & \textbf{Király} & \textbf{Királynő} & \textbf{Alma} \\
+\hline
+\textbf{Nem} & $-1$ & $1$ & $-0.95$ & $0.97$ & $0.0$\\
+\hline
+\textbf{Előkelő} & $0.01$ & $0.02$ & $0.93$ & $0.95$ & $-0.01$\\
+\hline
+\textbf{Kor} & $0.03$ & $0.02$ & $0.7$ & $0.68$ & $0.03$\\
+\hline
+\textbf{Étel} & $0.04$ & $0.01$ & $0.02$ & $0.01$ & $0.96$\\
+\hline
+\end{tabular}
+\end{center}
+Tehát ebben az esetben például a férfi szó beágyazóvektora:
+\begin{block}{}
+\vspace{-0.2cm}
+\[
+e_{\textit{férfi}} = \left[ -1,\;0.01,\;0.03,\;0.04 \right]
+\]
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
 \begin{frame}{Miért alkalmatlanok szekvencia feldolgozásra a hagyományos hálózatok?}
 \begin{columns}
 \begin{column}{.6\textwidth}
+\textbf{Hagyományos előrecsatolásos hálózatok}:
 \begin{itemize}
-	\item A szekvenciák hossza nem előre meghatározott, ezért nem képes változó hosszúságú input adattal dolgozni. 
-	\item Nem képes azonos szekvenciák között súlyokat megosztani. 
+	\item Nem képesek változó hosszúságú inputot feldolgozni, mert az input szekvenciák hossza előre meghatározott.
+	\item Nem képesek azonos szekvenciák között súlyokat megosztani. 
 \end{itemize}
-Ezzel szemben az RNN hálózatok:
+\textbf{Ezzel szemben az RNN hálózatok}:
 \begin{itemize}
 	\item Változó hosszúságú sorozatokkal működnek.
-	\item Hosszútávú függőségeket is meg tudnak tanulni.
-	\item Megőrzi az input vektor rendezettségét.
-	\item Képes paramétereket megosztani sorozatok között.
+	\item Hosszútávú függőségeket is képesek megtanulni.
+	\item Megőrzik az input vektor rendezettségét.
+	\item Képesek paramétereket megosztani sorozatok között.
 \end{itemize}
 \end{column}
 \begin{column}{.5\textwidth}
