@@ -21,6 +21,7 @@
 11_transformer/code/logs
 11_transformer/code/results
 11_transformer/code/wandb
+11_transformer/code/gpt2-finetuned
 
 # LaTeX
 *.aux
