@@ -16,6 +16,11 @@
 9_instance/code/oneformer/
 10_recurrent/code/training_checkpoints/*
 10_recurrent/code/training_checkpoints
+11_transformer/code/distilbert-imdb
+11_transformer/code/fine_tuned_model
+11_transformer/code/logs
+11_transformer/code/results
+11_transformer/code/wandb
 
 # LaTeX
 *.aux
