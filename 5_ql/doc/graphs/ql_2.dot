@@ -1,12 +1,12 @@
 digraph qlearning {
     graph[dpi=300]
 
-    initialize_q_table [label="Q1, Q2 tábla inícializálása", shape=rectangle];
+    initialize_q_table [label=<Q<sub>1</sub>, Q<sub>2</sub> tábla inicializálása>, shape=rectangle];
     choose_action [label="Cselekvés választás a Q-táblák együttese alapján", shape=rectangle];
     perform_action [label="Cselekvés végrehajtás", shape=rectangle];
     measure_reward [label="Jutalom megfigyelése", shape=rectangle];
-    update_q1_table [label="Q1-tábla frissítése", shape=rectangle];
-    update_q2_table [label="Q2-tábla frissítése", shape=rectangle];
+    update_q1_table [label=<Q<sub>1</sub> tábla frissítése>, shape=rectangle];
+    update_q2_table [label=<Q<sub>2</sub> tábla frissítése>, shape=rectangle];
 
     initialize_q_table -> choose_action
     choose_action -> perform_action
