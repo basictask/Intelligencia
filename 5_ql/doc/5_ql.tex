@@ -492,7 +492,7 @@ Miután először bemutatták 2013-ban, hamar kiderült hogy a naív $Q$-hálóz
 \begin{columns}
 \begin{column}{.65\textwidth}
 A tapasztalat visszajátszás az egyik változtatás, ami a $Q$-hálózat problémáján hivatott segíteni.\par\smallskip
-A tapasztalat memória ($D_{replay}$) \textbf{$[s,a,r,s']$ négyeseket tartalmaz}. Minden alkalommal amikor az ügynök cselekszik, az általa tapasztalt $s_t, a_t, r_t, s_{t+1}$ elmentődik a tapasztalat memóriába.\par\smallskip
+A tapasztalat memória ($D_{replay}$) \textbf{$[s,a,r,s']$ négyeseket tartalmaz}. Minden alkalommal amikor az ügynök cselekszik, az általa tapasztalt $s, a, r, s'$ elmentődik a tapasztalat memóriába.\par\smallskip
 Amikor tanulásra kerül a sor, az ügynök \textbf{véletlen és rendezetlen mintát} (miniköteget) kap a tapasztalat memóriából, melynek számossága megegyezik a kötegmérettel. Eszerint fogja kiszámolni a költségfüggvényt majd frissíteni a neurális hálózat paramétereit.
 \end{column}
 \begin{column}{.35\textwidth}
