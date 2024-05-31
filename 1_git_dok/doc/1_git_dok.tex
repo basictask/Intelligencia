@@ -81,7 +81,7 @@ A lokális verziókezelők a teljes fájlok helyett csak a változtatásokat tá
 \end{column}
 \begin{column}{0.5\textwidth}
 \begin{center}
-\includegraphics[width=7cm, keepaspectratio]{images/local_vcn.png}
+\includegraphics[width=7cm, height=7cm, keepaspectratio]{graphs/git_1.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -107,7 +107,7 @@ Ezek a rendszerek (például CVS, Subversion és Perforce) egyetlen szerverrel r
 \end{column}
 \begin{column}{0.5\textwidth}
 \begin{center}
-\includegraphics[width=7cm, keepaspectratio]{images/shared_vcn.png}
+\includegraphics[width=7cm, keepaspectratio]{graphs/git_2.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -123,7 +123,7 @@ A kliensek nem csak a fájlok legfrissebb pillanatképét töltik le, hanem telj
 \end{column}
 \begin{column}{0.5\textwidth}
 \begin{center}
-\includegraphics[height=7cm, keepaspectratio]{images/distributed_vcs.png}
+\includegraphics[height=7cm, width=7cm, keepaspectratio]{graphs/git_3.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -144,7 +144,7 @@ A hatékonyság érdekében, ha a fájlok nem változtak, a Git nem tárolja új
 \end{column}
 \begin{column}{0.5\textwidth}
 \begin{center}
-\includegraphics[width=7cm, keepaspectratio]{images/git_1.png}
+\includegraphics[width=7cm, keepaspectratio]{graphs/git_4.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -162,7 +162,7 @@ A Git rendszerében három fő állapota van a fájloknak: módosított (modifie
 \end{column}
 \begin{column}{0.6\textwidth}
 \begin{center}
-\includegraphics[width=8cm, height=8cm, keepaspectratio]{images/git_2.png}
+\includegraphics[width=8cm, height=8cm, keepaspectratio]{graphs/git_5.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -170,7 +170,7 @@ A Git rendszerében három fő állapota van a fájloknak: módosított (modifie
 
 \begin{frame}{Státuszok változása}
 \begin{center}
-\includegraphics[width=14cm, keepaspectratio]{images/git_3.png}
+\includegraphics[width=14cm, keepaspectratio]{graphs/git_6.png}
 \end{center}
 \end{frame}
 
@@ -199,24 +199,32 @@ A \textbf{commit} a Git verziókezelő rendszerben egy olyan művelet, amely sor
 \end{column}
 \begin{column}{0.7\textwidth}
 \begin{center}
-\includegraphics[width=10cm, height=10cm, keepaspectratio]{images/git_4.png}
+\includegraphics[width=10cm, height=10cm, keepaspectratio]{graphs/git_7.png}
 \end{center}
 \end{column}
 \end{columns}
 \end{frame}
 
 \begin{frame}{Több commit tárolása}
+\begin{columns}
+\begin{column}{.4\textwidth}
 Ha néhány változtatás után ismét egy commit következik, a következő commit egy mutatót tárol arra a commitra, amely közvetlenül megelőzte.\\
+\end{column}
+\begin{column}{.6\textwidth}
 \begin{center}
-\includegraphics[width=14cm, keepaspectratio]{images/git_5.png}
+\includegraphics[height=7cm, keepaspectratio]{graphs/git_8.png}
 \end{center}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Egy Git ág és az előzményei}
 \begin{columns}
 \begin{column}{0.4\textwidth}
 \only<1>{\begin{block}{Fejlesztési ág}
-A Gitben egy \textbf{fejlesztési ág} egy egyszerű mozgatható mutató, amely valamely commitra mutat.
+A Gitben egy \textbf{fejlesztési ág} egy egyszerű mozgatható mutató, amely valamely commitra mutat.\\
+\vspace{0.2cm}
+A példában fejlesztési ágak a \texttt{v1.0} és \texttt{master}.
 \end{block}}
 \only<2>{Az alapértelmezett ágnév a Gitben a \textbf{master}. Ahogy a commitok készülnek, a projekt kap egy master ágat, amely az utolsó, a felhasználó által készített commitra mutat. Minden egyes commitkor a master ág mutatója automatikusan előre mozog.}
 \only<3>{\begin{block}{HEAD}
@@ -226,7 +234,7 @@ A Git egy speciális mutatót tart nyilván, ami a \textbf{HEAD} néven ismert: 
 \end{column}
 \begin{column}{0.6\textwidth}
 \begin{center}
-\includegraphics[width=9cm, height=9cm, keepaspectratio]{images/git_6.png}
+\includegraphics[width=9cm, height=9cm, keepaspectratio]{graphs/git_9.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -236,33 +244,33 @@ A Git egy speciális mutatót tart nyilván, ami a \textbf{HEAD} néven ismert: 
 \only<1>{
 Amikor új ágat hozunk létre, egy új mutató jön létre a verziókezelőben. Ebben az esetben a HEAD még az eredeti ágra mutat.
 \begin{center}
-\includegraphics[height=6cm, keepaspectratio]{images/git_7.png}
+\includegraphics[height=6cm, keepaspectratio]{graphs/git_10.png}
 \end{center}}
 \only<2>{
 A checkout művelete átírja a HEAD mutató pozícióját a megjelölt fejlesztési ágra.
 \begin{center}
-\includegraphics[height=6cm, keepaspectratio]{images/git_8.png}
+\includegraphics[height=6cm, keepaspectratio]{graphs/git_11.png}
 \end{center}}
 \end{frame}
 
 \begin{frame}{Commit az új ágra}
 Ha a jelenleg aktív (checkout által megjelölt) fejlesztési ágra történik egy commit, az ág lehagyja a main-t 1 commit-tal. 
 \begin{center}
-\includegraphics[height=6cm, width=14cm, keepaspectratio]{images/git_9.png}
+\includegraphics[height=6cm, width=14cm, keepaspectratio]{graphs/git_12.png}
 \end{center}
 \end{frame}
 
 \begin{frame}{Másik ág aktiválása}
 A fejlesztési ágak között szabadon lehet váltani. Ha a checkout művelettel aktiválódik a master ág, a HEAD mutató onnantól kezdve rá mutat. Ebben az esetben a mappában lévő fájlok is megváltoznak a master-ben elmentett állapotukra.
 \begin{center}
-\includegraphics[height=6cm, width=14cm, keepaspectratio]{images/git_10.png}
+\includegraphics[height=5cm, width=14cm, keepaspectratio]{graphs/git_13.png}
 \end{center}
 \end{frame}
 
 \begin{frame}{Commit a master ágra}
 Ha ebben az állapotban a master ágra érkezik egy commit, egy új főág nyílik a projekten belül, és a két ág (testing, master) külön válnak.
 \begin{center}
-\includegraphics[height=6cm, width=14cm, keepaspectratio]{images/git_11.png}
+\includegraphics[height=6cm, width=14cm, keepaspectratio]{graphs/git_14.png}
 \end{center}
 \end{frame}
 
@@ -284,7 +292,7 @@ Az összeolvasztás (\textbf{merge}) a Git verziókezelő rendszerben egy olyan 
 \begin{column}{0.6\textwidth}
 Az 53-as probléma munkája befejeződött és készen áll arra, hogy a főprogrammal együtt legyen kezelve. Ahhoz, hogy ezt meg lehessen tenni, össze kell olvasztani az \textbf{iss53} ágat a \textbf{master} ággal.
 \begin{center}
-\includegraphics[height=6cm, width=9cm, keepaspectratio]{images/git_12.png}
+\includegraphics[height=6cm, width=8cm, keepaspectratio]{graphs/git_15.png}
 \end{center}
 \end{column}
 \end{columns}
@@ -293,13 +301,15 @@ Az 53-as probléma munkája befejeződött és készen áll arra, hogy a főprog
 \begin{frame}{Megjelölés összeolvasztásra}
 Mivel a master ágon lévő commit nem közvetlen őse az összeolvasztásra kerülő ágnak, a Gitnek el kell végeznie némi munkát. Ebben az esetben a Git egyszerű háromutas összeolvasztást végez, a két ág pillanatképeire mutató referenciák és a két ág közös őse alapján.
 \begin{center}
-\includegraphics[height=6cm, width=14cm, keepaspectratio]{images/git_13.png}
+\includegraphics[height=5cm, width=13cm, keepaspectratio]{graphs/git_16.png}
 \end{center}
 \end{frame}
 
 \begin{frame}{Összeolvasztás befejezése}
 Ahelyett, hogy egyszerűen előre mozgatná az ág mutatóját, a Git létrehoz egy új pillanatképet, amely az ebből a háromutas összeolvasztásból ered, és automatikusan létrehoz egy új commitot, amely erre mutat. Ezt nevezzük \textbf{összeolvasztási commitnak}, és különlegessége, hogy több mint egy szülője van.
-\includegraphics[height=6cm, width=14cm, keepaspectratio]{images/git_14.png}
+\begin{center}
+\includegraphics[height=6cm, width=12cm, keepaspectratio]{graphs/git_17.png}
+\end{center}
 \end{frame}
 
 \begin{frame}{Összeolvasztás típusai}
@@ -313,9 +323,9 @@ Ahelyett, hogy egyszerűen előre mozgatná az ág mutatóját, a Git létrehoz 
 \end{column}
 \begin{column}{0.5\textwidth}
 \begin{center}
-\only<1>{\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/git_15.png}}
-\only<2>{\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/git_16.png}}
-\only<3>{\includegraphics[width=7cm, height=7cm, keepaspectratio]{images/git_17.png}}
+\only<1>{\includegraphics[width=7cm, height=7cm, keepaspectratio]{graphs/git_18.png}}
+\only<2>{\includegraphics[width=7cm, height=7cm, keepaspectratio]{graphs/git_19.png}}
+\only<3>{\includegraphics[width=7cm, height=7cm, keepaspectratio]{graphs/git_20.png}}
 \end{center}
 \end{column}
 \end{columns}
