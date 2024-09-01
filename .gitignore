@@ -23,6 +23,7 @@ intelligencia_merged.pdf
 11_transformer/code/results
 11_transformer/code/wandb
 11_transformer/code/gpt2-finetuned
+widgets.qss
 
 # LaTeX
 *.aux
